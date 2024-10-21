@@ -6,7 +6,7 @@
 #    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/21 11:51:16 by eedwards         ###   ########.fr        #
+#    Updated: 2024/10/21 15:00:41 by eedwards         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,8 @@ CFLAGS = -Wall -Werror -Wextra -Ofast
 LFLAGS = -L./$(LIB1) -l$(LIB1_NAME) -L./$(LIB2) -l$(LIB2_NAME)
 
 # Libraries
-LIB1 = lib1_directory
-LIB1_NAME = lib1_name
+LIB1 = libft
+LIB1_NAME = libft.a
 LIB2 = lib2_directory
 LIB2_NAME = lib2_name
 
@@ -30,11 +30,16 @@ SRC_DIR = src
 INC_DIR = incl
 
 # Include paths
-INC = -I./$(LIB1) -I./$(LIB2) -I./$(INC_DIR)
+INC = -I./libft/incl -I./$(LIB2) -I./$(INC_DIR)
 
 # Source files
-SOURCES = create_tokens.c \
+SOURCES = close.c \
+	create_tokens.c \
+	ms_main.c \
 	replace_env.c \
+	signals.c \
+	token_utils.c \
+	token_utils2.c \
 
 
 # Object files

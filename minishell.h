@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/21 11:51:18 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/21 14:27:55 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "libft/incl/libft.h"
 #include <readline/readline.h> //readline + rl_* functions
 #include <readline/history.h> //readline + rl_* functions
+#include <signal.h> //signal, sig* functions
 
 
 typedef struct	s_token
@@ -66,7 +67,7 @@ int		add_to_list(char *k, t_mini *mini);
 /* ************************************************************************** */
 /*                              replace_env                                   */
 /* ************************************************************************** */
-int		re_main(int argc, char *argv[], char **envp);
+char	*re_main(char *input, char **envp);
 
 bool	isDelimiter(char ch);
 int		is_quotes(char *s, int *i);
@@ -75,5 +76,16 @@ char	*add_mem(char *str, int add, int old);
 char	*add_end(char *dst, char *add, int j);
 char	*get_env(char *str, int i, char **env);
 char	*first_check(char *str, char **env,  t_mini mini);
+
+/* ************************************************************************** */
+/*                                SIGNALS                                     */
+/* ************************************************************************** */
+void	ft_signal_setup();
+
+/* ************************************************************************** */
+/*                             CLOSE PROGRAM                                  */
+/* ************************************************************************** */
+void	ft_error_close(char *error_message);
+void	ft_close(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/21 11:55:27 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/21 13:14:12 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ char	*first_check(char *str, char **env,  t_mini mini)
 }
 
 
-int	re_main(char *input)
+char *re_main(char *input, char **envp);
 {
 	char *res;
 	t_mini mini;
@@ -194,5 +194,6 @@ int	re_main(char *input)
 	res = first_check(input, envp, mini);
 	printf(" %s\n", res);
 
-	return (1);
+	return (res);
+    //return (1);
 }
