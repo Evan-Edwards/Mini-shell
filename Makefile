@@ -6,12 +6,12 @@
 #    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/17 13:50:05 by eedwards         ###   ########.fr        #
+#    Updated: 2024/10/21 11:51:16 by eedwards         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Project name and compiler
-NAME = philo
+NAME = minishell
 CC = cc -g
 
 # Compiler and linker flags
@@ -33,11 +33,9 @@ INC_DIR = incl
 INC = -I./$(LIB1) -I./$(LIB2) -I./$(INC_DIR)
 
 # Source files
-SOURCES = input_validation.c \
-          ph_init.c \
-          ph_main.c \
-		  threads.c \
-		  utils.c
+SOURCES = create_tokens.c \
+	replace_env.c \
+
 
 # Object files
 SRCS = $(addprefix $(SRC_DIR)/, $(SOURCES))
