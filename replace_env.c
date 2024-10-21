@@ -3,185 +3,175 @@
 /*                                                        :::      ::::::::   */
 /*   replace_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/21 13:14:12 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/21 20:01:42 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	quotes(char *s, int *i, t_mini mini)
+int quotes2(char *s, int *i, t_mini mini)
 {
 	if (s[*i] == '\'')
 	{
 		if (mini.status == DEFAULT)
-		{
-			mini.status == SINGLEQ;
-			*i ++;
-		}
+			mini.status = SINGLEQ;
 		else if (mini.status == SINGLEQ)
-		{
-			mini.status == DEFAULT;
-			*i ++;
-		}
+			mini.status = DEFAULT;
 		else
 		{
 			return (1);
-			//mini.status[0] == s[*i];
-			//i++;
 		}
-		if (is_quotes(s, i) == 1)
-			quotes(s, i, mini);
 		return (1);
 	}
 	if (s[*i] == '\"')
 	{
 		if (mini.status == DEFAULT)
 		{
-			mini.status == DOUBLEQ;
-			*i ++;
+			mini.status = DOUBLEQ;
 		}
 		else if (mini.status == DOUBLEQ)
 		{
-			mini.status == DEFAULT;
-			*i ++;
+			mini.status = DEFAULT;
 		}
 		else
 		{
 			return (1);
-			//mini.token[0] == s[*i];
-			//i++;
 		}
-		if (is_quotes(s, i) == 1)
-			quotes(s, i, mini);
 		return (1);
 	}
 	return (0);
 }
 
-char	*add_mem(char *str, int add, int old)
+
+
+
+char  *add_mem (char *str, int add, int old)
 {
-	char *copy;
+    char *copy;
 
 	copy  = strdup(str);
-	free(str);
-	str = malloc(old + add);
-	str = strcpy(str, copy);
-	free (copy);
-	add = old + add;
-	return (str);
+    free(str);
+    str = malloc(old + add);
+    str = strcpy(str, copy);
+    free (copy);
+    add = old + add;
+    return (str);
 }
 
-char	*add_end(char *dst, char *add, int j)
+char *add_end (char *dst, char *add, int j)
 {
-	int i;
+    int i;
 
-	i = 0;
-	//j++;
-	printf("%s\n", add);
+    i = 0;
+    //j++;
+	//printf("%s\n", add);
 	//printf("%s\n", copy);
-	while (add[i])
-	{
-		dst[j] = add[i];
-		j++;
-		i++;
-	}
+    while (add[i])
+    {
+        dst[j] = add[i];
+        j++;
+        i++;
+    }
 	dst[j] = '\0';
-	printf("%s\n", dst);
-	return (dst);
+	//printf("%s\n", dst);
+    return (dst);
 }
 
-char	*get_env(char *str, int i, char **env)
+char *get_env (char *str, int *i, char **env)
 {
-	char *search;
-	int j;
-	char *ret;
+    char *search;
+    int j;
+    char *ret;
+    int k;
+    int z;
 
 	//return (strdup(""));
-	if (ft_isdigit(str[i + 1]) == 1)
-		return (strdup(""));
-	j = 0;
-	i++;
-	//return (strdup(""));
-	while(str[i] && isDelimiter(str[i]) == false)
-	{
-		i++;
-		j++;
-	}
-	//return (strdup(""));
-	search = malloc(j + 1);
-	i -= j;
-	j = 0;
-	while(str[i] && isDelimiter(str[i]) == false)
-	{
-		search[j] = str[i];
-		j++;
-		i++;
-	}
-	search[j] = '\0';
-	i = 0;
-	while (env[i])
-	{
-		if (strncmp(env[i], search, j) == 0 && env[i][j] == '=')
+    j = 0;
+    k = *i;
+    k++;
+    while(str[k] && isDelimiter(str[k]) == false)
+    {
+        k++;
+        j++;
+    }
+	*i += j + 1;
+	if (ft_isdigit(str[*i + 1]) == 1)
+        return (strdup(""));
+    search = malloc(j + 1);
+    k -= j;
+    j = 0;
+    while(str[k] && isDelimiter(str[k]) == false)
+    {
+        search[j] = str[k];
+        j++;
+        k++;
+    }
+    search[j] = '\0';
+    z = 0;
+    while (env[z])
+    {
+		if (strncmp(env[z], search, j) == 0 && env[z][j] == '=')
 			break;
-		i++;
-	}
-	if (env[i] == NULL)
+		z++;
+    }
+	if (env[z] == NULL)
 		return (strdup(""));
-	ret = strchr(env[i], '=');
-	return (ret);
+    ret = getenv(search);
+    //ret = strchr(env[z], '=');
+    return (ret);
 
 }
 
 
-
-char	*first_check(char *str, char **env,  t_mini mini)
+char *first_check(char *str, char **env,  t_mini mini)
 {
-	int i;
-	char *env_var;
-	char *copy;
-	int j;
-	int mem;
+    int i;
+    char *env_var;
+    char *copy;
+    int j;
+    int mem;
 	//t_mini mini;
 
 
 	i = 0;
-	j = 0;
-	mem = strlen(str);
-	printf("%d\n", mem);
+    j = 0;
+    mem = strlen(str);
+	//printf("%d\n", mem);
 	//return (NULL);
-	copy = malloc(mem + 1);
+    copy = malloc(mem + 1);
 	//return (NULL);
 	//return (NULL);
-	while (str[i])
-	{
-		quotes(str, &i, mini);
-		if (str[i] == '$' && mini.status != SINGLEQ)
-		{
-			env_var = get_env(str, i, env);
-			//printf("%s\n", env1);
+    while (str[i])
+    {
+        quotes2(str, &i, mini);
+        if (str[i] == '$' && mini.status != SINGLEQ)
+        {
+			env_var = get_env(str, &i, env);
+			//printf("%s\n", env_var);
+            //printf("%d\n", i);
 			//return (NULL);
-			copy = add_mem(copy, strlen(env_var), mem);
+            copy = add_mem(copy, strlen(env_var), mem);
 			//return (NULL);
-			mem += strlen(env_var);
-			copy = add_end(copy, env_var, j);
-			//free (env1);
-			return (copy);
-			i += strlen(env_var);   //fix
-			j += strlen(env_var);
-		}
-		else
-		{
+            mem += strlen(env_var);
+            copy = add_end(copy, env_var, j);
+            //free (env1);
+			//return (copy);
+            //i += strlen(env_var);   //fix
+            j += strlen(env_var);
+        }
+        else
+        {
 			copy[j] = str[i];
-			j++;
-			i++;
-		}
-	}
+            j++;
+            i++;
+        }
+    }
 	copy[j] = '\0';
-	if (mini.status != DEFAULT)
-		printf("uneven quotes");
+    if (mini.status != DEFAULT)
+        printf("uneven quotes");
 	return (copy);
 }
 

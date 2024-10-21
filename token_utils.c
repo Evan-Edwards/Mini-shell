@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 11:12:13 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/21 11:51:31 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/21 20:27:18 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,12 @@ bool	isDelimiter(char ch)
         return (true);
     return (false);
 }
-int	is_seperator (char* sep, char c)
-{
-	int i;
 
-	i = 0;
-	//return (0);
-	while (i < 1)
-	{
-		//return (0);
-		if (sep[i] == c)
-			return 1;
-		i++;
-		//return (0);
-	}
-	return 0;
-}
-
-int	is_quotes (char *s, int *i)
+bool is_quotes (char ch)
 {
-    if (s[*i] == '\'' || (s[*i] == '\"'))
-        return (1);
-    return (0);
+    if (ch == '\''|| ch == '\"')
+        return (true);
+    return (false);
 }
 
 void	skip_spaces (char *s, int *i)
@@ -48,7 +32,7 @@ void	skip_spaces (char *s, int *i)
 	{
 		while (s[*i] == ' ')
 		{
-			*i++;
+			*i = *i + 1;
 		}
 
 	}
