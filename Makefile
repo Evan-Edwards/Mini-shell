@@ -6,7 +6,7 @@
 #    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/21 15:00:41 by eedwards         ###   ########.fr        #
+#    Updated: 2024/10/22 10:26:35 by eedwards         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,11 @@ CC = cc -g
 
 # Compiler and linker flags
 CFLAGS = -Wall -Werror -Wextra -Ofast
-LFLAGS = -L./$(LIB1) -l$(LIB1_NAME) -L./$(LIB2) -l$(LIB2_NAME)
+LFLAGS = -L./$(LIBFT) -lft -lreadline
 
 # Libraries
-LIB1 = libft
-LIB1_NAME = libft.a
-LIB2 = lib2_directory
-LIB2_NAME = lib2_name
+LIBFT = libft
+LIBFTA = libft.a
 
 # Directories
 OBJ_DIR = obj
@@ -30,17 +28,16 @@ SRC_DIR = src
 INC_DIR = incl
 
 # Include paths
-INC = -I./libft/incl -I./$(LIB2) -I./$(INC_DIR)
+INC = -I./libft/incl -I./$(INC_DIR)
 
 # Source files
 SOURCES = close.c \
-	create_tokens.c \
+	create_token.c \
 	ms_main.c \
 	replace_env.c \
 	signals.c \
 	token_utils.c \
 	token_utils2.c \
-
 
 # Object files
 SRCS = $(addprefix $(SRC_DIR)/, $(SOURCES))
@@ -54,19 +51,16 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@make -C $(LIB1)
-	@make -C $(LIB2)
+	@make -C $(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LFLAGS)
 
 clean:
 	$(RM) $(OBJS)
-	@make -C $(LIB1) clean
-	@make -C $(LIB2) clean
+	@make -C $(LIBFT) clean
 
 fclean: clean
 	$(RM) $(NAME)
-	make -C $(LIB1) fclean
-	make -C $(LIB2) fclean
+	make -C $(LIBFT) fclean
 
 re: fclean all
 

@@ -6,13 +6,11 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/21 14:57:15 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/22 10:21:52 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 
 //if readline returns null it indicates Ctrl-D/ EOF, causing end of program
@@ -21,13 +19,15 @@ int main (int ac, char *av[], char **envp)
 	char	*input;
 	t_mini	mini;
 
-	//take input
+	(void)ac;
+	(void)av;
 	input = readline("Input > ");
 	if (input == NULL)
 		ft_close();
 	//lex input, put them into tokens
 	input = re_main(input, envp);
 	mini = ct_main(input);
+	print_list(&mini);
 	//error handling?
 	//parse tokens
 	//build into command table

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/21 20:57:18 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/22 10:17:12 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,10 @@ int add_to_list(char *k, t_mini *mini)
 	char *copy;
 
 	copy = strdup(k);
-	new_token = ft_lstnew(copy);
+	new_token = ft_t_lstnew(copy);
     if (!new_token)
         return (0);
-    ft_lstadd_back(&(mini->lst), new_token);
+    ft_t_lstadd_back(&(mini->lst), new_token);
     return (1);
 }
 
@@ -128,6 +128,7 @@ void token (char *s, t_mini *mini)
 
 	i = 0;
     j = 0;
+	k = NULL;
     malloc_flag = 0;
 	while(s[i])
 	{
@@ -175,18 +176,16 @@ void token (char *s, t_mini *mini)
 
 t_mini	ct_main(char *input)
 {
-	char *res;
+	//char *res;
 	t_mini mini;
-	t_mini mini2;
+	//t_mini mini2;
 
 	mini.lst = NULL;
-	mini2.lst = NULL;
+	//mini2.lst = NULL;
 	mini.status = DEFAULT;
 	token(input, &mini);
-	return (mini);
 	//print_list(&mini);
-    //return 0;
-	//return (1);
+	return (mini);
 }
 //error handling?
 

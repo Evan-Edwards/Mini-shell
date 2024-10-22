@@ -6,18 +6,18 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/21 14:27:55 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/22 10:22:30 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINI-SHELL_H
-# define MINI-SHELL_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "libft/incl/libft.h"
+#include "libft.h"
 #include <readline/readline.h> //readline + rl_* functions
 #include <readline/history.h> //readline + rl_* functions
 #include <signal.h> //signal, sig* functions
@@ -49,32 +49,30 @@ typedef enum e_status
 /* ************************************************************************** */
 t_mini	ct_main(char *input);
 
-int		quotes(char *s, int *i, t_mini mini);
+int		quotes(char *s, int *i, t_mini *mini);
 void	print_list(t_mini *mini);
+int		add_to_list(char *k, t_mini *mini);
 void	token (char *s, t_mini *mini);
 
 /* ************************************************************************** */
 /*                           create_token utils                               */
 /* ************************************************************************** */
 bool	isDelimiter(char ch);
-int		is_seperator (char* sep, char c);
-int		is_quotes (char *s, int *i);
+bool 	is_quotes (char ch);
 void	skip_spaces (char *s, int *i);
-void	ft_lstadd_back(t_token **lst, t_token *new);
-t_token	*ft_lstnew(void *content);
-int		add_to_list(char *k, t_mini *mini);
+void	ft_t_lstadd_back(t_token **lst, t_token *new);
+t_token	*ft_t_lstnew(void *content);
+
 
 /* ************************************************************************** */
 /*                              replace_env                                   */
 /* ************************************************************************** */
 char	*re_main(char *input, char **envp);
 
-bool	isDelimiter(char ch);
-int		is_quotes(char *s, int *i);
-int		quotes(char *s, int *i, t_mini mini);
+int		quotes2(char *s, int *i, t_mini mini);
 char	*add_mem(char *str, int add, int old);
 char	*add_end(char *dst, char *add, int j);
-char	*get_env(char *str, int i, char **env);
+char 	*get_env (char *str, int *i, char **env);
 char	*first_check(char *str, char **env,  t_mini mini);
 
 /* ************************************************************************** */
