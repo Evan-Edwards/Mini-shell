@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/22 10:21:52 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/22 10:56:57 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,30 @@ int main (int ac, char *av[], char **envp)
 
 	(void)ac;
 	(void)av;
-	input = readline("Input > ");
-	if (input == NULL)
-		ft_close();
-	//lex input, put them into tokens
-	input = re_main(input, envp);
-	mini = ct_main(input);
-	print_list(&mini);
-	//error handling?
-	//parse tokens
-	//build into command table
-	free(input);
-	//execute command table
-	//wait for next command?
 	ft_signal_setup();
+	while (1)
+	{
+		input = readline("Input > ");
+		if (input == NULL)
+			ft_close();
+		if (input[0] == '\0')
+		{
+			free(input);
+			continue;
+		}
+		//lex input, put them into tokens
+		input = re_main(input, envp);
+		mini = ct_main(input);
+		print_list(&mini);
+		//error handling?
+		//parse tokens
+		//build into command table
+		free(input);
+		//execute command table
+		//wait for next command?
+	}
 	//close program, free memory
+	return (0);
 	
 
 }

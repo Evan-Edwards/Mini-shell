@@ -6,21 +6,22 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/22 10:22:30 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/22 11:34:11 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include <stdbool.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include "libft.h"
 #include <readline/readline.h> //readline + rl_* functions
 #include <readline/history.h> //readline + rl_* functions
 #include <signal.h> //signal, sig* functions
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 
 typedef struct	s_token
