@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 11:12:13 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/22 10:05:18 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/23 20:25:35 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	isDelimiter(char ch)
+bool isDelimiter(char ch)
 {
-    if (ch == ' ' || ch == '<' || ch == '>' || ch == '*' )
+    if (ch == ' ' || ch == '<' || ch == '>' || ch == '*' || ch == '|')
         return (true);
     return (false);
 }

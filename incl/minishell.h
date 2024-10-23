@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/23 16:42:07 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/23 20:30:20 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <sys/wait.h>
+# include <fcntl.h>
 
 typedef struct s_token
 {
@@ -44,6 +46,18 @@ typedef enum e_status
 	SINGLEQ,
 	DOUBLEQ,
 }					t_status;
+
+typedef enum e_type
+{
+	ARG,
+	EMPTY,
+	DASH,
+	INPUT,
+	OUTPUT,
+	APPEND,
+	HEREDOC,
+	PIPE,
+}					t_type;
 
 /* ************************************************************************** */
 /*                              create_token                                  */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/23 16:42:14 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/23 20:27:56 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,10 @@
 
 int quotes(char *s, int *i, t_mini *mini)
 {
-	//return (1);
 	if (s[*i] == '\'')
 	{
-		//printf("%d\n", *i);
 		if (mini->status == DEFAULT)
 		{
-			//printf("aa\n");
 			mini->status = SINGLEQ;
 			*i = *i +1;
 		}
@@ -33,7 +30,6 @@ int quotes(char *s, int *i, t_mini *mini)
 		{
 			return (1);
 		}
-		//printf("%d\n", *i);
         if (is_quotes(s[*i]) == true)
             quotes(s, i, mini);
 		return (1);
@@ -99,7 +95,6 @@ static int	len_next(char *str, int i, t_mini mini)
 
 	j = 0;
 	skip_spaces(str, &i);
-	//printf("%c\n", str[i]);
 	while (str[i])
 	{
 		if (isDelimiter(str[i]) && mini.status == DEFAULT)
@@ -108,17 +103,74 @@ static int	len_next(char *str, int i, t_mini mini)
 				break;
 			}
 		quotes(str, &i, &mini);
-		if (str[i] == '\0') 
+		if (str[i] == '\0')
 			break;
 		i++;
 		j++;
 	}
-	//j++;
 	return (j);
 }
 
+int check_sep(char *s, int *i, t_mini *mini)
+{
+	char *k;
 
-void token(char *s, t_mini *mini)
+	if (s[*i] == '>')
+	{
+		if (s[*i+1] == '>')
+		{
+			if (!(k = malloc(3)))
+        		printf("malloc error");
+			k[0] = s[*i];
+			k[1] = s[*i];
+			k[2] = '\0';
+			add_to_list(k, mini);
+			*i += 1;
+		}
+		else
+		{
+			if (!(k = malloc(2)))
+        		printf("malloc error");
+			k[0] = s[*i];
+			k[1] = '\0';
+			add_to_list(k, mini);
+		}
+		free (k);
+	}
+	else if (s[*i] == '<')
+	{
+		if (s[*i+1] == '<')
+		{
+			if (!(k = malloc(3)))
+        		printf("malloc error");
+			k[0] = s[*i];
+			k[1] = s[*i];
+			k[2] = '\0';
+			add_to_list(k, mini);
+			*i += 1;
+		}
+		else
+		{
+			if (!(k = malloc(2)))
+        		printf("malloc error");
+			k[0] = s[*i];
+			k[1] = '\0';
+			add_to_list(k, mini);
+		}
+		free (k);
+	}
+	else
+	{
+		if (!(k = malloc(2)))
+        	printf("malloc error");
+			k[0] = s[*i];
+			k[1] = '\0';
+			add_to_list(k, mini);
+	}
+	return (1);
+}
+
+void token (char *s, t_mini *mini)
 {
 	int i;
 	int j;
@@ -128,7 +180,6 @@ void token(char *s, t_mini *mini)
 
 	i = 0;
     j = 0;
-	k = NULL;
     malloc_flag = 0;
 	while(s[i])
 	{
@@ -141,7 +192,7 @@ void token(char *s, t_mini *mini)
             malloc_flag = 1;
         }
         quotes(s, &i, mini);
-		if (s[i] == '\0') 
+		if (s[i] == '\0')
 			break;
 		if (isDelimiter(s[i]) && mini->status == DEFAULT)
 			{
@@ -149,15 +200,8 @@ void token(char *s, t_mini *mini)
 				if (strlen(k) > 0)
 					add_to_list(k, mini);
                 free (k);
-				if (s[i] == '>' || s[i] == '<' )
-				{
-					if (!(k = malloc(2)))
-                		printf("malloc error");
-					k[0] = s[i];
-					k[1] = '\0';
-					add_to_list(k, mini);
-					free (k);
-				}
+				if (s[i] == '>' || s[i] == '<' || s[i] == '|')
+					check_sep(s, &i, mini);
                 malloc_flag = 0;
                 j = 0;
             }
@@ -165,7 +209,7 @@ void token(char *s, t_mini *mini)
 		{
 			k[j] = s[i];
 			 j++;
-		} 
+		}
         i++;
 	}
 	k[j] = '\0';
