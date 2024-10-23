@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/22 10:17:12 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/23 16:42:14 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ static int	len_next(char *str, int i, t_mini mini)
 }
 
 
-void token (char *s, t_mini *mini)
+void token(char *s, t_mini *mini)
 {
 	int i;
 	int j;

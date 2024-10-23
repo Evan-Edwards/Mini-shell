@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:59:26 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/22 10:42:06 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/23 10:17:42 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	signal_interrupt(int sig)
 {
 	(void)sig;
 	rl_replace_line("", 0);
-	//having errors when trying to check for return of rl_replace_line
 	rl_on_new_line();
 	rl_redisplay();
 }

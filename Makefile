@@ -6,7 +6,7 @@
 #    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/22 11:34:03 by eedwards         ###   ########.fr        #
+#    Updated: 2024/10/23 16:42:11 by eedwards         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,9 @@ INC = -I./libft/incl -I./$(INC_DIR)
 # Source files
 SOURCES = close.c \
 	create_token.c \
+	exec_cd.c \
+	exec_cd2.c \
+	exec_pwd.c \
 	ms_main.c \
 	replace_env.c \
 	signals.c \
