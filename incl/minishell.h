@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/24 13:05:40 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/24 16:14:48 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char	*get_current_directory(void);
 int		ft_pwd(void);
 
 /* ************************************************************************** */
-/*                              EXECUTE CD                                   */
+/*                              EXECUTE CD                                    */
 /* ************************************************************************** */
 char	*rm_last_dir(char *cwd);
 int		ft_cd(char *path);
@@ -112,11 +112,22 @@ char	*mod_cwd(char *cwd, char *path);
 /*                             EXECUTE EXPORT                                 */
 /* ************************************************************************** */
 int		count_env_variables(char **envp);
-int		ft_export(char **envp);
+int		ft_export_no_arg(char **envp);
 char	**sort_array(char **to_sort, int iterations);
 char	**copy_str_array(char	**orig, char **copy);
 void	free_str_array(char **to_free);
 void	print_env(char *env);
+
+/* ************************************************************************** */
+/*                             EXECUTE UNSET                                  */
+/* ************************************************************************** */
+int		ft_unset(char **envp, char **to_unset);
+void	remove_str_from_array(char ***envp, int *j);
+
+/* ************************************************************************** */
+/*                              EXECUTE ENV                                   */
+/* ************************************************************************** */
+int	ft_env(char **envp)
 
 /* ************************************************************************** */
 /*                             CLOSE PROGRAM                                  */

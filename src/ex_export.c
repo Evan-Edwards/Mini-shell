@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 10:17:35 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/24 13:03:15 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/24 16:11:33 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	print_env(char *env)
 //prints each str with print_env
 //then frees the created str array
 //returns 1 on success, 0 on failure
-int	ft_export(char **envp)
+int	ft_export_no_arg(char **envp)
 {
 	int		i;
 	int		str_num;
