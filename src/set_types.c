@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   set_types.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:53:35 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/23 20:35:48 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/24 13:52:36 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -56,6 +55,7 @@ int reg(char *str)
 		return (ARG);
 }
 
+//sets the type variable for each t_token of list
 int	set_types(t_token *lst)
 {
 
@@ -70,6 +70,8 @@ int	set_types(t_token *lst)
 }
 
 
+
+//counts amount of pipes in linked list of t_tokens
 int	count_pipes (t_token *lst)
 {
 	int i;

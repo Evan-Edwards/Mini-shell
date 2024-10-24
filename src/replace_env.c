@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/23 16:42:13 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/24 13:52:39 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ char *add_end(char *dst, char *add, int j)
 	return (dst);
 }
 
+
 char *get_env(char *str, int *i, char **env)
 {
 	char *search;
@@ -115,6 +116,8 @@ char *get_env(char *str, int *i, char **env)
 	return (ret);
 }
 
+//handles variable expansion
+//No expansion if single quotes
 char *first_check(char *str, char **env, t_mini mini)
 {
 	int i;
