@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
+#    By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/25 13:36:27 by eedwards         ###   ########.fr        #
+#    Updated: 2024/10/25 19:51:26 by ttero            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,7 @@ SOURCES = close.c \
 	tok_main.c \
 	tok_quotes.c \
 	tok_utils.c \
+	distribute.c \
 
 # Object files
 SRCS = $(addprefix $(SRC_DIR)/, $(SOURCES))

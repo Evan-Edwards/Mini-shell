@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/25 13:38:29 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/25 19:21:41 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 
 //if readline returns null it indicates Ctrl-D/ EOF, causing end of program
@@ -34,6 +35,10 @@ int main (int ac, char *av[], char **envp)
 		}
 		input_to_tokens(input, envp, &mini);
 		print_list(&mini);
+		if (check_errors(mini.lst) == 0)
+       		continue;
+		set_types(mini.lst);
+    	distribute(&mini, envp);
 		//error handling?
 		//parse tokens
 		//build into command table
@@ -43,9 +48,9 @@ int main (int ac, char *av[], char **envp)
 	}
 	//close program, free memory
 	return (0);
-	
+
 
 }
 
-//There is at least making the program open and close properly, 
+//There is at least making the program open and close properly,
 //and the ctrl commands, or you can do any of the build in functions

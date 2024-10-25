@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/25 13:32:18 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/25 19:50:46 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ typedef enum e_type
 {
 	ARG,
 	EMPTY,
-	DASH,
+    DASH,
+    PIPE,
 	INPUT,
+    HEREDOC,
 	OUTPUT,
 	APPEND,
-	HEREDOC,
-	PIPE,
 }					t_type;
 
 /* ************************************************************************** */
@@ -133,5 +133,10 @@ void 	free_mini(t_mini *mini);
 void	ft_error_close(char *error_message);
 void	ft_close(void);
 void	ft_perror_close(char *perror_message);
+
+
+int distribute(t_mini *mini, char **envp);
+int exe(char **arg,t_mini *mini, char **envp);
+
 
 #endif

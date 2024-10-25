@@ -6,13 +6,38 @@
 /*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 20:35:34 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/23 20:36:10 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/25 19:49:39 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int open_file (int type, char *file_name)
+int input_file(int type, char *file_name)
+{
+    int fileout;
+
+    if (type == INPUT)
+	{
+		fileout = open(file_name, O_RDONLY, 0777);;
+		if (fileout == -1)
+		{
+			printf("%s: %s\n", file_name, strerror(errno));
+			return (-1);
+		}
+	}
+	if (type == HEREDOC)
+	{
+		//fileout = handle_heredoc(file_name);
+		if (fileout == -1)
+		{
+			printf("%s: %s\n", file_name, strerror(errno));
+			return (-1);
+		}
+	}
+	return (fileout);
+}
+
+int output_file (int type, char *file_name)
 {
 	int fileout;
 
@@ -21,7 +46,7 @@ int open_file (int type, char *file_name)
 		fileout = open(file_name, O_TRUNC | O_CREAT | O_RDWR, 0000644);
 		if (fileout == -1)
 		{
-			ft_printf_error("%s: %s\n", data.file2, strerror(errno));
+			printf("%s: %s\n", file_name, strerror(errno));
 			return (1);
 		}
 	}
@@ -30,41 +55,55 @@ int open_file (int type, char *file_name)
 		fileout = open(file_name, O_APPEND | O_CREAT | O_RDWR, 0000644);
 		if (fileout == -1)
 		{
-			ft_printf_error("%s: %s\n", data.file2, strerror(errno));
+			printf("%s: %s\n", file_name, strerror(errno));
 			return (1);
 		}
 	}
-	if (type == INPUT)
-	{
-		fileout = open(file_name, O_RDONLY, 0777);;
-		if (fileout == -1)
-		{
-			ft_printf_error("%s: %s\n", data.file2, strerror(errno));
-			return (1);
-		}
-	}
-	if (type == HEREDOC)
-	{
-		fileout = handle_heredoc(file_name);
-		if (fileout == -1)
-		{
-			ft_printf_error("%s: %s\n", data.file2, strerror(errno));
-			return (1);
-		}
-	}
+	return (fileout);
 }
 
-int exec (t_token *lst, int pipe_num)
-{
-	int i;
 
-	i = 0;
-	while (lst->next != NULL && lst->type != PIPE)
+int	create_pipe(int pipe_fd[2])
+{
+	if (pipe(pipe_fd) == -1)
 	{
-		if (lst->type > 6)
-		{
-			open_file(lst->type, lst->next->str);
-		}
-		lst = lst->next;
+		ft_printf_error("Pipe error");
+		return(0);
 	}
+	return (1);
+}
+
+
+int exe(char **arg,t_mini *mini, char **envp)
+{
+    char *path;
+	pid_t	pid1;
+	int status;
+
+
+	path = get_path2(arg[0], envp);
+    if (path == NULL)
+    {
+        ft_printf("%s: command not found:\n", arg[0]);
+        return (1);
+    }
+	pid1 = fork();
+	if (pid1 == -1)
+	{
+		ft_printf("Fork error");
+		return (1);
+	}
+	if (pid1 == 0)
+	{
+    	if (execve(path, arg, envp) == -1)
+		{
+			ft_printf("%s: %s\n", path, strerror(errno));
+			exit(errno);
+		}
+	}
+	waitpid(pid1, &status, 0);
+	free (path);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (status);
 }

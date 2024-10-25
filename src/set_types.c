@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_types.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:53:35 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/24 13:52:36 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/25 19:03:54 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@ int check_errors(t_token *lst)
 		return (0);
 	while (lst->next != NULL)
 	{
-		if (lst ->type > 3)
+        if (lst ->type >= 3)
 		{
-			if (lst->next == NULL || lst->next->type > 3)
+            if (lst->next == NULL || lst->next->type >= 3)
 			{
-				printf("syntax error near unexpected token, %s", lst->str);
+				printf("syntax error near unexpected token, %s\n", lst->content);
+                return (0);
 			}
 		}
 		lst = lst->next;
 	}
-	return (1);
-
+    return (1);
 }
 
 int reg(char *str)
