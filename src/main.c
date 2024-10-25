@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_main.c                                          :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/22 10:56:57 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/25 10:06:32 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 int main (int ac, char *av[], char **envp)
 {
 	char	*input;
-	t_mini	mini;
+	t_mini	mini; //malloc for mini?
 
 	(void)ac;
 	(void)av;
@@ -32,9 +32,7 @@ int main (int ac, char *av[], char **envp)
 			free(input);
 			continue;
 		}
-		//lex input, put them into tokens
-		input = re_main(input, envp);
-		mini = ct_main(input);
+		token_main(input, envp, &mini);
 		print_list(&mini);
 		//error handling?
 		//parse tokens

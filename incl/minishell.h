@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/24 16:14:48 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/25 10:05:33 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef enum e_type
 /* ************************************************************************** */
 /*                              create_token                                  */
 /* ************************************************************************** */
-t_mini	ct_main(char *input);
+void	ct_main(char *input, char **envp, t_mini *mini);
 
 int		quotes(char *s, int *i, t_mini *mini);
 void	print_list(t_mini *mini);
@@ -88,7 +88,7 @@ int		quotes2(char *s, int *i, t_mini mini);
 char	*add_mem(char *str, int add, int old);
 char	*add_end(char *dst, char *add, int j);
 char	*get_env(char *str, int *i, char **env);
-char	*first_check(char *str, char **env, t_mini mini);
+char 	*env_var_expansion(char *str, char **env, t_mini mini);
 
 /* ************************************************************************** */
 /*                                SIGNALS                                     */
@@ -127,7 +127,7 @@ void	remove_str_from_array(char ***envp, int *j);
 /* ************************************************************************** */
 /*                              EXECUTE ENV                                   */
 /* ************************************************************************** */
-int	ft_env(char **envp)
+int		ft_env(char **envp);
 
 /* ************************************************************************** */
 /*                             CLOSE PROGRAM                                  */

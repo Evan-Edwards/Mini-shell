@@ -1,49 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   replace_env.c                                      :+:      :+:    :+:   */
+/*   tok_env_exp.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/24 13:52:39 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/25 09:42:09 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int quotes2(char *s, int *i, t_mini mini)
-{
-	if (s[*i] == '\'')
-	{
-		if (mini.status == DEFAULT)
-			mini.status = SINGLEQ;
-		else if (mini.status == SINGLEQ)
-			mini.status = DEFAULT;
-		else
-		{
-			return (1);
-		}
-		return (1);
-	}
-	if (s[*i] == '\"')
-	{
-		if (mini.status == DEFAULT)
-		{
-			mini.status = DOUBLEQ;
-		}
-		else if (mini.status == DOUBLEQ)
-		{
-			mini.status = DEFAULT;
-		}
-		else
-		{
-			return (1);
-		}
-		return (1);
-	}
-	return (0);
-}
 
 char	*add_mem(char *str, int add, int old)
 {
@@ -57,22 +24,6 @@ char	*add_mem(char *str, int add, int old)
 	add = old + add;
 	return (str);
 }
-
-char *add_end(char *dst, char *add, int j)
-{
-	int i;
-
-	i = 0;
-	while (add[i])
-	{
-		dst[j] = add[i];
-		j++;
-		i++;
-	}
-	dst[j] = '\0';
-	return (dst);
-}
-
 
 char *get_env(char *str, int *i, char **env)
 {
@@ -118,7 +69,7 @@ char *get_env(char *str, int *i, char **env)
 
 //handles variable expansion
 //No expansion if single quotes
-char *first_check(char *str, char **env, t_mini mini)
+char *env_var_expansion(char *str, char **env, t_mini *mini)
 {
 	int i;
 	char *env_var;
@@ -132,13 +83,13 @@ char *first_check(char *str, char **env, t_mini mini)
 	copy = malloc(mem + 1);
 	while (str[i])
 	{
-		quotes2(str, &i, mini);
-		if (str[i] == '$' && mini.status != SINGLEQ)
+		quotes(str, &i, mini);
+		if (str[i] == '$' && mini->status != SINGLEQ)
 		{
 			env_var = get_env(str, &i, env);
 			copy = add_mem(copy, strlen(env_var), mem);
 			mem += strlen(env_var);
-			copy = add_end(copy, env_var, j);
+			ft_strlcat(copy + j, env_var, mem - j + 1);
 			j += strlen(env_var);
 		}
 		else
@@ -149,17 +100,9 @@ char *first_check(char *str, char **env, t_mini mini)
 		}
 	}
 	copy[j] = '\0';
-	if (mini.status != DEFAULT)
+	if (mini->status != DEFAULT)
 		printf("uneven quotes");
 	return (copy);
 }
 
-char *re_main(char *input, char **envp)
-{
-	char *res;
-	t_mini mini;
 
-	res = first_check(input, envp, mini);
-	printf(" %s\n", res);
-	return (res);
-}
