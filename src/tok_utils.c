@@ -1,40 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_utils.c                                      :+:      :+:    :+:   */
+/*   tok_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 11:12:13 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/23 20:25:35 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/25 13:32:08 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool isDelimiter(char ch)
+bool	is_delimiter(char ch)
 {
-    if (ch == ' ' || ch == '<' || ch == '>' || ch == '*' || ch == '|')
-        return (true);
-    return (false);
+	if (ch == ' ' || ch == '<' || ch == '>' || ch == '*' || ch == '|')
+		return (true);
+	return (false);
 }
 
-bool is_quotes (char ch)
+bool	is_quotes(char ch)
 {
-    if (ch == '\''|| ch == '\"')
-        return (true);
-    return (false);
+	if (ch == '\'' || ch == '\"')
+		return (true);
+	return (false);
 }
 
-void	skip_spaces (char *s, int *i)
+void	skip_spaces(char *s, int *i)
 {
 	if (s[*i] == ' ')
 	{
 		while (s[*i] == ' ')
-		{
-			*i = *i + 1;
-		}
-
+			(*i)++;
 	}
 }
-

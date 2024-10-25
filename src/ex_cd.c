@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cd.c                                          :+:      :+:    :+:   */
+/*   ex_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:43:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/23 16:42:05 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:41:10 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ static char	*cat_cwd_path(char *cwd, char *path)
 //removes last directory for '..' and skips '.'
 //updates index i to skip processed characters
 //returns NULL if rm_last_dir fails, updated cwd otherwise
-static char *handle_dot_paths(char *cwd, char *path, int *i)
+static char	*handle_dot_paths(char *cwd, char *path, int *i)
 {
-	char *new_cwd;
+	char	*new_cwd;
 
 	if (path[*i] == '.' && path[*i + 1] == '.')
 	{
@@ -61,10 +61,10 @@ static char *handle_dot_paths(char *cwd, char *path, int *i)
 //joins extracted path with cwd using cat_cwd_path
 //frees temporary allocations and returns new combined path
 //returns NULL if memory allocation fails
-static char *handle_alpha_path(char *cwd, char *path, int i)
+static char	*handle_alpha_path(char *cwd, char *path, int i)
 {
-	char *temp_path;
-	char *new_cwd;
+	char	*temp_path;
+	char	*new_cwd;
 
 	temp_path = ft_substr(path, i, ft_strlen(path) - i);
 	if (temp_path == NULL)
@@ -84,7 +84,7 @@ static char *handle_alpha_path(char *cwd, char *path, int i)
 char	*mod_cwd(char *cwd, char *path)
 {
 	int		i;
-	
+
 	i = 0;
 	while (path[i])
 	{

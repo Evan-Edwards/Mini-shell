@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/25 09:44:31 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:33:08 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 //makes substr of s from start to end
 //adds substr to list with add_to_list
-static void add_token(char *s, int start, int end, t_mini *mini)
+static void	add_token(char *s, int start, int end, t_mini *mini)
 {
-	char *token = ft_substr(s, start, end - start);
+	char	*token;
+
+	token = ft_substr(s, start, end - start);
 	if (!token)
 		ft_error_close("malloc error");
 	add_to_list(token, mini);
@@ -25,9 +27,9 @@ static void add_token(char *s, int start, int end, t_mini *mini)
 
 //adds delimiters as token to list
 //checks if it's a single or double arrow
-static void handle_delimiter(char *s, int *i, t_mini *mini)
+static void	handle_delimiter(char *s, int *i, t_mini *mini)
 {
-	char delim[3];
+	char	delim[3];
 
 	if (s[*i] == '>' || s[*i] == '<' || s[*i] == '|')
 	{
@@ -48,10 +50,10 @@ static void handle_delimiter(char *s, int *i, t_mini *mini)
 //increments i while s[i] is not a space or delimiter
 //uses add_token to make substr given i and start, and add to mini->lst
 //uses handle_delimiter to handle delimiters
-void token(char *s, t_mini *mini)
+void	token(char *s, t_mini *mini)
 {
-	int i;
-	int start;
+	int	i;
+	int	start;
 
 	i = 0;
 	start = 0;
@@ -59,30 +61,31 @@ void token(char *s, t_mini *mini)
 	{
 		skip_spaces(s, &i);
 		start = i;
-		while (s[i] && !(isDelimiter(s[i]) && mini->status == DEFAULT))
+		while (s[i] && !(is_delimiter(s[i]) && mini->status == DEFAULT))
 		{
 			quotes(s, &i, mini);
 			if (s[i] == '\0')
-				break;
+				break ;
 			i++;
 		}
 		if (i > start)
 			add_token(s, start, i, mini);
-		if (isDelimiter(s[i]) && mini->status == DEFAULT)
+		if (is_delimiter(s[i]) && mini->status == DEFAULT)
 			handle_delimiter(s, &i, mini);
 	}
 }
 
-t_mini	*ct_main(char *input, char **envp, t_mini *mini)
+//ERROR HANDLING FOR TOKEN?
+void	input_to_tokens(char *input, char **envp, t_mini *mini)
 {
 	mini->lst = NULL;
 	mini->status = DEFAULT;
-	input = env_var_expansion(input, envp, *mini);
+	input = env_var_expansion(input, envp, mini);
+	if (input == NULL)
+	{
+		free_mini(mini);
+		ft_error_close("Error expanding environmental variables");
+	}
 	token(input, &mini);
 	return (mini);
 }
-//error handling?!
-
-
-
-

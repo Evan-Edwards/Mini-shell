@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_pwd.c                                         :+:      :+:    :+:   */
+/*   ex_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:20:00 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/23 16:42:10 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:37:36 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*get_current_directory(void)
 	cwd = malloc(size);
 	if (cwd == NULL)
 		ft_error_close("Malloc Error"); //will it work like this? Need to free stuff?
-	if (get_cwd(cwd, size) == NULL)
+	if (getcwd(cwd, size) == NULL)
 	{
 		free (cwd);
 		ft_perror_close("getcwd failed");

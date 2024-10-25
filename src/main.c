@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/25 10:06:32 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:38:29 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int main (int ac, char *av[], char **envp)
 			free(input);
 			continue;
 		}
-		token_main(input, envp, &mini);
+		input_to_tokens(input, envp, &mini);
 		print_list(&mini);
 		//error handling?
 		//parse tokens

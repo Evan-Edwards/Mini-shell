@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 10:17:35 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/24 16:11:33 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:42:18 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	free_str_array(char **to_free)
 
 	i = 0;
 	if (to_free == NULL)
-		return;
+		return ;
 	while (to_free[i])
 	{
 		free(to_free[i]);
@@ -72,7 +72,7 @@ char	**sort_array(char **to_sort, int iterations)
 			}
 		}
 		if (swapped == 0)
-			break;
+			break ;
 	}
 	return (to_sort);
 }
@@ -116,7 +116,7 @@ int	ft_export_no_arg(char **envp)
 
 	i = 0;
 	str_num = count_env_variables(envp);
-	env_arr_sorted = malloc((str_num + 1) * sizeof(char*));
+	env_arr_sorted = malloc((str_num + 1) * sizeof(char *));
 	if (!env_arr_sorted)
 		return (0);
 	env_arr_sorted = copy_str_array(envp, env_arr_sorted);
@@ -133,4 +133,9 @@ int	ft_export_no_arg(char **envp)
 	}
 	free_str_array(env_arr_sorted);
 	return (1);
+}
+
+int	ft_export(char **envp)
+{
+	
 }

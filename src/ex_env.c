@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:47:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/24 16:07:00 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:34:56 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_env(char **envp)
 	{
 		if (ft_putstr(*envp) == -1 || ft_putchar('\n') == -1)
 		{
-			ft_putstrfd("Printing error", 2);
+			ft_putstr_fd("Printing error", 2);
 			return (0);
 		}
 		envp++;

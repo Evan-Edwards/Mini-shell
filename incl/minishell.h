@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/25 10:05:33 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:32:18 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,32 +63,29 @@ typedef enum e_type
 /* ************************************************************************** */
 /*                              create_token                                  */
 /* ************************************************************************** */
-void	ct_main(char *input, char **envp, t_mini *mini);
-
-int		quotes(char *s, int *i, t_mini *mini);
-void	print_list(t_mini *mini);
-int		add_to_list(char *k, t_mini *mini);
+void	input_to_tokens(char *input, char **envp, t_mini *mini);
 void	token(char *s, t_mini *mini);
+char	*env_var_expansion(char *str, char **env, t_mini *mini);
+char	*get_env(char *str, int *i, char **env);
 
 /* ************************************************************************** */
-/*                           create_token utils                               */
+/*                           create token utils                               */
 /* ************************************************************************** */
-bool	isDelimiter(char ch);
+bool	is_delimiter(char ch);
 bool	is_quotes(char ch);
 void	skip_spaces(char *s, int *i);
-void	ft_t_lstadd_back(t_token **lst, t_token *new);
-t_token	*ft_t_lstnew(void *content);
-
-/* ************************************************************************** */
-/*                              replace_env                                   */
-/* ************************************************************************** */
-char	*re_main(char *input, char **envp);
-
-int		quotes2(char *s, int *i, t_mini mini);
+int		quotes(char *s, int *i, t_mini *mini);
 char	*add_mem(char *str, int add, int old);
 char	*add_end(char *dst, char *add, int j);
 char	*get_env(char *str, int *i, char **env);
-char 	*env_var_expansion(char *str, char **env, t_mini mini);
+
+/* ************************************************************************** */
+/*                          token list utils                                  */
+/* ************************************************************************** */
+int		add_to_list(char *k, t_mini *mini);
+void	ft_t_lstadd_back(t_token **lst, t_token *new);
+void	print_list(t_mini *mini);
+t_token	*ft_t_lstnew(char *content);
 
 /* ************************************************************************** */
 /*                                SIGNALS                                     */
@@ -132,6 +129,7 @@ int		ft_env(char **envp);
 /* ************************************************************************** */
 /*                             CLOSE PROGRAM                                  */
 /* ************************************************************************** */
+void 	free_mini(t_mini *mini);
 void	ft_error_close(char *error_message);
 void	ft_close(void);
 void	ft_perror_close(char *perror_message);
