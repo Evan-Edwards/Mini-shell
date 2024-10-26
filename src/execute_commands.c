@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 20:35:34 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/25 19:49:39 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/26 11:14:28 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int input_file(int type, char *file_name)
 {
-    int fileout;
+	int fileout;
 
-    if (type == INPUT)
+	if (type == INPUT)
 	{
-		fileout = open(file_name, O_RDONLY, 0777);;
+		fileout = open(file_name, O_RDONLY, 0777);
 		if (fileout == -1)
 		{
 			printf("%s: %s\n", file_name, strerror(errno));
@@ -63,11 +63,11 @@ int output_file (int type, char *file_name)
 }
 
 
-int	create_pipe(int pipe_fd[2])
+int create_pipe(int pipe_fd[2])
 {
 	if (pipe(pipe_fd) == -1)
 	{
-		ft_printf_error("Pipe error");
+		ft_error_close("Pipe error");
 		return(0);
 	}
 	return (1);
@@ -76,17 +76,18 @@ int	create_pipe(int pipe_fd[2])
 
 int exe(char **arg,t_mini *mini, char **envp)
 {
-    char *path;
-	pid_t	pid1;
+	char *path;
+	pid_t pid1;
 	int status;
 
-
-	path = get_path2(arg[0], envp);
-    if (path == NULL)
-    {
-        ft_printf("%s: command not found:\n", arg[0]);
-        return (1);
-    }
+	(void)mini;  //for make
+	path = (NULL); //for make
+	//path = get_path2(arg[0], envp); //commented so make works
+	if (path == NULL)
+	{
+		ft_printf("%s: command not found:\n", arg[0]);
+		return (1);
+	}
 	pid1 = fork();
 	if (pid1 == -1)
 	{
@@ -95,7 +96,7 @@ int exe(char **arg,t_mini *mini, char **envp)
 	}
 	if (pid1 == 0)
 	{
-    	if (execve(path, arg, envp) == -1)
+		if (execve(path, arg, envp) == -1)
 		{
 			ft_printf("%s: %s\n", path, strerror(errno));
 			exit(errno);

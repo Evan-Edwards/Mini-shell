@@ -6,13 +6,13 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 08:20:36 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/25 13:28:55 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/26 11:56:01 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	handle_single_quote(char *s, int *i, t_mini *mini)
+static int	handle_single_quote(int *i, t_mini *mini)
 {
 	if (mini->status == DEFAULT)
 	{
@@ -29,7 +29,7 @@ static int	handle_single_quote(char *s, int *i, t_mini *mini)
 	return (0);
 }
 
-static int	handle_double_quote(char *s, int *i, t_mini *mini)
+static int	handle_double_quote(int *i, t_mini *mini)
 {
 	if (mini->status == DEFAULT)
 	{
@@ -56,9 +56,9 @@ int	quotes(char *s, int *i, t_mini *mini)
 
 	result = 0;
 	if (s[*i] == '\'')
-		result = handle_single_quote(s, i, mini);
+		result = handle_single_quote(i, mini);
 	else if (s[*i] == '\"')
-		result = handle_double_quote(s, i, mini);
+		result = handle_double_quote(i, mini);
 	else
 		return (0);
 	if (result == 0 && is_quotes(s[*i]))

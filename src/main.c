@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/25 19:21:41 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/26 17:14:38 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,40 +17,40 @@
 //if readline returns null it indicates Ctrl-D/ EOF, causing end of program
 int main (int ac, char *av[], char **envp)
 {
-	char	*input;
-	t_mini	mini; //malloc for mini?
+	char		*input;
+	t_mini		mini; //malloc for mini?
+	t_history	*history;
 
 	(void)ac;
 	(void)av;
 	ft_signal_setup();
+	history = NULL;
 	while (1)
 	{
 		input = readline("Input > ");
 		if (input == NULL)
-			ft_close();
+			ft_close(input, history);
 		if (input[0] == '\0')
 		{
 			free(input);
 			continue;
 		}
+		ft_history(input, history);
 		input_to_tokens(input, envp, &mini);
+		free(input);
 		print_list(&mini);
-		if (check_errors(mini.lst) == 0)
-       		continue;
-		set_types(mini.lst);
-    	distribute(&mini, envp);
+		//if (check_errors(mini.lst) == 0) //?
+				//continue;
+		//set_types(mini.lst); //COMMENTED FOR MAKE
+		//distribute(&mini, envp); //COMMENTED FOR MAKE
 		//error handling?
 		//parse tokens
 		//build into command table
-		free(input);
 		//execute command table
 		//wait for next command?
 	}
 	//close program, free memory
 	return (0);
 
-
 }
 
-//There is at least making the program open and close properly,
-//and the ctrl commands, or you can do any of the build in functions

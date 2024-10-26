@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 10:17:35 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/25 13:42:18 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/26 11:07:53 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,4 @@ int	ft_export_no_arg(char **envp)
 	}
 	free_str_array(env_arr_sorted);
 	return (1);
-}
-
-int	ft_export(char **envp)
-{
-	
 }

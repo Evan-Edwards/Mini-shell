@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:58:48 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/25 13:41:24 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/26 17:15:51 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,13 @@ void	ft_error_close(char *error_message)
 }
 
 //free memory before calling
-void	ft_close(void)
+void	ft_close(char *input, t_history *history)
 {
+	if (input)
+		free(input);
+	if (history)
+		clear_t_history(history);
+	free_mini(mini);
 	exit(EXIT_SUCCESS);
 }
 

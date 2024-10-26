@@ -6,11 +6,31 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/25 13:32:38 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/26 11:52:08 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// Reallocates memory for the copy string if needed
+// Returns the new (or unchanged) copy string
+static char	*add_copy_size(char *copy, size_t new_total_size)
+{
+	char	*new_copy;
+
+	if (!copy)
+		return (NULL);
+	new_copy = malloc(new_total_size);
+	if (!new_copy)
+	{
+		free(copy);
+		return (NULL);
+	}
+	ft_strlcpy(new_copy, copy, new_total_size);
+	free(copy);
+	return (new_copy);
+}
+
 
 //iterates through the env array to find a matching environment variable
 //compares the start of each env string (until '=') with the search string
@@ -70,32 +90,50 @@ char	*get_env(char *str, int *i, char **env)
 	return (result);
 }
 
-//iterates through str
-//checks for quotes using quotes
-//expands $ variables outside single quotes using get_env
-//Then resizes the copy buffer if needed and adds value to copy string
-//copies other character to copy str
-static char	*process_env_vars(char *str, char **env, t_mini *mini, char *copy)
+//handles expansion of a single environment variable
+//gets the env var value, resizes the copy buffer if needed
+//adds the expanded value to the copy string
+//returns the updated copy string or NULL on error
+static char *handle_env_var(char *str, int *i, char **env, char **copy)
 {
-	int		i;
-	int		j;
 	char	*env_var;
+	size_t	new_size;
+	int		j;
+	
+	j = ft_strlen(*copy);
+	env_var = get_env(str, i, env);
+	if (env_var == NULL)
+		return (NULL);
+	new_size = j + ft_strlen(env_var) + ft_strlen(str + *i) + 1;
+	*copy = add_copy_size(*copy, new_size);
+	if (!*copy)
+	{
+		free(env_var);
+		return (NULL);
+	}
+	ft_strlcat(*copy + j, env_var, new_size - j);
+	free(env_var);
+	return (*copy);
+}
 
-	i = 0;
-	j = 0;
+//iterates through str, expanding environment variables
+//checks for quotes using quotes function
+//expands $ variables outside single quotes using handle_env_var
+//copies other characters to copy string
+//returns the fully processed copy string or NULL on error
+static char *process_env_vars(char *str, char **env, t_mini *mini, char *copy)
+{
+	int i = 0;
+	int j = 0;
+
 	while (str[i])
 	{
 		quotes(str, &i, mini);
 		if (str[i] == '$' && mini->status != SINGLEQ)
 		{
-			env_var = get_env(str, &i, env);
-			if (env_var == NULL)
+			if (!handle_env_var(str, &i, env, &copy))
 				return (NULL);
-			copy = add_copy_size(copy, ft_strlen(env_var),
-					j + ft_strlen(env_var) + 1);
-			ft_strlcat(copy + j, env_var, j + strlen(env_var) + 1);
-			j += ft_strlen(env_var);
-			free(env_var);
+			j = ft_strlen(copy);
 		}
 		else
 			copy[j++] = str[i++];
@@ -110,20 +148,15 @@ static char	*process_env_vars(char *str, char **env, t_mini *mini, char *copy)
 //if there was starting but not ending quote 
 char	*env_var_expansion(char *str, char **env, t_mini *mini)
 {
-	int		i;
-	int		j;
 	char	*copy;
 
-	i = 0;
-	j = 0;
 	copy = malloc(strlen(str) + 1);
 	if (!copy)
 		return (NULL);
 	copy = process_env_vars(str, env, mini, copy);
 	if (!copy)
 		return (NULL);
-	copy[j] = '\0';
 	if (mini->status != DEFAULT)
-		printf("uneven quotes");
+		ft_putstr_fd("uneven quotes", 2);
 	return (copy);
 }

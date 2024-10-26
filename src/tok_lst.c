@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 11:15:03 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/25 12:40:42 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/26 11:53:10 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	add_to_list(char *k, t_mini *mini)
 {
 	t_token	*new_token;
 
-	if (!k || *k == NULL)
+	if (!k || *k == '\0')
 		return (0);
 	new_token = ft_t_lstnew(k);
 	if (!new_token)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+         #
+#    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/25 19:51:26 by ttero            ###   ########.fr        #
+#    Updated: 2024/10/26 16:35:19 by eedwards         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,19 +40,21 @@ SOURCES = close.c \
 	ex_export2.c \
 	ex_pwd.c \
 	ex_unset.c \
-	execute_commands.c \
 	find_path.c \
+	history.c \
 	main.c \
-	path.c \
-	path2.c \
-	set_types.c \
 	signals.c \
 	tok_env_exp.c \
 	tok_lst.c \
 	tok_main.c \
 	tok_quotes.c \
-	tok_utils.c \
-	distribute.c \
+	tok_utils.c 
+
+# 	execute_commands.c \
+	path.c \
+	path2.c \
+	set_types.c \
+	distribute.c 
 
 # Object files
 SRCS = $(addprefix $(SRC_DIR)/, $(SOURCES))
