@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 17:00:24 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 17:13:42 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 17:59:42 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ int	validate_name(char **command, int *i)
 			return (0);
 		(*i)++;
 	}
-	return (i);
+	return (*i);
 }
 
 // Adds a new environment variable to mini->envp
 // Returns 1 on success, 0 on failure
-static int	handle_new_env_variable(char *name, char *value, t_mini *mini)
+static int	handle_new_env_variable(char *name, t_mini *mini)
 {
 	char	**new_env;
 	int		env_count;
@@ -114,7 +114,7 @@ int	export_with_arg(char **command, t_mini *mini)
 		value = ft_substr(command[1], i + 1, ft_strlen(command[1]) - i - 1);
 	i = find_env_index(name, mini);
 	if (i == -1)
-		result = handle_new_env_variable(name, value, mini);
+		result = handle_new_env_variable(name, mini);
 	else
 		result = update_existing_env_variable(name, value, i, mini);
 	free(name);

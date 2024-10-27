@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 09:27:15 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 16:13:13 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 17:45:04 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_echo(char **command)
 		ft_printf("\n");
 		return ;
 	}
-	if (command[1] == "-n")
+	if (ft_strcmp(command[1], "-n") == 0)
 	{
 		no_newline = 1;
 		i++;

@@ -6,27 +6,11 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 10:17:35 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 16:45:24 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 17:23:54 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//frees array of memory allocated strings
-void	free_str_array(char **to_free)
-{
-	int	i;
-
-	i = 0;
-	if (to_free == NULL)
-		return ;
-	while (to_free[i])
-	{
-		free(to_free[i]);
-		i++;
-	}
-	free(to_free);
-}
 
 //creates a copy of the the str array given using strdup
 //failure: returns NULL if malloc in strdup fails or if orig or copy don't exist
@@ -135,75 +119,6 @@ int	export_no_arg(char **envp)
 	return (1);
 }
 
-int	validate_name(char **command, int *i)
-{
-	if (command == NULL || command[0] == NULL || command[1] == NULL)
-		return (0);
-	while (command[1][*i] && command[1][*i] != '=')
-	{
-		if (command[1][*i] != '_' && !ft_isalnum(command[1][*i]))
-			return (0);
-		(*i)++;
-	}
-	return (i);
-}
-
-int	find_env_index(char *name, t_mini *mini)
-{
-	int	i;
-
-	i = 0;
-	while (mini->envp[i])
-	{
-		if (ft_strncmp(mini->envp[i], name, ft_strlen(name)) == 0)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-int	export_with_arg(char **command, t_mini *mini)
-{
-	char	*name;
-	char	*value;
-	int		i;
-	char	**new_env;
-	
-	i = 0;
-	if (!validate_name(command, &i))
-		return (0);
-	name = ft_substr(command[1], 0, i); //validate?
-	if (name == NULL)
-		return (0);
-	value = ft_substr(command[1], i + 1, ft_strlen(command[1]) - i - 1);
-	i = find_env_index(name, mini);
-	if (i == -1)
-	{
-		new_env = malloc((count_env_variables(mini->envp) + 2) * sizeof(char *));
-		if (new_env == NULL)
-			return (0);
-		new_env = copy_str_array(mini->envp, new_env);
-		if (new_env == NULL)
-		{
-			free_str_array(new_env);
-			return (0);
-		}
-		new_env[count_env_variables(mini->envp)] = ft_strjoin(name, "=");
-		if (new_env[count_env_variables(mini->envp)] == NULL)
-		{
-			free_str_array(new_env);
-			return (0);
-		}
-	}
-	else
-	{
-		free(mini->envp[i]);
-		mini->envp[i] = ft_strjoin(name, "=");
-
-	}
-	
-}
-
 int	ft_export(char **command, t_mini *mini)
 {
 	if (command == NULL || command[0] == NULL)
@@ -214,9 +129,3 @@ int	ft_export(char **command, t_mini *mini)
 		return (export_with_arg(command, mini));
 }
 
-/*
-void	ex_export(char **command)
-{
-	
-}
-*/
