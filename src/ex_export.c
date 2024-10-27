@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 10:17:35 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 12:24:07 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 16:45:24 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	print_env(char *env)
 //prints each str with print_env
 //then frees the created str array
 //returns 1 on success, 0 on failure
-int	ft_export_no_arg(char **envp)
+int	export_no_arg(char **envp)
 {
 	int		i;
 	int		str_num;
@@ -133,6 +133,85 @@ int	ft_export_no_arg(char **envp)
 	}
 	free_str_array(env_arr_sorted);
 	return (1);
+}
+
+int	validate_name(char **command, int *i)
+{
+	if (command == NULL || command[0] == NULL || command[1] == NULL)
+		return (0);
+	while (command[1][*i] && command[1][*i] != '=')
+	{
+		if (command[1][*i] != '_' && !ft_isalnum(command[1][*i]))
+			return (0);
+		(*i)++;
+	}
+	return (i);
+}
+
+int	find_env_index(char *name, t_mini *mini)
+{
+	int	i;
+
+	i = 0;
+	while (mini->envp[i])
+	{
+		if (ft_strncmp(mini->envp[i], name, ft_strlen(name)) == 0)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+int	export_with_arg(char **command, t_mini *mini)
+{
+	char	*name;
+	char	*value;
+	int		i;
+	char	**new_env;
+	
+	i = 0;
+	if (!validate_name(command, &i))
+		return (0);
+	name = ft_substr(command[1], 0, i); //validate?
+	if (name == NULL)
+		return (0);
+	value = ft_substr(command[1], i + 1, ft_strlen(command[1]) - i - 1);
+	i = find_env_index(name, mini);
+	if (i == -1)
+	{
+		new_env = malloc((count_env_variables(mini->envp) + 2) * sizeof(char *));
+		if (new_env == NULL)
+			return (0);
+		new_env = copy_str_array(mini->envp, new_env);
+		if (new_env == NULL)
+		{
+			free_str_array(new_env);
+			return (0);
+		}
+		new_env[count_env_variables(mini->envp)] = ft_strjoin(name, "=");
+		if (new_env[count_env_variables(mini->envp)] == NULL)
+		{
+			free_str_array(new_env);
+			return (0);
+		}
+	}
+	else
+	{
+		free(mini->envp[i]);
+		mini->envp[i] = ft_strjoin(name, "=");
+
+	}
+	
+}
+
+int	ft_export(char **command, t_mini *mini)
+{
+	if (command == NULL || command[0] == NULL)
+		return (0);
+	if (command[1] == NULL)
+		return (export_no_arg(mini->envp));
+	else
+		return (export_with_arg(command, mini));
 }
 
 /*

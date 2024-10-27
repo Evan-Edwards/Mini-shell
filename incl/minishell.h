@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 13:42:04 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 17:06:18 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,10 +134,9 @@ char		*mod_cwd(char *cwd, char *path);
 /*                             EXECUTE EXPORT                                 */
 /* ************************************************************************** */
 int			count_env_variables(char **envp);
-int			ft_export_no_arg(char **envp);
+int			export_no_arg(char **envp);
 char		**sort_array(char **to_sort, int iterations);
 char		**copy_str_array(char	**orig, char **copy);
-void		free_str_array(char **to_free);
 void		print_env(char *env);
 
 /* ************************************************************************** */
@@ -154,11 +153,15 @@ int			ft_env(char **envp);
 /* ************************************************************************** */
 /*                             CLOSE PROGRAM                                  */
 /* ************************************************************************** */
-void		free_mini(t_mini *mini);
-void		free_str_array(char **to_free);
 void		ft_error_close(char **arg, t_mini *mini);
 void		ft_close(char *input, t_mini *mini);
 void		ft_perror_close(char *perror_message);
+
+/* ************************************************************************** */
+/*                                FREE                                      */
+/* ************************************************************************** */
+void		free_mini(t_mini *mini);
+void		free_str_array(char **to_free);
 
 /* ************************************************************************** */
 /*                             DISTRIBUTE                                     */
