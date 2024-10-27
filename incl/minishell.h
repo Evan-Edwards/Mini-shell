@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 12:15:30 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:46:03 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,9 @@ typedef struct s_token
 
 typedef struct s_mini
 {
-	int		status;
-	t_token	*lst;
+	int				status;
+	t_token			*lst;
+	t_history		*history;
 }					t_mini;
 
 typedef enum e_status
@@ -159,9 +160,23 @@ void		ft_close(char *input, t_history *history, t_mini *mini);
 void		ft_perror_close(char *perror_message);
 
 /* ************************************************************************** */
-/*                             DISTRIBUTE                                   */
+/*                             DISTRIBUTE                                     */
 /* ************************************************************************** */
-int			distribute(t_mini *mini, char **envp);
-int			exe(char **arg, t_mini *mini, char **envp);
+int			builtin(char **arg, t_mini *mini, char **envp, t_history *history);
+int			distribute(t_mini *mini, char **envp, t_history *history);
+int			number_of_arguments(t_token *lst);
+int			is_builtin(char *arg);
+char		**build_exe(t_token *lst);
+void		execute_command(char **arg, t_mini *mini, char **envp,
+				t_history *history);
+void		print_array(char **arg);
+
+/* ************************************************************************** */
+/*                             FILE HANDLING                                 */
+/* ************************************************************************** */
+int			file_in(t_token *lst);
+int			file_out(t_token *lst);
+int			input_file(int type, char *file_name);
+int			output_file(int type, char *file_name);
 
 #endif

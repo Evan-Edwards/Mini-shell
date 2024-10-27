@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/26 17:45:54 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:23:37 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,7 @@ int main (int ac, char *av[], char **envp)
 				//continue;
 		//set_types(mini.lst); //COMMENTED FOR MAKE
 		//distribute(&mini, envp); //COMMENTED FOR MAKE
-		//error handling?
 		//parse tokens
-		//build into command table
-		//execute command table
-		//wait for next command?
 	}
 	//close program, free memory
 	return (0);

@@ -6,69 +6,12 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:03:11 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 12:03:56 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:36:53 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//handles input redirection
-int	file_in(t_token *lst)
-{
-	int	file_fd;
-
-	file_fd = -1;
-	while (lst && lst->type != PIPE)
-	{
-		if (lst->type == 4 && lst->next)
-		{
-			file_fd = input_file(lst->type, lst->next->content);
-			if (file_fd < 0)
-				return (-1);
-		}
-		lst = lst->next;
-	}
-	if (file_fd != -1)
-	{
-		if (dup2(file_fd, STDIN_FILENO) == -1)
-		{
-			perror("dup2");
-			close(file_fd);
-			return (-1);
-		}
-		close(file_fd);
-	}
-	return (1);
-}
-
-//handles output redirection
-int	file_out(t_token *lst)
-{
-	int	file_fd;
-
-	file_fd = -1;
-	while (lst->next != NULL && lst->type != PIPE)
-	{
-		if (lst->type >= 6)
-		{
-			file_fd = output_file(lst->type, lst->next->content);
-			if (file_fd < 0)
-				return (-1);
-		}
-		lst = lst->next;
-	}
-	if (file_fd != -1)
-	{
-		if (dup2(file_fd, STDOUT_FILENO) == -1)
-		{
-			perror("dup2");
-			close(file_fd);
-			return (-1);
-		}
-		close(file_fd);
-	}
-	return (1);
-}
 
 void	print_array(char **arg)
 {

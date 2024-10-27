@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 11:12:13 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/25 13:32:08 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:23:46 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,23 @@ void	skip_spaces(char *s, int *i)
 		while (s[*i] == ' ')
 			(*i)++;
 	}
+}
+
+// Reallocates memory for the copy string if needed
+// Returns the new (or unchanged) copy string
+char	*add_copy_size(char *copy, size_t new_total_size)
+{
+	char	*new_copy;
+
+	if (!copy)
+		return (NULL);
+	new_copy = malloc(new_total_size);
+	if (!new_copy)
+	{
+		free(copy);
+		return (NULL);
+	}
+	ft_strlcpy(new_copy, copy, new_total_size);
+	free(copy);
+	return (new_copy);
 }

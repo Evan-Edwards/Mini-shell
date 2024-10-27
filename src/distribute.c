@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 12:05:08 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:24:03 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,8 @@ void	execute_command(char **arg, t_mini *mini, char **envp,
 			ft_error_close(arg, mini, envp, history);
 		}
 	}
-	else
-		exe(arg, mini, envp);
+	//else
+		//exe(arg, mini, envp); //need to finish
 }
 
 //handles input and output redirection using file_in and file_out
