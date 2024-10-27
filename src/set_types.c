@@ -3,35 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   set_types.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:53:35 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 17:01:08 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/27 18:20:31 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int check_errors(t_token *lst)
+//Checks for syntax errors in the token list
+//Returns 1 if no errors, 0 if errors are found
+int	check_errors(t_token *lst)
 {
 	if (lst == 0)
 		return (0);
 	while (lst->next != NULL)
 	{
-        if (lst ->type >= 3)
+		if (lst->type >= 3)
 		{
-            if (lst->next == NULL || lst->next->type >= 3)
+			if (lst->next == NULL || lst->next->type >= 3)
 			{
-				printf("syntax error near unexpected token, %s\n", lst->content);
-                return (0);
+				printf("syntax error near unexpected token, %s\n",
+					lst->content);
+				return (0);
 			}
 		}
 		lst = lst->next;
 	}
-    return (1);
+	return (1);
 }
 
-int reg(char *str)
+//Determines the type of a token based on its content
+//Returns the corresponding token type
+int	reg(char *str)
 {
 	if (str[0] == '\0')
 		return (EMPTY);
@@ -55,10 +60,10 @@ int reg(char *str)
 		return (ARG);
 }
 
-//sets the type variable for each t_token of list
+//Sets the type for each token in the linked list
+//Returns 1 on success, 0 if the list is empty
 int	set_types(t_token *lst)
 {
-
 	if (lst == 0)
 		return (0);
 	while (lst->next != NULL)
@@ -69,12 +74,11 @@ int	set_types(t_token *lst)
 	return (1);
 }
 
-
-
-//counts amount of pipes in linked list of t_tokens
-int	count_pipes (t_token *lst)
+//Counts the number of pipe tokens in the linked list
+//Returns the count of pipes
+int	count_pipes(t_token *lst)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (lst == 0)
@@ -87,4 +91,3 @@ int	count_pipes (t_token *lst)
 	}
 	return (i);
 }
-

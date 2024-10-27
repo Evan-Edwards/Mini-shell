@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 18:24:59 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/25 19:04:31 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/27 18:23:12 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//Checks if the last character of argv is a slash and handles directory error
+//Returns NULL after printing error message and exiting if it's a directory
 char	*handle_dir_slash(char *argv)
 {
 	int	i;
@@ -25,6 +27,9 @@ char	*handle_dir_slash(char *argv)
 	return (NULL);
 }
 
+//Handles absolute path for the given argv
+//Returns a duplicate of argv if accessible, exits with appropriate error
+//otherwise
 char	*handle_absolute_path(char *argv)
 {
 	if (access(argv, F_OK) == 0)
@@ -41,6 +46,9 @@ char	*handle_absolute_path(char *argv)
 	}
 }
 
+//Handles relative path for the given argv
+//Returns the result of find_path function or exits with error if PATH is
+//not set
 char	*handle_relative_path(char *argv, char **envp)
 {
 	int	i;
@@ -54,6 +62,8 @@ char	*handle_relative_path(char *argv, char **envp)
 	return (find_path(argv, envp));
 }
 
+//Gets the path for the given argv
+//Returns the appropriate path based on whether it's absolute or relative
 char	*get_path(char *argv, char **envp)
 {
 	char	*result;
