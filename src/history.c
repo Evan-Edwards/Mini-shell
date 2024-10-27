@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 15:52:22 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 12:06:45 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 13:16:47 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	clear_t_history(t_history *history)
 //initiates history struct if not already done
 //then adds input to history struct
 //returns history struct
-void	ft_history(char *command, t_history *history)
+void	ft_history(char *command, t_mini *mini)
 {
 	if (!command)
 	{
@@ -81,14 +81,14 @@ void	ft_history(char *command, t_history *history)
 		return ;
 	}
 	add_history(command);
-	if (!history)
+	if (!mini->history)
 	{
-		history = init_history();
-		if (!history)
+		mini->history = init_history();
+		if (!mini->history)
 		{
 			ft_putstr_fd("Error: failed to initialize history\n", 2);
 			return ;
 		}
 	}
-	add_to_history(history, command);
+	add_to_history(mini->history, command);
 }

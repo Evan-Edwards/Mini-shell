@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 12:12:36 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 13:33:04 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,19 @@
 //if a match is found, uses getenv to retrieve the variable's value
 //returns a newly allocated string containing the value or an empty string
 //if no match is found, returns an empty string
-static char	*search_env(char *search, int len, char **env)
+static char	*search_env(char *search, int len, t_mini *mini)
 {
 	int		j;
-	char	*ret;
 	char	*result;
+	char	*env_value;
 
 	j = 0;
-	while (env[j])
+	while (mini->envp[j])
 	{
-		if (strncmp(env[j], search, len) == 0 && env[j][len] == '=')
+		if (strncmp(mini->envp[j], search, len) == 0 && mini->envp[j][len] == '=')
 		{
-			ret = getenv(search);
-			if (ret)
-				result = ft_strdup(ret);
-			else
-				result = ft_strdup("");
+			env_value = mini->envp[j] + len + 1;  // Skip past the '='
+			result = ft_strdup(env_value);
 			if (!result)
 				return (NULL);
 			return (result);
@@ -49,7 +46,7 @@ static char	*search_env(char *search, int len, char **env)
 //allocates memory for copy and copies variable name
 //searches env array for matching variable with search_env
 //if found returns value of variable by recalling getenv
-char	*get_env(char *str, int *i, char **env)
+char	*get_env(char *str, int *i, t_mini *mini)
 {
 	int		start;
 	int		len;
@@ -65,7 +62,7 @@ char	*get_env(char *str, int *i, char **env)
 	search = ft_substr(str, start, len);
 	if (!search)
 		return (NULL);
-	result = search_env(search, len, env);
+	result = search_env(search, len, mini);
 	free(search);
 	return (result);
 }
@@ -74,14 +71,14 @@ char	*get_env(char *str, int *i, char **env)
 //gets the env var value, resizes the copy buffer if needed
 //adds the expanded value to the copy string
 //returns the updated copy string or NULL on error
-static char	*handle_env_var(char *str, int *i, char **env, char **copy)
+static char	*handle_env_var(char *str, int *i, t_mini *mini, char **copy)
 {
 	char	*env_var;
 	size_t	new_size;
 	int		j;
 
 	j = ft_strlen(*copy);
-	env_var = get_env(str, i, env);
+	env_var = get_env(str, i, mini);
 	if (env_var == NULL)
 		return (NULL);
 	new_size = j + ft_strlen(env_var) + ft_strlen(str + *i) + 1;
@@ -101,7 +98,7 @@ static char	*handle_env_var(char *str, int *i, char **env, char **copy)
 //expands $ variables outside single quotes using handle_env_var
 //copies other characters to copy string
 //returns the fully processed copy string or NULL on error
-static char	*process_env_vars(char *str, char **env, t_mini *mini, char *copy)
+static char	*process_env_vars(char *str, t_mini *mini, char *copy)
 {
 	int	i;
 	int	j;
@@ -113,7 +110,7 @@ static char	*process_env_vars(char *str, char **env, t_mini *mini, char *copy)
 		quotes(str, &i, mini);
 		if (str[i] == '$' && mini->status != SINGLEQ)
 		{
-			if (!handle_env_var(str, &i, env, &copy))
+			if (!handle_env_var(str, &i, mini, &copy))
 				return (NULL);
 			j = ft_strlen(copy);
 		}
@@ -128,14 +125,14 @@ static char	*process_env_vars(char *str, char **env, t_mini *mini, char *copy)
 //uses process_env_vars to expand env variables
 //null-terminates copy string
 //if there was starting but not ending quote 
-char	*env_var_expansion(char *str, char **env, t_mini *mini)
+char	*env_var_expansion(char *str, t_mini *mini)
 {
 	char	*copy;
 
-	copy = malloc(strlen(str) + 1);
+	copy = malloc(ft_strlen(str) + 1);
 	if (!copy)
 		return (NULL);
-	copy = process_env_vars(str, env, mini, copy);
+	copy = process_env_vars(str, mini, copy);
 	if (!copy)
 		return (NULL);
 	if (mini->status != DEFAULT)

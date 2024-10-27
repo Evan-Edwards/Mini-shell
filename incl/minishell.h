@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 12:50:21 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 13:42:04 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ typedef struct s_token
 typedef struct s_mini
 {
 	int				status;
+	int				flag;
+	char			**envp;
 	t_token			*lst;
 	t_history		*history;
-	int				flag;
 }					t_mini;
 
 typedef enum e_status
@@ -71,9 +72,9 @@ typedef struct s_history
 /* ************************************************************************** */
 /*                              create_token                                  */
 /* ************************************************************************** */
-void		input_to_tokens(char *input, char **envp, t_mini *mini);
+void		input_to_tokens(char *input, t_mini *mini);
 void		token(char *s, t_mini *mini);
-char		*env_var_expansion(char *str, char **env, t_mini *mini);
+char		*env_var_expansion(char *str, t_mini *mini);
 char		*get_env(char *str, int *i, char **env);
 
 /* ************************************************************************** */
@@ -155,21 +156,19 @@ int			ft_env(char **envp);
 /* ************************************************************************** */
 void		free_mini(t_mini *mini);
 void		free_str_array(char **to_free);
-void		ft_error_close(char **arg, t_mini *mini, char **envp,
-				t_history *history);
-void		ft_close(char *input, t_history *history, t_mini *mini);
+void		ft_error_close(char **arg, t_mini *mini);
+void		ft_close(char *input, t_mini *mini);
 void		ft_perror_close(char *perror_message);
 
 /* ************************************************************************** */
 /*                             DISTRIBUTE                                     */
 /* ************************************************************************** */
-int			builtin(char **arg, t_mini *mini, char **envp, t_history *history);
-int			distribute(t_mini *mini, char **envp, t_history *history);
+int			builtin(char **arg, t_mini *mini);
+int			distribute(t_mini *mini);
 int			number_of_arguments(t_token *lst);
 int			is_builtin(char *arg);
 char		**build_exe(t_token *lst);
-void		execute_command(char **arg, t_mini *mini, char **envp,
-				t_history *history);
+void		execute_command(char **arg, t_mini *mini);
 void		print_array(char **arg);
 
 /* ************************************************************************** */

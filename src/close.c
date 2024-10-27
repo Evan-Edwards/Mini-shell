@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:58:48 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 11:37:22 by eedwards         ###   ########.fr       */
+	/*   Updated: 2024/10/27 13:18:11 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,24 @@ void	ft_perror_close(char *perror_message)
 
 //is it necessary?
 //free memory before calling
-void	ft_error_close(char **arg, t_mini *mini, char **envp, t_history *history)
+void	ft_error_close(char **arg, t_mini *mini, char **envp)
 {
-	ft_printf("Error: %s\n", error_message);
+	if (arg)
+		free_str_array(arg);
+	if (envp)
+		free_str_array(envp);
+	free_mini(mini);
 	exit(EXIT_FAILURE);
 }
 
 //free memory before calling
 //CAN HANDLE MORE ARGS TO FREE?
-void	ft_close(char *input, t_history *history, t_mini *mini)
+void	ft_close(char *input, t_mini *mini, char **envp)
 {
 	if (input)
 		free(input);
-	if (history)
-		clear_t_history(history);
+	if (envp)
+		free_str_array(envp);
 	free_mini(mini);
 	exit(EXIT_SUCCESS);
 }
@@ -46,6 +50,8 @@ void	free_mini(t_mini *mini)
 
 	if (!mini)
 		return ;
+	if (mini->history)
+		clear_t_history(mini->history);
 	current = mini->lst;
 	while (current)
 	{

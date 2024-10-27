@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 11:37:58 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 13:41:43 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,16 @@ void	token(char *s, t_mini *mini)
 }
 
 //ERROR HANDLING FOR TOKEN?
-void	input_to_tokens(char *input, char **envp, t_mini *mini)
+void	input_to_tokens(char *input, t_mini *mini)
 {
 	mini->lst = NULL;
 	mini->status = DEFAULT;
-	input = env_var_expansion(input, envp, mini);
+	input = env_var_expansion(input, mini);
 	if (input == NULL)
 	{
 		free_mini(mini);
 		ft_putstr_fd("Error expanding environmental variables\n", 2);
-		ft_error_close(NULL, mini, envp, NULL); //FIX
+		ft_error_close(NULL, mini); //FIX
 	}
 	token(input, mini);
 }

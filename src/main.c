@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 12:52:30 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 13:22:12 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,22 @@ int main (int ac, char *av[], char **envp)
 {
 	char		*input;
 	t_mini		mini; //malloc for mini?
-	t_history	*history;
 
 	(void)ac;
 	(void)av;
 	ft_signal_setup();
-	history = NULL;
+	mini.envp = envp;
 	while (1)
 	{
 		input = readline("Input > ");
 		if (input == NULL)
-			ft_close(input, history, &mini);
+			ft_close(input, &mini);
 		if (input[0] == '\0')
 		{
 			free(input);
 			continue;
 		}
-		ft_history(input, history);
+		ft_history(input, &mini);
 		input_to_tokens(input, envp, &mini);
 		free(input);
 		print_list(&mini);

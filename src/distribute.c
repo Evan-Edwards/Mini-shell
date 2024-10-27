@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 12:52:14 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 13:41:22 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	is_builtin(char *arg)
 }
 
 //ERROR HANDLING
-int	builtin(char **arg, t_mini *mini, char **envp, t_history *history)
+int	builtin(char **arg, t_mini *mini)
 {
 	int	status;
 
@@ -78,35 +78,33 @@ int	builtin(char **arg, t_mini *mini, char **envp, t_history *history)
 	else if (ft_strcmp(arg[0], "echo") == 0)
 		ft_echo(arg);
 	else if (ft_strcmp(arg[0], "env") == 0)
-		status = ft_env(envp);
+		status = ft_env(mini->envp);
 	else if (ft_strcmp(arg[0], "exit") == 0)
 	{
 		free_str_array(arg);
-		free_str_array(envp);
-		ft_close(NULL, history, mini);
+		ft_close(NULL, mini);
 	}
 	else if (ft_strcmp(arg[0], "export") == 0)
-		status = ft_export(arg, envp); // Need to finish
+		status = ft_export(arg, mini); // Need to finish
 	else if (ft_strcmp(arg[0], "history") == 0)
-		status = ex_history(arg, history);
+		status = ex_history(arg, mini->history);
 	else if (ft_strcmp(arg[0], "pwd") == 0)
 		status = ft_pwd();
 	else if (ft_strcmp(arg[0], "unset") == 0)
-		status = ft_unset(envp, arg);
+		status = ft_unset(mini->envp, arg);
 	return (status);
 }
 
-void	execute_command(char **arg, t_mini *mini, char **envp,
-	t_history *history)
+void	execute_command(char **arg, t_mini *mini)
 {
 	if (is_builtin(arg[0]) == 1)
 	{
-		if (builtin(arg, mini, envp, history) == 0)
+		if (builtin(arg, mini) == 0)
 		{
 			ft_putstr_fd("Error: ", 2);
 			ft_putstr_fd(arg[0], 2);
 			ft_putstr_fd(" command failed\n", 2);
-			ft_error_close(arg, mini, envp, history);
+			ft_error_close(arg, mini);
 		}
 	}
 	//else
@@ -117,7 +115,7 @@ void	execute_command(char **arg, t_mini *mini, char **envp,
 //builds an argument array using build_exe
 //checks if the command is a built-in using is_buildin
 //executes the command (either built-in or external)
-int distribute(t_mini *mini, char **envp, t_token *lst, t_history history)
+int distribute(t_mini *mini, t_token *current)
 {
 	int		number_of_commands;
 	int		i;
@@ -126,12 +124,12 @@ int distribute(t_mini *mini, char **envp, t_token *lst, t_history history)
 	char	*path;
 
 	file_fd = -1;
-	if (file_in(mini-) < 0)
+	if (file_in(mini->lst) < 0) //does it need to be current?
 	{
 		ft_printf("error\n");
 		return (0);
 	}
-	file_fd = file_out(mini);
+	file_fd = file_out(mini->lst);
 	if (file_fd < 0)
 	{
 		ft_printf("error\n");
@@ -140,10 +138,9 @@ int distribute(t_mini *mini, char **envp, t_token *lst, t_history history)
 	number_of_commands = number_of_arguments(mini);
 	i = 0;
 	arg = build_exe(mini->lst);
-	execute_command(arg, mini, envp, history);
+	execute_command(arg, mini);
 	return (1);
 }
-
 
 int	count_pipes (t_token *lst)
 {
@@ -161,12 +158,11 @@ int	count_pipes (t_token *lst)
 	return (i);
 }
 
-
-int dis_b(t_mini *mini, char **envp, t_history history)
+int dis_b(t_mini *mini)
 {
-	t_token *current;
-	int pipe_num;
-	int	i;
+	t_token	*current;
+	int		pipe_num;
+	int		i;
 
 	current = mini->lst;
 	mini->flag = 0;
@@ -174,19 +170,18 @@ int dis_b(t_mini *mini, char **envp, t_history history)
 	i = 0;
 	if (pipe_num > 0)
 		mini->flag = 1;
-	distribute(mini, envp, current);
-    while (i < pipe_num) 
+	distribute(mini, current);
+	while (i < pipe_num)
 	{
-        if (current->type == PIPE) 
+		if (current->type == PIPE)
 		{
 			if (i = pipe_num)
 				mini->flag = 0;
-			distribute(mini, envp, current->next);
+			distribute(mini, current->next);
 			i++;
-        }
-        current = current->next;
+		}
+		current = current->next;
 		mini->flag = 0;
-    }
+	}
 	return (1);
 }
-
