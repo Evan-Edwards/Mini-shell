@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   distribute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 13:41:22 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 17:05:28 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ int	builtin(char **arg, t_mini *mini)
 		free_str_array(arg);
 		ft_close(NULL, mini);
 	}
-	else if (ft_strcmp(arg[0], "export") == 0)
-		status = ft_export(arg, mini); // Need to finish
+	//else if (ft_strcmp(arg[0], "export") == 0)
+	//	status = ft_export(arg, mini); // Need to finish
 	else if (ft_strcmp(arg[0], "history") == 0)
 		status = ex_history(arg, mini->history);
 	else if (ft_strcmp(arg[0], "pwd") == 0)
@@ -117,27 +117,22 @@ void	execute_command(char **arg, t_mini *mini)
 //executes the command (either built-in or external)
 int distribute(t_mini *mini, t_token *current)
 {
-	int		number_of_commands;
-	int		i;
 	char	**arg;
 	int		file_fd;
-	char	*path;
 
 	file_fd = -1;
-	if (file_in(mini->lst) < 0) //does it need to be current?
+	if (file_in(current) < 0) //does it need to be current?
 	{
 		ft_printf("error\n");
 		return (0);
 	}
-	file_fd = file_out(mini->lst);
+	file_fd = file_out(current);
 	if (file_fd < 0)
 	{
 		ft_printf("error\n");
 		return (0);
 	}
-	number_of_commands = number_of_arguments(mini);
-	i = 0;
-	arg = build_exe(mini->lst);
+	arg = build_exe(current);
 	execute_command(arg, mini);
 	return (1);
 }
@@ -175,7 +170,7 @@ int dis_b(t_mini *mini)
 	{
 		if (current->type == PIPE)
 		{
-			if (i = pipe_num)
+			if (i == pipe_num)
 				mini->flag = 0;
 			distribute(mini, current->next);
 			i++;

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ex_history.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 11:45:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 11:47:43 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 16:43:37 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ex_history(char **arg, t_history *history)
+/* int	ex_history(char **arg, t_history *history)
 {
 	if (!arg || !history)
 	{
@@ -25,3 +25,4 @@ int	ex_history(char **arg, t_history *history)
 		clear_t_history(history);
 	return (1);
 }
+ */

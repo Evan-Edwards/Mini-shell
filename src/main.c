@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 13:22:12 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 17:08:40 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ int main (int ac, char *av[], char **envp)
 			continue;
 		}
 		ft_history(input, &mini);
-		input_to_tokens(input, envp, &mini);
+		input_to_tokens(input, &mini);
 		free(input);
 		print_list(&mini);
-		//if (check_errors(mini.lst) == 0) //?
+		if (check_errors(mini.lst) == 0) //?
 				//continue;
-		//set_types(mini.lst); //COMMENTED FOR MAKE
-		//distribute(&mini, envp); //COMMENTED FOR MAKE
+		set_types(mini.lst); //COMMENTED FOR MAKE
+		dis_b(&mini); //COMMENTED FOR MAKE
 		//parse tokens
 	}
 	//close program, free memory

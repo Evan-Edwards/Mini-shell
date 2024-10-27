@@ -21,24 +21,24 @@ void	ft_perror_close(char *perror_message)
 
 //is it necessary?
 //free memory before calling
-void	ft_error_close(char **arg, t_mini *mini, char **envp)
+void		ft_error_close(char **arg, t_mini *mini)
 {
 	if (arg)
 		free_str_array(arg);
-	if (envp)
-		free_str_array(envp);
+	if (mini->envp)
+		free_str_array(mini->envp);
 	free_mini(mini);
 	exit(EXIT_FAILURE);
 }
 
 //free memory before calling
 //CAN HANDLE MORE ARGS TO FREE?
-void	ft_close(char *input, t_mini *mini, char **envp)
+void		ft_close(char *input, t_mini *mini)
 {
 	if (input)
 		free(input);
-	if (envp)
-		free_str_array(envp);
+	if (mini->envp)
+		free_str_array(mini->envp);
 	free_mini(mini);
 	exit(EXIT_SUCCESS);
 }
