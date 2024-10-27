@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   distribute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 17:05:28 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/27 18:08:30 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,22 +135,6 @@ int distribute(t_mini *mini, t_token *current)
 	arg = build_exe(current);
 	execute_command(arg, mini);
 	return (1);
-}
-
-int	count_pipes (t_token *lst)
-{
-	int i;
-
-	i = 0;
-	if (lst == 0)
-		return (0);
-	while (lst->next != NULL)
-	{
-		if (lst ->type == PIPE)
-			i++;
-		lst = lst->next;
-	}
-	return (i);
 }
 
 int dis_b(t_mini *mini)

@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:36:16 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 13:06:16 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 18:06:21 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ int	file_out(t_token *lst)
 	return (1);
 }
 
-static void	print_file_error(const char *error_msg, const char *file_name)
+static void	print_file_error(const char *error_msg, char *file_name)
 {
-	ft_putstr_fd(error_msg, 2);
+	ft_putstr_fd((char *)error_msg, 2);
 	ft_putstr_fd("\n", 2);
 	ft_putstr_fd(file_name, 2);
 }
@@ -124,4 +124,3 @@ int	output_file(int type, char *file_name)
 		print_file_error(error_msg, file_name);
 	return (fileout);
 }
-

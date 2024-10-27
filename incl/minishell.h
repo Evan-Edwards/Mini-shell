@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 17:46:14 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 18:10:24 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,12 +179,20 @@ void		execute_command(char **arg, t_mini *mini);
 void		print_array(char **arg);
 
 /* ************************************************************************** */
-/*                             FILE HANDLING                                 */
+/*                             FILE HANDLING                                  */
 /* ************************************************************************** */
 int			file_in(t_token *lst);
 int			file_out(t_token *lst);
 int			input_file(int type, char *file_name);
 int			output_file(int type, char *file_name);
+
+/* ************************************************************************** */
+/*                             SET TYPES                                      */
+/* ************************************************************************** */
+int			count_pipes(t_token *lst);
+int			set_types(t_token *lst);
+int			reg(char *str);
+int			check_errors(t_token *lst);
 
 
 char	*get_path2(char *argv, char **envp);
