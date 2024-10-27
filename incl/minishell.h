@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 12:15:30 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:24:40 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_token
 typedef struct s_mini
 {
 	int		status;
+	int flag;
 	t_token	*lst;
 }					t_mini;
 

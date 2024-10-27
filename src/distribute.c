@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   distribute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 12:05:08 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:38:34 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	execute_command(char **arg, t_mini *mini, char **envp,
 //builds an argument array using build_exe
 //checks if the command is a built-in using is_buildin
 //executes the command (either built-in or external)
-int	distribute(t_mini *mini, char **envp, t_history *history)
+int distribute(t_mini *mini, char **envp, t_token *lst, t_history history)
 {
 	int		number_of_commands;
 	int		i;
@@ -126,24 +126,67 @@ int	distribute(t_mini *mini, char **envp, t_history *history)
 	char	*path;
 
 	file_fd = -1;
-	if (file_in(mini->lst) < 0)
+	if (file_in(mini-) < 0)
 	{
 		ft_printf("error\n");
 		return (0);
 	}
-	file_fd = file_out(mini->lst);
+	file_fd = file_out(mini);
 	if (file_fd < 0)
 	{
 		ft_printf("error\n");
 		return (0);
 	}
-	number_of_commands = number_of_arguments(mini->lst);
+	number_of_commands = number_of_arguments(mini);
 	i = 0;
 	arg = build_exe(mini->lst);
 	execute_command(arg, mini, envp, history);
 	return (1);
 }
 
-/* while (i < number_of_commands)
+
+int	count_pipes (t_token *lst)
+{
+	int i;
+
+	i = 0;
+	if (lst == 0)
+		return (0);
+	while (lst->next != NULL)
 	{
-	} */
+		if (lst ->type == PIPE)
+			i++;
+		lst = lst->next;
+	}
+	return (i);
+}
+
+
+int dis_b(t_mini *mini, char **envp, t_history history)
+{
+	t_token *current;
+	int pipe_num;
+	int	i;
+
+	current = mini->lst;
+	mini->flag = 0;
+	pipe_num = count_pipes(mini->lst);
+	i = 0;
+	if (pipe_num > 0)
+		mini->flag = 1;
+	distribute(mini, envp, current);
+    while (i < pipe_num) 
+	{
+        if (current->type == PIPE) 
+		{
+			if (i = pipe_num)
+				mini->flag = 0;
+			distribute(mini, envp, current->next);
+			i++;
+        }
+        current = current->next;
+		mini->flag = 0;
+    }
+	return (1);
+}
+
