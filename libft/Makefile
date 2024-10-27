@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
+#    By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: Invalid date        by                   #+#    #+#              #
-#    Updated: 2024/09/04 14:41:22 by eedwards         ###   ########.fr        #
+#    Updated: 2024/10/27 17:00:13 by ttero            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ LIBFT_SRCS = src/libft/ft_atoi.c src/libft/ft_bzero.c src/libft/ft_calloc.c \
 GNL_SRCS = src/gnl/get_next_line_utils.c src/gnl/get_next_line.c
 
 PRINTF_SRCS = src/ft_printf/ft_printf.c src/ft_printf/ft_putchar.c \
-	src/ft_printf/ft_putnbr_p.c src/ft_printf/ft_putnbr.c src/ft_printf/ft_putstr.c
+	src/ft_printf/ft_putnbr_p.c src/ft_printf/ft_putnbr.c src/ft_printf/ft_putstr.c \
+	src/ft_printf_error.c src/ft_printf_utils_error.c src/ft_printf_utils2_error.c
 
 SRCS = $(LIBFT_SRCS) $(GNL_SRCS) $(PRINTF_SRCS)
 

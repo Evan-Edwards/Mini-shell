@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 17:06:18 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 17:19:55 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+typedef struct s_history
+{
+	char	**commands;
+	int		capacity;
+	int		count;
+}					t_history;
+
 
 typedef struct s_token
 {
@@ -62,20 +70,12 @@ typedef enum e_type
 	APPEND,
 }					t_type;
 
-typedef struct s_history
-{
-	char	**commands;
-	int		capacity;
-	int		count;
-}					t_history;
-
 /* ************************************************************************** */
 /*                              create_token                                  */
 /* ************************************************************************** */
 void		input_to_tokens(char *input, t_mini *mini);
 void		token(char *s, t_mini *mini);
 char		*env_var_expansion(char *str, t_mini *mini);
-char		*get_env(char *str, int *i, char **env);
 
 /* ************************************************************************** */
 /*                           create token utils                               */
@@ -86,7 +86,7 @@ void		skip_spaces(char *s, int *i);
 int			quotes(char *s, int *i, t_mini *mini);
 char		*add_mem(char *str, int add, int old);
 char		*add_end(char *dst, char *add, int j);
-char		*get_env(char *str, int *i, char **env);
+char	*get_env(char *str, int *i, t_mini *mini);
 char		*add_copy_size(char *copy, size_t new_total_size);
 
 /* ************************************************************************** */
@@ -100,7 +100,7 @@ t_token		*ft_t_lstnew(char *content);
 /* ************************************************************************** */
 /*                              HISTORY                                      */
 /* ************************************************************************** */
-void		ft_history(char *command, t_history *history);
+void	ft_history(char *command, t_mini *mini);
 t_history	*init_history(void);
 void		add_to_history(t_history *history, char *command);
 void		clear_t_history(t_history *history);
@@ -127,7 +127,7 @@ int			ft_pwd(void);
 /*                              EXECUTE CD                                    */
 /* ************************************************************************** */
 char		*rm_last_dir(char *cwd);
-int			ft_cd(char *path);
+int	ft_cd(char **arg);
 char		*mod_cwd(char *cwd, char *path);
 
 /* ************************************************************************** */
@@ -167,7 +167,7 @@ void		free_str_array(char **to_free);
 /*                             DISTRIBUTE                                     */
 /* ************************************************************************** */
 int			builtin(char **arg, t_mini *mini);
-int			distribute(t_mini *mini);
+int distribute(t_mini *mini, t_token *current);
 int			number_of_arguments(t_token *lst);
 int			is_builtin(char *arg);
 char		**build_exe(t_token *lst);
@@ -181,5 +181,15 @@ int			file_in(t_token *lst);
 int			file_out(t_token *lst);
 int			input_file(int type, char *file_name);
 int			output_file(int type, char *file_name);
+
+
+char	*get_path2(char *argv, char **envp);
+int output_file (int type, char *file_name);
+int input_file(int type, char *file_name);
+int	is_env(char *env[]);
+char	*find_path(char *argv, char *env[]);
+int check_errors(t_token *lst);
+int	set_types(t_token *lst);
+int dis_b(t_mini *mini);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 20:35:34 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 12:37:00 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/27 16:55:25 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 int input_file(int type, char *file_name)
 {
 	int fileout;
-
+	
+	fileout = -1;
 	if (type == INPUT)
 	{
 		fileout = open(file_name, O_RDONLY, 0777);
@@ -41,6 +42,7 @@ int output_file (int type, char *file_name)
 {
 	int fileout;
 
+	fileout = -1;
 	if (type == OUTPUT)
 	{
 		fileout = open(file_name, O_TRUNC | O_CREAT | O_RDWR, 0000644);
@@ -74,7 +76,7 @@ int create_pipe(int pipe_fd[2])
 }
 
 
-int exe(char **arg,t_mini *mini, char **envp)
+/* int exe(char **arg,t_mini *mini, char **envp)
 {
 	char *path;
 	pid_t pid1;
@@ -109,7 +111,7 @@ int exe(char **arg,t_mini *mini, char **envp)
 	return (status);
 }
 
-
+ */
 
 int exe(char **arg,t_mini *mini, char **envp)  // Updated version with pipes
 {

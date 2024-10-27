@@ -43,32 +43,3 @@ void	ft_close(char *input, t_mini *mini, char **envp)
 	exit(EXIT_SUCCESS);
 }
 
-void	free_mini(t_mini *mini)
-{
-	t_token	*current;
-	t_token	*next;
-
-	if (!mini)
-		return ;
-	if (mini->history)
-		clear_t_history(mini->history);
-	current = mini->lst;
-	while (current)
-	{
-		next = current->next;
-		free(current->content);
-		free(current);
-		current = next;
-	}
-	free(mini);
-}
-
-void	free_str_array(char **to_free)
-{
-	int	i;
-
-	i = 0;
-	while (to_free[i])
-		free(to_free[i++]);
-	free(to_free);
-}

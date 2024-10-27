@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
+#    By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/27 11:48:00 by eedwards         ###   ########.fr        #
+#    Updated: 2024/10/27 16:52:29 by ttero            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,9 +49,8 @@ SOURCES = close.c \
 	tok_lst.c \
 	tok_main.c \
 	tok_quotes.c \
-	tok_utils.c 
-
-# 	execute_commands.c \
+	tok_utils.c \
+ 	execute_commands.c \
 	path.c \
 	path2.c \
 	set_types.c \

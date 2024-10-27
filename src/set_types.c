@@ -6,7 +6,7 @@
 /*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:53:35 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/25 19:03:54 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/27 17:01:08 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	set_types(t_token *lst)
 		return (0);
 	while (lst->next != NULL)
 	{
-		lst->type = reg(lst->str);
+		lst->type = reg(lst->content);
 		lst = lst->next;
 	}
 	return (1);
