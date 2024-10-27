@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   distribute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 18:08:30 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 22:17:49 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 //It allocates memory for the array and copies the content of tokens with type
 //ARG, EMPTY, or DASH (2 or lower) into the array.
 //???? Is logic correct????
-char	**build_exe(t_token *lst)
+/*  char	**build_exe(t_token *lst)		//segfaults
 {
 	int		arg_num;
 	char	**arg_array;
@@ -41,6 +41,44 @@ char	**build_exe(t_token *lst)
 	}
 	arg_array[i] = NULL;
 	return (arg_array);
+} */
+
+ char **build_exe (t_token *lst)
+{
+    int arg_num;
+    char **arg_array;
+    int i;
+
+    i = 0;
+    arg_num = number_of_arguments(lst);
+	if (arg_num == 0)
+	{
+		return (NULL);
+	}
+    arg_array = malloc(sizeof(char*) * (arg_num +1));
+    while (lst->next != NULL && lst->type != PIPE)
+	{
+		if (lst->type >= 3)
+		{
+			lst->next->type = 6;
+            lst = lst->next;
+		}
+        else
+        {
+            arg_array[i] = lst->content;
+            i++;
+        }
+		if (lst->next != NULL)
+            lst = lst->next;
+	}
+    if (lst->type <= 2)
+        {
+            arg_array[i] = lst->content;
+            i++;
+        }
+    //arg_array[i] = malloc(1);
+    arg_array[i] = 0;
+    return (arg_array);
 }
 
 //checks if function is one of the built in functions
@@ -107,8 +145,8 @@ void	execute_command(char **arg, t_mini *mini)
 			ft_error_close(arg, mini);
 		}
 	}
-	//else
-		//exe(arg, mini, envp); //need to finish
+	else
+		exe(arg, mini); //need to finish
 }
 
 //handles input and output redirection using file_in and file_out

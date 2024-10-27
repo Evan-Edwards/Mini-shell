@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 20:35:34 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 17:23:44 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 22:19:18 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ int create_pipe(int pipe_fd[2])
 	return (1);
 }
 
-
-int exe(char **arg,t_mini *mini, char **envp)
+ int exe(char **arg,t_mini *mini)
 {
 	char *path;
 	pid_t pid1;
@@ -31,7 +30,7 @@ int exe(char **arg,t_mini *mini, char **envp)
 
 	(void)mini;  //for make
 	path = (NULL); //for make
-	//path = get_path2(arg[0], envp); //commented so make works
+	path = get_path2(arg[0], mini->envp); //commented so make works
 	if (path == NULL)
 	{
 		ft_printf("%s: command not found:\n", arg[0]);
@@ -45,7 +44,7 @@ int exe(char **arg,t_mini *mini, char **envp)
 	}
 	if (pid1 == 0)
 	{
-		if (execve(path, arg, envp) == -1)
+		if (execve(path, arg, mini->envp) == -1)
 		{
 			ft_printf("%s: %s\n", path, strerror(errno));
 			exit(errno);
@@ -57,3 +56,5 @@ int exe(char **arg,t_mini *mini, char **envp)
 		return (WEXITSTATUS(status));
 	return (status);
 }
+
+
