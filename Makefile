@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+         #
+#    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/27 16:52:29 by ttero            ###   ########.fr        #
+#    Updated: 2024/10/27 17:52:27 by eedwards         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,29 +32,33 @@ INC = -I./libft/incl -I./$(INC_DIR)
 
 # Source files
 SOURCES = close.c \
+	distribute.c \
+	distribute2.c \
 	ex_cd.c \
 	ex_cd2.c \
 	ex_echo.c \
 	ex_env.c \
+	ex_export_arg.c \
 	ex_export.c \
 	ex_export2.c \
 	ex_history.c \
 	ex_pwd.c \
 	ex_unset.c \
+	execute_commands.c \
+	file_handling.c \
 	find_path.c \
+	free.c \
 	history.c \
 	main.c \
+	path.c \
+	path2.c \
+	set_types.c \
 	signals.c \
 	tok_env_exp.c \
 	tok_lst.c \
 	tok_main.c \
 	tok_quotes.c \
 	tok_utils.c \
- 	execute_commands.c \
-	path.c \
-	path2.c \
-	set_types.c \
-	distribute.c 
 
 # Object files
 SRCS = $(addprefix $(SRC_DIR)/, $(SOURCES))
