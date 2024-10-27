@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 12:46:03 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:50:21 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_mini
 	int				status;
 	t_token			*lst;
 	t_history		*history;
+	int				flag;
 }					t_mini;
 
 typedef enum e_status

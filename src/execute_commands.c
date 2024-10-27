@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 20:35:34 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 11:39:03 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:37:00 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,53 @@ int exe(char **arg,t_mini *mini, char **envp)
 		}
 	}
 	waitpid(pid1, &status, 0);
+	free (path);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (status);
+}
+
+
+
+int exe(char **arg,t_mini *mini, char **envp)  // Updated version with pipes
+{
+    char *path;
+	pid_t	pid1;
+	int status;
+	int fd[2];
+
+
+	path = get_path2(arg[0], envp);
+    if (path == NULL)
+    {
+        printf("%s: command not found:\n", arg[0]);
+        return (1);
+    }
+	 if (pipe(fd) == -1)
+		printf("Error"); 
+	pid1 = fork();
+	if (pid1 == -1)
+	{
+		printf("Fork error");
+		return (1);
+	}
+	if (pid1 == 0)
+	{
+    	close(fd[0]);
+		if (mini->flag == 1)
+			dup2(fd[1], STDOUT_FILENO);
+		if (execve(path, arg, envp) == -1)
+		{
+			printf("%s: %s\n", path, strerror(errno));
+			exit(errno);
+		}
+	}
+	else 
+	{
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		waitpid(pid1, &status, 0);
+	}
 	free (path);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));

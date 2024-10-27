@@ -6,13 +6,11 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 12:23:37 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:52:30 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 //if readline returns null it indicates Ctrl-D/ EOF, causing end of program
 int main (int ac, char *av[], char **envp)
