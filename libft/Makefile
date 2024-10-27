@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+         #
+#    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: Invalid date        by                   #+#    #+#              #
-#    Updated: 2024/10/27 17:00:13 by ttero            ###   ########.fr        #
+#    Updated: 2024/10/27 17:27:30 by eedwards         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,13 +36,15 @@ GNL_SRCS = src/gnl/get_next_line_utils.c src/gnl/get_next_line.c
 
 PRINTF_SRCS = src/ft_printf/ft_printf.c src/ft_printf/ft_putchar.c \
 	src/ft_printf/ft_putnbr_p.c src/ft_printf/ft_putnbr.c src/ft_printf/ft_putstr.c \
-	src/ft_printf_error.c src/ft_printf_utils_error.c src/ft_printf_utils2_error.c
+	src/ft_printf/ft_printf_error.c src/ft_printf/ft_printf_utils_error.c src/ft_printf/ft_printf_utils2_error.c
 
 SRCS = $(LIBFT_SRCS) $(GNL_SRCS) $(PRINTF_SRCS)
 
 OBJS = $(SRCS:src/%.c=obj/%.o)
 
+
 obj/%.o: src/%.c
+	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	
 all: $(NAME)
