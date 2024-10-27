@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/26 16:00:50 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 11:37:58 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 //makes substr of s from start to end
 //adds substr to list with add_to_list
+//FIX ERROR HANDLING
 static void	add_token(char *s, int start, int end, t_mini *mini)
 {
 	char	*token;
 
 	token = ft_substr(s, start, end - start);
 	if (!token)
-		ft_error_close("malloc error");
+		ft_putstr_fd("malloc error\n", 2); //FIX
 	add_to_list(token, mini);
 	free(token);
 }
@@ -84,7 +85,8 @@ void	input_to_tokens(char *input, char **envp, t_mini *mini)
 	if (input == NULL)
 	{
 		free_mini(mini);
-		ft_error_close("Error expanding environmental variables");
+		ft_putstr_fd("Error expanding environmental variables\n", 2);
+		ft_error_close(NULL, mini, envp, NULL); //FIX
 	}
 	token(input, mini);
 }

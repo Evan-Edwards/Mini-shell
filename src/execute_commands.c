@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 20:35:34 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/26 11:14:28 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 11:39:03 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int create_pipe(int pipe_fd[2])
 {
 	if (pipe(pipe_fd) == -1)
 	{
-		ft_error_close("Pipe error");
+		ft_putstr_fd("Pipe error\n", 2);
 		return(0);
 	}
 	return (1);

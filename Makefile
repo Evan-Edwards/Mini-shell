@@ -6,7 +6,7 @@
 #    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/26 16:35:19 by eedwards         ###   ########.fr        #
+#    Updated: 2024/10/27 11:48:00 by eedwards         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SOURCES = close.c \
 	ex_env.c \
 	ex_export.c \
 	ex_export2.c \
+	ex_history.c \
 	ex_pwd.c \
 	ex_unset.c \
 	find_path.c \

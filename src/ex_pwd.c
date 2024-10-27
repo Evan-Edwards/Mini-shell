@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:20:00 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/26 11:01:31 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 11:33:12 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //allocates memory for path string
 //calls get_cwd to get path string + handles errors
-//returns cwd
+//returns cwd or NULL + prints error message if fails
 char	*get_current_directory(void)
 {
 	char	*cwd;
@@ -23,11 +23,15 @@ char	*get_current_directory(void)
 	size = 4096;
 	cwd = malloc(size);
 	if (cwd == NULL)
-		ft_error_close("Malloc Error"); //will it work like this? Need to free stuff?
+	{
+		ft_putstr_fd("Malloc Error\n", 2);
+		return (NULL);
+	}
 	if (getcwd(cwd, size) == NULL)
 	{
 		free (cwd);
-		ft_perror_close("getcwd failed");
+		ft_putstr_fd("Get cwd failed\n", 2);
+		return (NULL);
 	}
 	return (cwd);
 }
@@ -42,7 +46,11 @@ int	ft_pwd(void)
 
 	cwd = get_current_directory();
 	if (cwd == NULL)
+	{
+		if (cwd)
+			free(cwd);
 		return (0);
+	}
 	ft_printf("Current working directory: %s\n", cwd);
 	free(cwd);
 	return (1);

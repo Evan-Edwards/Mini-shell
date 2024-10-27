@@ -6,16 +6,16 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 15:52:22 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/26 16:46:21 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:06:45 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //initialises history struct
-t_history *init_history(void)
+t_history	*init_history(void)
 {
-	t_history *history;
+	t_history	*history;
 
 	history = (t_history *)malloc(sizeof(t_history));
 	if (!history)
@@ -92,5 +92,3 @@ void	ft_history(char *command, t_history *history)
 	}
 	add_to_history(history, command);
 }
-
-

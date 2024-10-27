@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/26 17:33:09 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:15:30 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
 
 typedef struct s_token
 {
@@ -60,7 +59,8 @@ typedef enum e_type
 	APPEND,
 }					t_type;
 
-typedef struct s_history {
+typedef struct s_history
+{
 	char	**commands;
 	int		capacity;
 	int		count;
@@ -84,6 +84,7 @@ int			quotes(char *s, int *i, t_mini *mini);
 char		*add_mem(char *str, int add, int old);
 char		*add_end(char *dst, char *add, int j);
 char		*get_env(char *str, int *i, char **env);
+char		*add_copy_size(char *copy, size_t new_total_size);
 
 /* ************************************************************************** */
 /*                          token list utils                                  */
@@ -101,11 +102,17 @@ t_history	*init_history(void);
 void		add_to_history(t_history *history, char *command);
 void		clear_t_history(t_history *history);
 void		print_history(t_history *history);
+int			ex_history(char **arg, t_history *history);
 
 /* ************************************************************************** */
 /*                                SIGNALS                                     */
 /* ************************************************************************** */
 void		ft_signal_setup(void);
+
+/* ************************************************************************** */
+/*                              EXECUTE ECHO                                  */
+/* ************************************************************************** */
+void		ft_echo(char **command);
 
 /* ************************************************************************** */
 /*                              EXECUTE PWD                                   */
@@ -145,12 +152,16 @@ int			ft_env(char **envp);
 /*                             CLOSE PROGRAM                                  */
 /* ************************************************************************** */
 void		free_mini(t_mini *mini);
-void		ft_error_close(char *error_message);
+void		free_str_array(char **to_free);
+void		ft_error_close(char **arg, t_mini *mini, char **envp,
+				t_history *history);
 void		ft_close(char *input, t_history *history, t_mini *mini);
 void		ft_perror_close(char *perror_message);
 
+/* ************************************************************************** */
+/*                             DISTRIBUTE                                   */
+/* ************************************************************************** */
 int			distribute(t_mini *mini, char **envp);
-int			exe(char **arg,t_mini *mini, char **envp);
-
+int			exe(char **arg, t_mini *mini, char **envp);
 
 #endif

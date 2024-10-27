@@ -6,31 +6,11 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/26 11:52:08 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:12:36 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// Reallocates memory for the copy string if needed
-// Returns the new (or unchanged) copy string
-static char	*add_copy_size(char *copy, size_t new_total_size)
-{
-	char	*new_copy;
-
-	if (!copy)
-		return (NULL);
-	new_copy = malloc(new_total_size);
-	if (!new_copy)
-	{
-		free(copy);
-		return (NULL);
-	}
-	ft_strlcpy(new_copy, copy, new_total_size);
-	free(copy);
-	return (new_copy);
-}
-
 
 //iterates through the env array to find a matching environment variable
 //compares the start of each env string (until '=') with the search string
@@ -94,12 +74,12 @@ char	*get_env(char *str, int *i, char **env)
 //gets the env var value, resizes the copy buffer if needed
 //adds the expanded value to the copy string
 //returns the updated copy string or NULL on error
-static char *handle_env_var(char *str, int *i, char **env, char **copy)
+static char	*handle_env_var(char *str, int *i, char **env, char **copy)
 {
 	char	*env_var;
 	size_t	new_size;
 	int		j;
-	
+
 	j = ft_strlen(*copy);
 	env_var = get_env(str, i, env);
 	if (env_var == NULL)
@@ -121,11 +101,13 @@ static char *handle_env_var(char *str, int *i, char **env, char **copy)
 //expands $ variables outside single quotes using handle_env_var
 //copies other characters to copy string
 //returns the fully processed copy string or NULL on error
-static char *process_env_vars(char *str, char **env, t_mini *mini, char *copy)
+static char	*process_env_vars(char *str, char **env, t_mini *mini, char *copy)
 {
-	int i = 0;
-	int j = 0;
+	int	i;
+	int	j;
 
+	i = 0;
+	j = 0;
 	while (str[i])
 	{
 		quotes(str, &i, mini);

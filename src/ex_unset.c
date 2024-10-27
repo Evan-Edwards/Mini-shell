@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 13:08:25 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/24 15:30:37 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 11:43:18 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	validate_unset_args(char **to_unset)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	while (to_unset[i])
 	{
 		if (check_arg_valid(to_unset[i]) == 0)
@@ -79,7 +79,7 @@ int	ft_unset(char **envp, char **to_unset)
 
 	if (!envp || !to_unset || !validate_unset_args(to_unset))
 		return (0);
-	i = 0;
+	i = 1;
 	while (to_unset[i])
 	{
 		j = 0;

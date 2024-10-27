@@ -6,195 +6,144 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/26 07:48:15 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:05:08 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//counts number of arguments in a linked list of tokens up to end or pipe
-//skips tokens of type 3 ?
-int number_of_arguments (t_token *lst)
-{
-	int i;
-
-	i = 0;
-	while (lst->next != NULL && lst->type != PIPE)
-	{
-		if (lst->type >= 3)
-		{
-			lst->next->type = 3;
-			lst = lst->next;
-		}
-		else
-			i++;
-		if (lst->next != NULL)
-			lst = lst->next;
-	}
-	if (lst->type <= 2)
-		i++;
-	return (i);
-}
-
 //This function builds an array of strings (char) from the linked list of tokens
 //It allocates memory for the array and copies the content of tokens with type
 //ARG, EMPTY, or DASH (2 or lower) into the array.
-char **build_exe (t_token *lst)
+//???? Is logic correct????
+char	**build_exe(t_token *lst)
 {
-	int arg_num;
-	char **arg_array;
-	int i;
+	int		arg_num;
+	char	**arg_array;
+	int		i;
 
-	i = 0;
 	arg_num = number_of_arguments(lst);
-	arg_array = malloc(sizeof(char*) * (arg_num +1));
-	while (lst->next != NULL && lst->type != PIPE)
+	arg_array = malloc(sizeof(char *) * (arg_num + 1));
+	if (!arg_array)
+		return (NULL);
+	i = 0;
+	while (lst && lst->type != PIPE)
 	{
 		if (lst->type >= 3)
 		{
 			lst->next->type = 3;
 			lst = lst->next;
 		}
-		else
-		{
-			arg_array[i] = lst->content;
-			i++;
-		}
+		else if (lst->type < 3)
+			arg_array[i++] = lst->content;
 		if (lst->next != NULL)
 			lst = lst->next;
 	}
-	if (lst->type <= 2)
-		{
-			arg_array[i] = lst->content;
-			i++;
-		}
-	arg_array[i] = 0;
+	arg_array[i] = NULL;
 	return (arg_array);
-}
-
-void print_array(char **arg)
-{
-	int i;
-
-	i = 0;
-	while (arg[i])
-	{
-		printf("%s\n", arg[i]);
-		i++;
-	}
-	printf("%s\n", arg[i]);
 }
 
 //checks if function is one of the built in functions
 //returns 1 if it is
 //0 if not
-int is_buildin(char *arg)
+int	is_builtin(char *arg)
 {
-	if (strcmp(arg, "echo") == 0)
+	if (ft_strcmp(arg, "echo") == 0)
 		return (1);
-	if (strcmp(arg, "cd") == 0)
+	if (ft_strcmp(arg, "cd") == 0)
 		return (1);
-	if (strcmp(arg, "pwd") == 0)
+	if (ft_strcmp(arg, "pwd") == 0)
 		return (1);
-	if (strcmp(arg, "export") == 0)
+	if (ft_strcmp(arg, "export") == 0)
 		return (1);
-	if (strcmp(arg, "unset") == 0)
+	if (ft_strcmp(arg, "unset") == 0)
 		return (1);
-	if (strcmp(arg, "env") == 0)
+	if (ft_strcmp(arg, "env") == 0)
 		return (1);
-	if (strcmp(arg, "exit") == 0)
+	if (ft_strcmp(arg, "exit") == 0)
+		return (1);
+	if (ft_strcmp(arg, "history") == 0)
 		return (1);
 	return (0);
 }
 
-//handles input redirection
-int file_in (t_token *lst)
+//ERROR HANDLING
+int	builtin(char **arg, t_mini *mini, char **envp, t_history *history)
 {
-	int i;
-	int file_fd;
+	int	status;
 
-	i = 0;
-	file_fd = -1;
-
-	while (lst->next != NULL && lst->type != PIPE)
+	status = 1;
+	if (ft_strcmp(arg[0], "cd") == 0)
+		status = ft_cd(arg);
+	else if (ft_strcmp(arg[0], "echo") == 0)
+		ft_echo(arg);
+	else if (ft_strcmp(arg[0], "env") == 0)
+		status = ft_env(envp);
+	else if (ft_strcmp(arg[0], "exit") == 0)
 	{
-		if (lst->type == 4)
-		{
-			file_fd = input_file(lst->type, lst->next->content);
-			if (file_fd < 0)
-				return (-1);
-		}
-		lst = lst->next;
+		free_str_array(arg);
+		free_str_array(envp);
+		ft_close(NULL, history, mini);
 	}
-	if (file_fd != -1)
-		dup2(file_fd, STDIN_FILENO);
-	return (1);
+	else if (ft_strcmp(arg[0], "export") == 0)
+		status = ft_export(arg, envp); // Need to finish
+	else if (ft_strcmp(arg[0], "history") == 0)
+		status = ex_history(arg, history);
+	else if (ft_strcmp(arg[0], "pwd") == 0)
+		status = ft_pwd();
+	else if (ft_strcmp(arg[0], "unset") == 0)
+		status = ft_unset(envp, arg);
+	return (status);
 }
 
-int file_out (t_token *lst)
+void	execute_command(char **arg, t_mini *mini, char **envp,
+	t_history *history)
 {
-	int i;
-	int file_fd;
-
-	i = 0;
-	file_fd = -1;
-
-	while (lst->next != NULL && lst->type != PIPE)
+	if (is_builtin(arg[0]) == 1)
 	{
-		if (lst->type >= 6)
+		if (builtin(arg, mini, envp, history) == 0)
 		{
-			file_fd = output_file(lst->type, lst->next->content);
-			if (file_fd < 0)
-				return (-1);
+			ft_putstr_fd("Error: ", 2);
+			ft_putstr_fd(arg[0], 2);
+			ft_putstr_fd(" command failed\n", 2);
+			ft_error_close(arg, mini, envp, history);
 		}
-		lst = lst->next;
 	}
-	if (file_fd != -1)
-		dup2(file_fd, STDOUT_FILENO);
-	return (1);
+	else
+		exe(arg, mini, envp);
 }
-
 
 //handles input and output redirection using file_in and file_out
 //builds an argument array using build_exe
 //checks if the command is a built-in using is_buildin
 //executes the command (either built-in or external)
-int distribute(t_mini *mini, char **envp)
+int	distribute(t_mini *mini, char **envp, t_history *history)
 {
-	int number_of_commands;
-	int i;
-	char **arg;
-	int file_fd;
-	char *path;
+	int		number_of_commands;
+	int		i;
+	char	**arg;
+	int		file_fd;
+	char	*path;
 
-	 file_fd = -1;
+	file_fd = -1;
 	if (file_in(mini->lst) < 0)
-		{
-			printf("error\n");
-			return (0);
-		}
+	{
+		ft_printf("error\n");
+		return (0);
+	}
 	file_fd = file_out(mini->lst);
 	if (file_fd < 0)
 	{
-		printf("error\n");
+		ft_printf("error\n");
 		return (0);
 	}
-	//printf("%d\n", file_fd);
-	number_of_commands =number_of_arguments(mini->lst);
+	number_of_commands = number_of_arguments(mini->lst);
 	i = 0;
 	arg = build_exe(mini->lst);
-	if (is_buildin(arg[i]) == 1)
-	{
-		printf("buildin");
-		//buildin(arg, mini, env);
-	}
-	 else
-	{
-		exe(arg, mini, envp);
-	}
-	/* while (i < number_of_commands)
-	{
-
-	} */
+	execute_command(arg, mini, envp, history);
 	return (1);
 }
+
+/* while (i < number_of_commands)
+	{
+	} */

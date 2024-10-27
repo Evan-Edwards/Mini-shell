@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:59:26 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/23 10:17:42 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 12:08:32 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ static void	ft_signal_quit(int sig)
 }
 //should interupt any command running?
 
-
-
-void	ft_signal_setup()
+void	ft_signal_setup(void)
 {
 	signal(SIGINT, signal_interrupt);
 	signal(SIGQUIT, ft_signal_quit);

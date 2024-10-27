@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ex_echo.c                                          :+:      :+:    :+:   */
+/*   ex_history.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/24 09:27:15 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 10:27:46 by eedwards         ###   ########.fr       */
+/*   Created: 2024/10/27 11:45:04 by eedwards          #+#    #+#             */
+/*   Updated: 2024/10/27 11:47:43 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//prints out next token(s)
-void	ft_echo(char **command)
+int	ex_history(char **arg, t_history *history)
 {
-	int	i;
-
-	i = 1;
-	while (command[i])
+	if (!arg || !history)
 	{
-		ft_printf("%s ", command[i]);
-		i++;
+		ft_putstr_fd("Error: arg or history is NULL\n", 2);
+		return (0);
 	}
-	ft_printf("\n");
+	if (!arg[1])
+		print_history(history);
+	else if (arg[1] == "-c")
+		clear_t_history(history);
+	return (1);
 }

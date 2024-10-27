@@ -6,124 +6,88 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:43:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/25 13:41:10 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/27 10:20:17 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//joins together the cwd and path to make new dest str
-//adds first / to the end of cwd
-//returns NULL if ft_strjoin fails
-static char	*cat_cwd_path(char *cwd, char *path)
+//parses for last '/' symbol
+//returns substring of cwd until last /
+char	*rm_last_dir(char *cwd)
 {
+	int		i;
+	int		last;
 	char	*temp;
+
+	i = 0;
+	last = 0;
+	while (cwd[i])
+	{
+		if (cwd[i] == '/')
+			last = i;
+		i++;
+	}
+	temp = ft_substr(cwd, 0, last);
+	free(cwd);
+	if (temp == NULL)
+		perror("Malloc failure");
+	return (temp);
+}
+
+//handles the case when no argument is provided to cd
+//returns the HOME directory path or NULL if HOME is not set
+static char	*handle_no_arg(void)
+{
 	char	*dest;
 
-	temp = ft_strjoin(cwd, "/");
-	if (temp == NULL)
+	dest = getenv("HOME");
+	if (dest == NULL)
+	{
+		ft_perror_close("HOME not set");
 		return (NULL);
-	dest = ft_strjoin(temp, path);
-	free(temp);
+	}
 	return (dest);
 }
 
-//handles '.' and '..' in the path
-//removes last directory for '..' and skips '.'
-//updates index i to skip processed characters
-//returns NULL if rm_last_dir fails, updated cwd otherwise
-static char	*handle_dot_paths(char *cwd, char *path, int *i)
-{
-	char	*new_cwd;
-
-	if (path[*i] == '.' && path[*i + 1] == '.')
-	{
-		new_cwd = rm_last_dir(cwd);
-		free(cwd);
-		if (new_cwd == NULL)
-			return (NULL);
-		cwd = new_cwd;
-		*i += 2;
-		if (path[*i] == '/')
-			(*i)++;
-	}
-	else if (path[*i] == '.')
-	{
-		(*i)++;
-		while (path[*i] == '/')
-			(*i)++;
-	}
-	return (cwd);
-}
-
-//creates a new path by joining cwd with the remaining part of path
-//extracts substring of path from index i to end
-//joins extracted path with cwd using cat_cwd_path
-//frees temporary allocations and returns new combined path
-//returns NULL if memory allocation fails
-static char	*handle_alpha_path(char *cwd, char *path, int i)
-{
-	char	*temp_path;
-	char	*new_cwd;
-
-	temp_path = ft_substr(path, i, ft_strlen(path) - i);
-	if (temp_path == NULL)
-	{
-		free(cwd);
-		return (NULL);
-	}
-	new_cwd = cat_cwd_path(cwd, temp_path);
-	free(cwd);
-	free(temp_path);
-	return (new_cwd);
-}
-
-//uses cwd and path to create new dest str
-//if there's "..": removes last directory
-//otherwise adds path to cwd to create dest
-char	*mod_cwd(char *cwd, char *path)
-{
-	int		i;
-
-	i = 0;
-	while (path[i])
-	{
-		if (path[i] == '.')
-		{
-			cwd = handle_dot_paths(cwd, path, &i);
-			if (cwd == NULL)
-				return (NULL);
-		}
-		else if (ft_isalpha(path[i]) == 1)
-			return (handle_alpha_path(cwd, path, i));
-		else
-			i++;
-	}
-	return (cwd);
-}
-
-//changes directory based on path given
-//if path starts with '/' then chdir called with it
-//otherwise it's modified with mod_cwd
-//returns 0 if get_current_directory or mod_cwd fails, 1 on success
-int	ft_cd(char *path)
+//processes the cd command arguments to determine the destination path
+//returns the appropriate path based on the argument or NULL on error
+static char	*process_cd_path(char **arg)
 {
 	char	*dest;
 	char	*cwd;
 
+	if (arg[1] == NULL)
+		return (handle_no_arg());
+	if (arg[1][0] == '/')
+		return (arg[1]);
 	cwd = get_current_directory();
 	if (cwd == NULL)
-		return (0);
-	if (path[0] == '/')
-		dest = path;
-	else
+		return (NULL);
+	dest = mod_cwd(cwd, arg[1]);
+	free(cwd);
+	return (dest);
+}
+
+//changes the current working directory based on the given arguments
+//calls process_cd_path to get the destination path
+//returns 1 on success, 0 on failure
+int	ft_cd(char **arg)
+{
+	char	*dest;
+
+	dest = process_cd_path(arg);
+	if (dest == NULL || chdir(dest) == -1)
 	{
-		dest = mod_cwd(cwd, path);
 		if (dest == NULL)
-			return (0);
+			ft_perror_close("Invalid path");
+		else
+			ft_perror_close("Chdir failed");
+		if (arg[1] && arg[1][0] != '/' && dest)
+			free(dest);
+		return (0);
 	}
-	if (chdir(dest) == -1)
-		ft_perror_close("Chdir failed");
+	if (arg[1] && arg[1][0] != '/')
+		free(dest);
 	return (1);
 }
-//store cwd in data struct?
