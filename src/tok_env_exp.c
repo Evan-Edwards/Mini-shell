@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tok_env_exp.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 11:01:04 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:23:44 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ char	*get_env(char *str, int *i, t_mini *mini)
 	if (!str || !i || !mini)
 		return (NULL);
 	start = ++(*i);
+	if (str[*i] == '?')
+	{
+		result = ft_itoa(mini->exit_status);
+		(*i)++;
+		return (result);
+	}
 	while (str[*i] && !is_delimiter(str[*i]))
 		(*i)++;
 	len = *i - start;
@@ -95,7 +101,7 @@ static char	*handle_env_var(char *str, int *i, t_mini *mini, char **copy)
 		free(env_var);
 		return (NULL);
 	}
-	ft_strlcat(*copy + j, env_var, new_size - j);
+	ft_strlcat(*copy + j, env_var, new_size -j);
 	free(env_var);
 	return (*copy);
 }
@@ -133,7 +139,7 @@ static char	*process_env_vars(char *str, t_mini *mini, char *copy)
 //allocates room for expanded copy of str
 //uses process_env_vars to expand env variables
 //null-terminates copy string
-//if there was starting but not ending quote 
+//if there was starting but not ending quote
 char	*env_var_expansion(char *str, t_mini *mini)
 {
 	char	*copy;
@@ -143,7 +149,7 @@ char	*env_var_expansion(char *str, t_mini *mini)
 		ft_putstr_fd("null pointer in env_var_expansion\n", 2);
 		return (NULL);
 	}
-	copy = malloc(ft_strlen(str) + 1);
+	copy = ft_calloc(ft_strlen(str) + 1, 1);
 	if (!copy)
 	{
 		ft_putstr_fd("malloc error in env_var_expansion\n", 2);
