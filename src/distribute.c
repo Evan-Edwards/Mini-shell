@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   distribute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 06:57:02 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 09:44:40 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	process_token(t_token *lst, char **arg_array, int *i)
 	{
 		if (lst->type >= 3)
 		{
-			lst->next->type = 6;
+			lst->next->type = 8;
 			lst = lst->next;
 		}
 		else
@@ -139,9 +139,18 @@ int	distribute(t_mini *mini, t_token *current)
 		return (0);
 	}
 	arg = build_exe(current);
+	if (arg == NULL)
+		return (0);
 	execute_command(arg, mini);
 	return (1);
 }
+
+void	reset_dup2(t_mini *mini)
+{
+	dup2(mini->in, STDIN_FILENO);
+	dup2(mini->out, STDOUT_FILENO);
+}
+
 
 //Distributes commands across pipes
 //Processes multiple commands separated by pipes
@@ -171,5 +180,6 @@ int	dis_b(t_mini *mini)
 		current = current->next;
 		mini->flag = 0;
 	}
+	reset_dup2(mini);
 	return (1);
 }
