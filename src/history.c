@@ -6,89 +6,102 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 15:52:22 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 13:16:47 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 07:23:37 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//initialises history struct
-t_history	*init_history(void)
+//Initializes history struct
+//Returns 1 on success, 0 on failure
+int	init_history(t_history **history)
 {
-	t_history	*history;
-
-	history = (t_history *)malloc(sizeof(t_history));
-	if (!history)
-		return (NULL);
-	history->capacity = 100;
-	history->count = 0;
-	history->commands = (char **)malloc(history->capacity * sizeof(char *));
-	if (!history->commands)
+	*history = (t_history *)malloc(sizeof(t_history));
+	if (!(*history))
+		return (0);
+	(*history)->capacity = 100;
+	(*history)->count = 0;
+	(*history)->commands = malloc((*history)->capacity * sizeof(char *));
+	if (!(*history)->commands)
 	{
-		free(history);
-		return (NULL);
+		free(*history);
+		*history = NULL;
+		return (0);
 	}
-	return (history);
+	return (1);
 }
 
-//adds command to history struct
-void	add_to_history(t_history *history, char *command)
+//Adds command to history struct
+//Returns 1 on success, 0 on failure
+int	add_to_history(t_history *history, char *command)
 {
-	if (history->count < history->capacity)
+	char	*new_command;
+
+	if (!history || !command || history->count >= history->capacity)
+		return (0);
+	new_command = ft_strdup(command);
+	if (!new_command)
 	{
-		history->commands[history->count] = ft_strdup(command);
-		history->count++;
+		ft_putstr_fd("Error: memory allocation failed\n", 2);
+		return (0);
 	}
-	else
-	{
-		ft_printf("History capacity reached\n");
-	}
+	history->commands[history->count] = new_command;
+	history->count++;
+	return (1);
 }
 
-//prints history struct
-void	print_history(t_history *history)
+//Prints history struct
+//Returns 1 on success, 0 if history is NULL
+int	print_history(t_history *history)
 {
 	int	i;
 
 	if (!history)
-		return ;
+		return (0);
 	i = 0;
 	while (i < history->count)
 	{
 		ft_printf("%d: %s\n", i + 1, history->commands[i]);
 		i++;
 	}
+	return (1);
 }
 
-void	clear_t_history(t_history *history)
+//For history -c command: clear contents but keep structure
+int	clear_history_contents(t_history *history)
 {
+	int	i;
+
 	if (!history)
-		return ;
+		return (0);
 	rl_clear_history();
-	free(history->commands);
-	free(history);
+	i = 0;
+	while (i < history->count)
+	{
+		free(history->commands[i]);
+		i++;
+	}
+	history->count = 0;  // Just reset the count, keep the allocated array
+	return (1);
 }
 
-//adds history to readline history
-//initiates history struct if not already done
-//then adds input to history struct
-//returns history struct
-void	ft_history(char *command, t_mini *mini)
+//Adds command to readline history and history struct
+//Returns 1 on success, 0 on failure
+int	ft_history(char *command, t_mini *mini)
 {
-	if (!command)
+	if (!command || !mini)
 	{
-		ft_putstr_fd("Error: command is NULL\n", 2);
-		return ;
+		ft_putstr_fd("Error: invalid arguments\n", 2);
+		return (0);
 	}
 	add_history(command);
 	if (!mini->history)
 	{
-		mini->history = init_history();
-		if (!mini->history)
+		if (!init_history(&mini->history))
 		{
 			ft_putstr_fd("Error: failed to initialize history\n", 2);
-			return ;
+			return (0);
 		}
 	}
-	add_to_history(mini->history, command);
+	return (add_to_history(mini->history, command));
 }

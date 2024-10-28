@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 17:03:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 06:32:42 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 07:27:54 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	free_mini(t_mini *mini)
 	if (!mini)
 		return ;
 	if (mini->history)
-		clear_t_history(mini->history);
+		clear_t_history(mini);
 	current = mini->lst;
 	while (current)
 	{
@@ -44,4 +44,22 @@ void	free_str_array(char **to_free)
 	while (to_free[i])
 		free(to_free[i++]);
 	free(to_free);
+}
+
+//For program exit: free everything
+void	clear_t_history(t_mini *mini)
+{
+	int	i;
+
+	if (!mini->history)
+		return ;
+	rl_clear_history();
+	i = 0;
+	while (i < mini->history->count)
+	{
+		free(mini->history->commands[i]);
+		i++;
+	}
+	free(mini->history->commands);
+	free(mini->history);
 }

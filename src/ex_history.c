@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 11:45:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 18:13:56 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 07:13:08 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ int	ex_history(char **arg, t_history *history)
 	if (!arg[1])
 		print_history(history);
 	else if (ft_strcmp(arg[1], "-c") == 0)
-		clear_t_history(history);
+		clear_history_contents(history);
 	return (1);
 }

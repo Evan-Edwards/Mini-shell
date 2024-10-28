@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 06:06:01 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 06:57:02 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	execute_command(char **arg, t_mini *mini)
 			ft_putstr_fd("Error: ", 2);
 			ft_putstr_fd(arg[0], 2);
 			ft_putstr_fd(" command failed\n", 2);
-			ft_error_close(arg, mini);
+			ft_error_close(NULL, arg, mini);
 		}
 	}
 	else
