@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 06:29:38 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 06:55:37 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 10:13:12 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_perror_close(char *perror_message)
 
 //is it necessary?
 //free memory before calling
-void	ft_error_close(char *input, char **arg, t_mini *mini)
+void	ft_error_close(int exit_status, char *input, char **arg, t_mini *mini)
 {
 	if (input)
 		free(input);
@@ -33,7 +33,7 @@ void	ft_error_close(char *input, char **arg, t_mini *mini)
 
 //free memory before calling
 //CAN HANDLE MORE ARGS TO FREE?
-void	ft_close(char *input, char **arg, t_mini *mini)
+void	ft_close(int exit_status, char *input, char **arg, t_mini *mini)
 {
 	if (input)
 		free(input);

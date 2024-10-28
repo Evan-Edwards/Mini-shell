@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 17:03:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 07:27:54 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 09:49:15 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,18 @@ void	free_mini(t_mini *mini)
 		return ;
 	if (mini->history)
 		clear_t_history(mini);
-	current = mini->lst;
-	while (current)
+	if (mini->lst)
 	{
-		next = current->next;
-		free(current->content);
-		free(current);
-		current = next;
+		current = mini->lst;
+		while (current)
+		{
+			next = current->next;
+			if (current->content)
+				free(current->content);
+			free(current);
+			current = next;
+		}
 	}
-	free(mini);
 }
 
 //frees array of memory allocated strings
@@ -46,20 +49,24 @@ void	free_str_array(char **to_free)
 	free(to_free);
 }
 
-//For program exit: free everything
+//For program exit 
+//frees everything in history struct
 void	clear_t_history(t_mini *mini)
 {
 	int	i;
 
-	if (!mini->history)
+	if (!mini || !mini->history)
 		return ;
 	rl_clear_history();
 	i = 0;
-	while (i < mini->history->count)
+	if (mini->history->commands)
 	{
-		free(mini->history->commands[i]);
-		i++;
+		while (i < mini->history->count && mini->history->commands[i])
+		{
+			free(mini->history->commands[i]);
+			i++;
+		}
+		free(mini->history->commands);
 	}
-	free(mini->history->commands);
 	free(mini->history);
 }

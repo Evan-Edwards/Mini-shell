@@ -6,11 +6,23 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 09:27:15 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 17:45:04 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 09:57:15 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//Prints command tokens starting from given index, adding spaces between words
+static void	print_echo_content(char **command, int start)
+{
+	while (command[start])
+	{
+		ft_printf("%s", command[start]);
+		if (command[start + 1])
+			ft_printf(" ");
+		start++;
+	}
+}
 
 //prints out next token(s)
 void	ft_echo(char **command)
@@ -32,11 +44,7 @@ void	ft_echo(char **command)
 		no_newline = 1;
 		i++;
 	}
-	while (command[i])
-	{
-		ft_printf("%s ", command[i]);
-		i++;
-	}
+	print_echo_content(command, i);
 	if (no_newline == 0)
 		ft_printf("\n");
 }

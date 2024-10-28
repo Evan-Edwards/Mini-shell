@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 06:57:21 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 10:05:55 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,12 @@ static void	add_token(char *s, int start, int end, t_mini *mini)
 
 	token = ft_substr(s, start, end - start);
 	if (!token)
-		ft_putstr_fd("malloc error\n", 2); //FIX
+	{
+		ft_putstr_fd("malloc error\n", 2);
+		ft_error_close(NULL, NULL, mini);
+	}
 	add_to_list(token, mini);
-	free(token);
+	//free(token);
 }
 
 //adds delimiters as token to list
