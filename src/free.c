@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 17:03:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 17:03:55 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 06:32:42 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	free_mini(t_mini *mini)
 	}
 	free(mini);
 }
-
 
 //frees array of memory allocated strings
 void	free_str_array(char **to_free)

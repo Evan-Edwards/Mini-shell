@@ -3,26 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 22:22:20 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/28 06:14:11 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //if readline returns null it indicates Ctrl-D/ EOF, causing end of program
-int main (int ac, char *av[], char **envp)
+int	main(int ac, char *av[], char **envp)
 {
 	char		*input;
-	t_mini		mini; //malloc for mini?
+	t_mini		mini;
 
-	(void)ac;
-	(void)av;
 	ft_signal_setup();
 	mini.envp = envp;
-	while (1)
+	while (ac && av)
 	{
 		input = readline("Input > ");
 		if (input == NULL)
@@ -30,21 +28,17 @@ int main (int ac, char *av[], char **envp)
 		if (input[0] == '\0')
 		{
 			free(input);
-			continue;
+			continue ;
 		}
 		//ft_history(input, &mini); //segfaults
 		input_to_tokens(input, &mini);
 		//free(input);
 		//print_list(&mini);
-		 if (check_errors(mini.lst) == 0) //?
-				continue; 
-		set_types(mini.lst); //COMMENTED FOR MAKE
-		dis_b(&mini); //COMMENTED FOR MAKE
+		if (check_errors(mini.lst) == 0) //?
+			continue ;
+		set_types(mini.lst);
+		dis_b(&mini);
 		free(input);
-		//parse tokens
 	}
-	//close program, free memory
 	return (0);
-
 }
-

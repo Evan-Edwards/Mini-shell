@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 13:33:04 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 06:32:21 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ static char	*search_env(char *search, int len, t_mini *mini)
 	j = 0;
 	while (mini->envp[j])
 	{
-		if (strncmp(mini->envp[j], search, len) == 0 && mini->envp[j][len] == '=')
+		if (strncmp(mini->envp[j], search, len) == 0
+			&& mini->envp[j][len] == '=')
 		{
-			env_value = mini->envp[j] + len + 1;  // Skip past the '='
+			env_value = mini->envp[j] + len + 1;
 			result = ft_strdup(env_value);
 			if (!result)
 				return (NULL);

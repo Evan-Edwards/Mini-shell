@@ -6,12 +6,11 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:03:11 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 12:36:53 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 06:06:52 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void	print_array(char **arg)
 {
@@ -48,4 +47,58 @@ int	number_of_arguments(t_token *lst)
 			break ;
 	}
 	return (i);
+}
+
+//checks if function is one of the built in functions
+//returns 1 if it is
+//0 if not
+int	is_builtin(char *arg)
+{
+	if (ft_strcmp(arg, "echo") == 0)
+		return (1);
+	if (ft_strcmp(arg, "cd") == 0)
+		return (1);
+	if (ft_strcmp(arg, "pwd") == 0)
+		return (1);
+	if (ft_strcmp(arg, "export") == 0)
+		return (1);
+	if (ft_strcmp(arg, "unset") == 0)
+		return (1);
+	if (ft_strcmp(arg, "env") == 0)
+		return (1);
+	if (ft_strcmp(arg, "exit") == 0)
+		return (1);
+	if (ft_strcmp(arg, "history") == 0)
+		return (1);
+	return (0);
+}
+
+//Executes built-in shell commands (cd, echo, env, exit, history, pwd, unset)
+//Returns 1 on success, 0 on failure
+//Handles command-specific logic and error reporting
+int	builtin(char **arg, t_mini *mini)
+{
+	int	status;
+
+	status = 1;
+	if (ft_strcmp(arg[0], "cd") == 0)
+		status = ft_cd(arg);
+	else if (ft_strcmp(arg[0], "echo") == 0)
+		ft_echo(arg);
+	else if (ft_strcmp(arg[0], "env") == 0)
+		status = ft_env(mini->envp);
+	else if (ft_strcmp(arg[0], "exit") == 0)
+	{
+		free_str_array(arg);
+		ft_close(NULL, mini);
+	}
+	//else if (ft_strcmp(arg[0], "export") == 0)
+	//	status = ft_export(arg, mini); // Need to finish
+	else if (ft_strcmp(arg[0], "history") == 0)
+		status = ex_history(arg, mini->history);
+	else if (ft_strcmp(arg[0], "pwd") == 0)
+		status = ft_pwd();
+	else if (ft_strcmp(arg[0], "unset") == 0)
+		status = ft_unset(mini->envp, arg);
+	return (status);
 }

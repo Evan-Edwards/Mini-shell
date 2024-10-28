@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 10:17:35 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 17:23:54 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 06:30:50 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,4 +128,3 @@ int	ft_export(char **command, t_mini *mini)
 	else
 		return (export_with_arg(command, mini));
 }
-

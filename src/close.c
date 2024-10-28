@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/21 13:58:48 by eedwards          #+#    #+#             */
-	/*   Updated: 2024/10/27 13:18:11 by eedwards         ###   ########.fr       */
+/*   Created: 2024/10/28 06:29:38 by eedwards          #+#    #+#             */
+/*   Updated: 2024/10/28 06:30:28 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,3 @@ void	ft_close(char *input, t_mini *mini)
 	free_mini(mini);
 	exit(EXIT_SUCCESS);
 }
-

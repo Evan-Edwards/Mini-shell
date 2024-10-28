@@ -3,136 +3,103 @@
 /*                                                        :::      ::::::::   */
 /*   distribute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 22:17:49 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/28 06:06:01 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//This function builds an array of strings (char) from the linked list of tokens
-//It allocates memory for the array and copies the content of tokens with type
-//ARG, EMPTY, or DASH (2 or lower) into the array.
-//???? Is logic correct????
-/*  char	**build_exe(t_token *lst)		//segfaults
+/*
+char	**build_exe(t_token *lst)
 {
 	int		arg_num;
 	char	**arg_array;
 	int		i;
 
-	arg_num = number_of_arguments(lst);
-	arg_array = malloc(sizeof(char *) * (arg_num + 1));
-	if (!arg_array)
-		return (NULL);
 	i = 0;
-	while (lst && lst->type != PIPE)
-	{
-		if (lst->type >= 3)
-		{
-			lst->next->type = 3;
-			lst = lst->next;
-		}
-		else if (lst->type < 3)
-			arg_array[i++] = lst->content;
-		if (lst->next != NULL)
-			lst = lst->next;
-	}
-	arg_array[i] = NULL;
-	return (arg_array);
-} */
-
- char **build_exe (t_token *lst)
-{
-    int arg_num;
-    char **arg_array;
-    int i;
-
-    i = 0;
-    arg_num = number_of_arguments(lst);
+	arg_num = number_of_arguments(lst);
 	if (arg_num == 0)
 	{
 		return (NULL);
 	}
-    arg_array = malloc(sizeof(char*) * (arg_num +1));
-    while (lst->next != NULL && lst->type != PIPE)
+	arg_array = malloc(sizeof(char*) * (arg_num +1));
+	while (lst->next != NULL && lst->type != PIPE)
 	{
 		if (lst->type >= 3)
 		{
 			lst->next->type = 6;
-            lst = lst->next;
+			lst = lst->next;
 		}
-        else
-        {
-            arg_array[i] = lst->content;
-            i++;
-        }
+		else
+		{
+			arg_array[i] = lst->content;
+			i++;
+		}
 		if (lst->next != NULL)
-            lst = lst->next;
+			lst = lst->next;
 	}
-    if (lst->type <= 2)
-        {
-            arg_array[i] = lst->content;
-            i++;
-        }
-    //arg_array[i] = malloc(1);
-    arg_array[i] = 0;
-    return (arg_array);
-}
-
-//checks if function is one of the built in functions
-//returns 1 if it is
-//0 if not
-int	is_builtin(char *arg)
-{
-	if (ft_strcmp(arg, "echo") == 0)
-		return (1);
-	if (ft_strcmp(arg, "cd") == 0)
-		return (1);
-	if (ft_strcmp(arg, "pwd") == 0)
-		return (1);
-	if (ft_strcmp(arg, "export") == 0)
-		return (1);
-	if (ft_strcmp(arg, "unset") == 0)
-		return (1);
-	if (ft_strcmp(arg, "env") == 0)
-		return (1);
-	if (ft_strcmp(arg, "exit") == 0)
-		return (1);
-	if (ft_strcmp(arg, "history") == 0)
-		return (1);
-	return (0);
-}
-
-//ERROR HANDLING
-int	builtin(char **arg, t_mini *mini)
-{
-	int	status;
-
-	status = 1;
-	if (ft_strcmp(arg[0], "cd") == 0)
-		status = ft_cd(arg);
-	else if (ft_strcmp(arg[0], "echo") == 0)
-		ft_echo(arg);
-	else if (ft_strcmp(arg[0], "env") == 0)
-		status = ft_env(mini->envp);
-	else if (ft_strcmp(arg[0], "exit") == 0)
+	if (lst->type <= 2)
 	{
-		free_str_array(arg);
-		ft_close(NULL, mini);
+		arg_array[i] = lst->content;
+		i++;
 	}
-	//else if (ft_strcmp(arg[0], "export") == 0)
-	//	status = ft_export(arg, mini); // Need to finish
-	else if (ft_strcmp(arg[0], "history") == 0)
-		status = ex_history(arg, mini->history);
-	else if (ft_strcmp(arg[0], "pwd") == 0)
-		status = ft_pwd();
-	else if (ft_strcmp(arg[0], "unset") == 0)
-		status = ft_unset(mini->envp, arg);
-	return (status);
+	//arg_array[i] = malloc(1);
+	arg_array[i] = 0;
+	return (arg_array);
+}*/
+
+//Processes a token list to build an array of arguments
+//Handles redirection tokens (type >= 3) by marking following tokens
+//Collects command and argument tokens (type <= 2) into the array
+static void	process_token(t_token *lst, char **arg_array, int *i)
+{
+	while (lst->next != NULL && lst->type != PIPE)
+	{
+		if (lst->type >= 3)
+		{
+			lst->next->type = 6;
+			lst = lst->next;
+		}
+		else
+		{
+			arg_array[*i] = lst->content;
+			(*i)++;
+		}
+		if (lst->next != NULL)
+			lst = lst->next;
+	}
+	if (lst->type <= 2)
+	{
+		arg_array[*i] = lst->content;
+		(*i)++;
+	}
 }
 
+//Builds an executable command array from a token list
+//Returns NULL if no arguments are found
+//Allocates memory for the array and terminates it with NULL
+char	**build_exe(t_token *lst)
+{
+	int		arg_num;
+	char	**arg_array;
+	int		i;
+
+	i = 0;
+	arg_num = number_of_arguments(lst);
+	if (arg_num == 0)
+		return (NULL);
+	arg_array = malloc(sizeof(char *) * (arg_num + 1));
+	process_token(lst, arg_array, &i);
+	arg_array[i] = 0;
+	return (arg_array);
+}
+
+//Executes a command, either built-in or external
+//Checks command type and routes to appropriate handler
+//Reports errors for failed built-in commands
 void	execute_command(char **arg, t_mini *mini)
 {
 	if (is_builtin(arg[0]) == 1)
@@ -149,17 +116,18 @@ void	execute_command(char **arg, t_mini *mini)
 		exe(arg, mini); //need to finish
 }
 
-//handles input and output redirection using file_in and file_out
-//builds an argument array using build_exe
-//checks if the command is a built-in using is_buildin
-//executes the command (either built-in or external)
-int distribute(t_mini *mini, t_token *current)
+//Handles input and output redirection using file_in and file_out
+//Builds an argument array using build_exe
+//Checks if the command is a built-in using is_builtin
+//Executes the command (either built-in or external)
+//Returns 0 on error, 1 on success
+int	distribute(t_mini *mini, t_token *current)
 {
 	char	**arg;
 	int		file_fd;
 
 	file_fd = -1;
-	if (file_in(current) < 0) //does it need to be current?
+	if (file_in(current) < 0)
 	{
 		ft_printf("error\n");
 		return (0);
@@ -175,7 +143,10 @@ int distribute(t_mini *mini, t_token *current)
 	return (1);
 }
 
-int dis_b(t_mini *mini)
+//Distributes commands across pipes
+//Processes multiple commands separated by pipes
+//Sets flags for pipe handling and manages command flow
+int	dis_b(t_mini *mini)
 {
 	t_token	*current;
 	int		pipe_num;

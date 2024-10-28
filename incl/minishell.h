@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 22:16:41 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/28 05:54:35 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct s_history
 	int		capacity;
 	int		count;
 }					t_history;
-
 
 typedef struct s_token
 {
@@ -142,7 +141,6 @@ char		**copy_str_array(char	**orig, char **copy);
 void		print_env(char *env);
 int			validate_name(char **command, int *i);
 
-
 /* ************************************************************************** */
 /*                             EXECUTE UNSET                                  */
 /* ************************************************************************** */
@@ -177,6 +175,11 @@ int			is_builtin(char *arg);
 char		**build_exe(t_token *lst);
 void		execute_command(char **arg, t_mini *mini);
 void		print_array(char **arg);
+char		*get_path2(char *argv, char **envp);
+int			is_env(char *env[]);
+char		*find_path(char *argv, char *env[]);
+int			dis_b(t_mini *mini);
+int			exe(char **arg, t_mini *mini);
 
 /* ************************************************************************** */
 /*                             FILE HANDLING                                  */
@@ -193,15 +196,5 @@ int			count_pipes(t_token *lst);
 int			set_types(t_token *lst);
 int			reg(char *str);
 int			check_errors(t_token *lst);
-
-
-char	*get_path2(char *argv, char **envp);
-int	is_env(char *env[]);
-char	*find_path(char *argv, char *env[]);
-int check_errors(t_token *lst);
-int	set_types(t_token *lst);
-int dis_b(t_mini *mini);
-int exe(char **arg,t_mini *mini);
-
 
 #endif

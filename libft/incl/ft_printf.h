@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:28:45 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 16:59:04 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/28 06:37:52 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,5 @@ int	ft_puthex_error(unsigned int nb);
 int	ft_puthex_error_cap(unsigned int nb);
 int	ft_puthex_error_long(unsigned long nb);
 int	convert_error(void *pointer);
-
 
 #endif

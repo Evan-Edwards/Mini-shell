@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 18:25:25 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/23 20:33:10 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/28 06:29:13 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//Copies characters from src to dest starting at the given index
+//Updates index to point to the next available position in dest
 void	copy_string(char *dest, const char *src, int *index)
 {
 	int	i;
@@ -25,6 +27,8 @@ void	copy_string(char *dest, const char *src, int *index)
 	}
 }
 
+//Joins two strings and frees the first string (s1)
+//Returns newly allocated string containing s1+s2, or NULL if allocation fails
 char	*ft_strjoin_mod(char *s1, char const *s2)
 {
 	int		len1;
@@ -45,16 +49,9 @@ char	*ft_strjoin_mod(char *s1, char const *s2)
 	return (arr);
 }
 
-void	free_token(char **cmd1)
-{
-	int	i;
-
-	i = -1;
-	while (cmd1[++i])
-		free(cmd1[i]);
-	free(cmd1);
-}
-
+//Searches environment variables for PATH
+//Returns index of PATH variable or -1 if not found
+//Handles NULL environment and empty environment cases
 int	is_env(char *env[])
 {
 	int	i;
@@ -71,6 +68,9 @@ int	is_env(char *env[])
 	return (-1);
 }
 
+//Searches PATH environment for executable file
+//Returns full path to executable if found, NULL otherwise
+//Handles path construction and validation
 char	*find_path(char *argv, char *env[])
 {
 	int		i;
@@ -89,12 +89,12 @@ char	*find_path(char *argv, char *env[])
 		path = ft_strjoin_mod(path, argv);
 		if (access(path, F_OK) == 0)
 		{
-			free_token(token);
+			free_str_array(token);
 			return (path);
 		}
 		free(path);
 		i++;
 	}
-	free_token(token);
+	free_str_array(token);
 	return (NULL);
 }
