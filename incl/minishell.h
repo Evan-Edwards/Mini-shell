@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 07:28:21 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 09:34:23 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ typedef struct s_mini
 	int				status;
 	int				flag;
 	char			**envp;
+	int				in;
+	int				out;
+	int				ret_value;
 	t_token			*lst;
 	t_history		*history;
 }					t_mini;
@@ -67,6 +70,7 @@ typedef enum e_type
 	HEREDOC,
 	OUTPUT,
 	APPEND,
+	EXTRA,
 }					t_type;
 
 /* ************************************************************************** */

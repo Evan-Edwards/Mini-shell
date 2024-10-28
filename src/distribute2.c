@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   distribute2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:03:11 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 06:58:30 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 09:35:58 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	number_of_arguments(t_token *lst)
 			i++;
 		else if (lst->type >= 3 && lst->next)
 		{
-			lst->next->type = 3;
+			lst->next->type = 8;
 			lst = lst->next;
 		}
 		if (lst->next)

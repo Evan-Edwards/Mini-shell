@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 07:01:24 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 09:41:28 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ int	main(int ac, char *av[], char **envp)
 	ft_signal_setup();
 	mini.envp = envp;
 	mini.history = NULL;
+	mini.in = dup(STDIN_FILENO);
+	mini.out = dup(STDOUT_FILENO);
+	mini.ret_value = 0;
 	while (ac && av)
 	{
 		input = readline("Input > ");
