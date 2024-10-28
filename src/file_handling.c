@@ -3,14 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   file_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:36:16 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 06:35:03 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 22:10:54 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
+void here_doc(char *limiter)
+{
+	pid_t reader;
+	int fd[2];
+	char *line;
+
+	if (pipe(fd) == -1)
+	{
+		ft_printf_error("Pipe error");
+		return;
+	}
+	reader = fork();
+	if (reader == -1)
+	{
+		ft_printf_error("Fork error");
+		return;
+	}
+	if (reader == 0)
+	{
+		close(fd[0]);
+		while ((line = get_next_line(STDIN_FILENO)) != NULL)
+		{
+			if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0 && line[ft_strlen(limiter)] == '\n')
+			{
+				free(line);
+				exit(EXIT_SUCCESS);
+			}
+			write(fd[1], line, ft_strlen(line));
+			free(line);
+		}
+		close(fd[1]);
+		exit(EXIT_SUCCESS);
+	}
+	else
+	{
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+		wait(NULL);
+	}
+}
 
 //Handles input redirection (<)
 //Processes input file tokens until pipe or end of list
@@ -23,11 +66,13 @@ int	file_in(t_token *lst)
 	file_fd = -1;
 	while (lst && lst->type != PIPE)
 	{
-		if (lst->type == 4 && lst->next)
+		if ((lst->type == 4 || lst->type == 5) && lst->next)
 		{
 			file_fd = input_file(lst->type, lst->next->content);
 			if (file_fd < 0)
 				return (-1);
+			else if (lst->type == HEREDOC)
+				return 1;
 		}
 		lst = lst->next;
 	}
@@ -99,12 +144,16 @@ int	input_file(int type, char *file_name)
 	if (type == INPUT)
 	{
 		fileout = open(file_name, O_RDONLY);
-		error_msg = "Error opening input file";
+		if (fileout == -1)
+		{
+			ft_printf_error("%s: %s\n", file_name, strerror(errno));
+			return (-1);
+		}
 	}
-	else if (type == HEREDOC)
+	else if (type == 5)
 	{
-		//fileout = handle_heredoc(file_name);
-		error_msg = "Error handling heredoc";
+		here_doc(file_name);
+		return 1;
 	}
 	if (fileout == -1)
 		print_file_error(error_msg, file_name);

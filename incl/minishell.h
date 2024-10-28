@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 17:34:57 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:46:42 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,7 @@ int		is_builtin(char *arg);
 char	**build_exe(t_token *lst);
 void	execute_command(char **arg, t_mini *mini);
 void	print_array(char **arg);
+char	*get_path(char *argv, char **envp);
 char	*get_path2(char *argv, char **envp);
 int		is_env(char *env[]);
 char	*find_path(char *argv, char *env[]);
