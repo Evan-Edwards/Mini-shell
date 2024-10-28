@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 13:56:44 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 17:15:06 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,12 +159,12 @@ void	execute_command(char **arg, t_mini *mini)
 {
 	if (is_builtin(arg[0]) == 1)
 	{
-		if (builtin(arg, mini) == 0)
+		if (builtin(arg, mini) == 1)
 		{
-			ft_putstr_fd("Error: ", 2);
-			ft_putstr_fd(arg[0], 2);
-			ft_putstr_fd(" command failed\n", 2);
-			ft_close(1, NULL, arg, mini);
+			//ft_putstr_fd("Error: ", 2);
+			//ft_putstr_fd(arg[0], 2);
+			//ft_putstr_fd(" command failed\n", 2);
+			ft_close(EXIT_FAILURE, NULL, arg, mini);
 		}
 	}
 	else

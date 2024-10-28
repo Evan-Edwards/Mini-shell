@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:20:00 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 11:33:12 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 16:55:29 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ int	ft_pwd(void)
 	{
 		if (cwd)
 			free(cwd);
-		return (0);
+		return (EXIT_FAILURE);
 	}
-	ft_printf("Current working directory: %s\n", cwd);
+	ft_printf("%s\n", cwd);
 	free(cwd);
-	return (1);
+	return (EXIT_SUCCESS);
 }

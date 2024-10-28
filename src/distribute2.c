@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:03:11 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 14:00:46 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 17:35:14 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,24 +78,21 @@ int	is_builtin(char *arg)
 //Handles command-specific logic and error reporting
 int	builtin(char **arg, t_mini *mini)
 {
-	int	status;
-
-	status = 1;
 	if (ft_strcmp(arg[0], "cd") == 0)
-		status = ft_cd(arg);
+		mini->exit_status = ft_cd(arg);
 	else if (ft_strcmp(arg[0], "echo") == 0)
-		ft_echo(arg);
+		mini->exit_status = ft_echo(arg);
 	else if (ft_strcmp(arg[0], "env") == 0)
-		status = ft_env(mini->envp);
+		mini->exit_status = ft_env(mini->envp);
 	else if (ft_strcmp(arg[0], "exit") == 0)
-		ft_close(EXIT_SUCCESS, NULL, arg, mini);
+		ft_exit(arg, mini);
 	else if (ft_strcmp(arg[0], "export") == 0)
-		status = ft_export(arg, mini);
+		mini->exit_status = ft_export(arg, mini);
 	else if (ft_strcmp(arg[0], "history") == 0)
-		status = ex_history(arg, mini->history);
+		mini->exit_status = ex_history(arg, mini->history);
 	else if (ft_strcmp(arg[0], "pwd") == 0)
-		status = ft_pwd();
+		mini->exit_status = ft_pwd();
 	else if (ft_strcmp(arg[0], "unset") == 0)
-		status = ft_unset(mini->envp, arg);
-	return (status);
+		mini->exit_status = ft_unset(mini->envp, arg);
+	return (mini->exit_status);
 }

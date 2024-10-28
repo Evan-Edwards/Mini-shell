@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 20:35:34 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 11:08:08 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 16:39:26 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static int	validate_command_path(char **arg, char **envp, char **path)
 	*path = get_path2(arg[0], envp);
 	if (*path == NULL)
 	{
+		
 		ft_printf_error("%s: command not found:\n", arg[0]);
 		return (0);
 	}

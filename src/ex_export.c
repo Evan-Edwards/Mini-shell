@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 10:17:35 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 06:30:50 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 16:03:05 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	print_env(char *env)
 //sorts strings alphabetically with sort_array
 //prints each str with print_env
 //then frees the created str array
-//returns 1 on success, 0 on failure
+//returns 0 on success, 1 on failure
 int	export_no_arg(char **envp)
 {
 	int		i;
@@ -102,12 +102,12 @@ int	export_no_arg(char **envp)
 	str_num = count_env_variables(envp);
 	env_arr_sorted = malloc((str_num + 1) * sizeof(char *));
 	if (!env_arr_sorted)
-		return (0);
+		return (EXIT_FAILURE);
 	env_arr_sorted = copy_str_array(envp, env_arr_sorted);
 	if (env_arr_sorted == NULL)
 	{
 		free_str_array(env_arr_sorted);
-		return (0);
+		return (EXIT_FAILURE);
 	}
 	env_arr_sorted = sort_array(env_arr_sorted, str_num);
 	while (env_arr_sorted[i])
@@ -116,13 +116,13 @@ int	export_no_arg(char **envp)
 		i++;
 	}
 	free_str_array(env_arr_sorted);
-	return (1);
+	return (EXIT_SUCCESS);
 }
 
 int	ft_export(char **command, t_mini *mini)
 {
 	if (command == NULL || command[0] == NULL)
-		return (0);
+		return (EXIT_FAILURE);
 	if (command[1] == NULL)
 		return (export_no_arg(mini->envp));
 	else

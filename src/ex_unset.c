@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 13:08:25 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 11:43:18 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 16:06:35 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	ft_unset(char **envp, char **to_unset)
 	size_t	len;
 
 	if (!envp || !to_unset || !validate_unset_args(to_unset))
-		return (0);
+		return (EXIT_FAILURE);
 	i = 1;
 	while (to_unset[i])
 	{
@@ -96,5 +96,5 @@ int	ft_unset(char **envp, char **to_unset)
 		}
 		i++;
 	}
-	return (1);
+	return (EXIT_SUCCESS);
 }

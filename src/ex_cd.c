@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:43:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 13:17:08 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:54:43 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ int	ft_cd(char **arg)
 			ft_putstr_fd("Chdir failed\n", 2);
 		if (arg[1] && arg[1][0] != '/' && dest)
 			free(dest);
-		return (0);
+		return (1);
 	}
 	if (arg[1] && arg[1][0] != '/')
 		free(dest);
-	return (1);
+	return (0);
 }

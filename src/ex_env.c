@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:47:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 13:46:32 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:59:07 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int	ft_env(char **envp)
 	{
 		// Write the full string in one go
 		if (write(STDOUT_FILENO, envp[i], ft_strlen(envp[i])) == -1)
-			return (0);
+			return (EXIT_FAILURE);
 		if (write(STDOUT_FILENO, "\n", 1) == -1)
-			return (0);
+			return (EXIT_FAILURE);
 		i++;
 	}
-	return (1);
+	return (EXIT_SUCCESS);
 }

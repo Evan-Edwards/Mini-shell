@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 17:00:24 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 17:59:42 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 17:13:51 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ int	validate_name(char **command, int *i)
 {
 	if (command == NULL || command[0] == NULL || command[1] == NULL)
 		return (0);
+	
+	if (ft_isdigit(command[1][0]))
+		return (0);
 	while (command[1][*i] && command[1][*i] != '=')
 	{
 		if (command[1][*i] != '_' && !ft_isalnum(command[1][*i]))
@@ -45,7 +48,7 @@ int	validate_name(char **command, int *i)
 }
 
 // Adds a new environment variable to mini->envp
-// Returns 1 on success, 0 on failure
+// Returns 0 on success, 1 on failure
 static int	handle_new_env_variable(char *name, t_mini *mini)
 {
 	char	**new_env;
@@ -54,26 +57,26 @@ static int	handle_new_env_variable(char *name, t_mini *mini)
 	env_count = count_env_variables(mini->envp);
 	new_env = malloc((env_count + 2) * sizeof(char *));
 	if (new_env == NULL)
-		return (0);
+		return (1);
 	new_env = copy_str_array(mini->envp, new_env);
 	if (new_env == NULL)
 	{
 		free_str_array(new_env);
-		return (0);
+		return (1);
 	}
 	new_env[env_count] = ft_strjoin(name, "=");
 	if (new_env[env_count] == NULL)
 	{
 		free_str_array(new_env);
-		return (0);
+		return (1);
 	}
 	new_env[env_count + 1] = NULL;
 	mini->envp = new_env;
-	return (1);
+	return (0);
 }
 
 // Updates an existing environment variable in mini->envp
-// Returns 1 on success, 0 on failure
+// Returns 0 on success, 1 on failure
 static int	update_existing_env_variable(char *name, char *value, int index,
 	t_mini *mini)
 {
@@ -83,19 +86,19 @@ static int	update_existing_env_variable(char *name, char *value, int index,
 	if (value == NULL)
 	{
 		mini->envp[index] = ft_strdup(name);
-		return (mini->envp[index] != NULL);
+		return (mini->envp[index] == NULL);
 	}
 	temp = ft_strjoin(name, "=");
 	if (temp == NULL)
-		return (0);
+		return (1);
 	mini->envp[index] = ft_strjoin(temp, value);
 	free(temp);
-	return (mini->envp[index] != NULL);
+	return (mini->envp[index] == NULL);
 }
 
 // Handles the export command with arguments
 // Adds a new environment variable or updates an existing one
-// Returns 1 on success, 0 on failure
+// Returns 0 on success, 1 on failure
 int	export_with_arg(char **command, t_mini *mini)
 {
 	char	*name;
@@ -105,10 +108,13 @@ int	export_with_arg(char **command, t_mini *mini)
 
 	i = 0;
 	if (!validate_name(command, &i))
-		return (0);
+	{
+		ft_putstr_fd(" not a valid identifier\n", 2);
+		return (1);
+	}
 	name = ft_substr(command[1], 0, i);
 	if (name == NULL)
-		return (0);
+		return (1);
 	value = NULL;
 	if (command[1][i] == '=')
 		value = ft_substr(command[1], i + 1, ft_strlen(command[1]) - i - 1);
