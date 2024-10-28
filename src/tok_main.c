@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 10:05:55 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 10:18:44 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	add_token(char *s, int start, int end, t_mini *mini)
 	if (!token)
 	{
 		ft_putstr_fd("malloc error\n", 2);
-		ft_error_close(NULL, NULL, mini);
+		ft_close(EXIT_FAILURE, NULL, NULL, mini);
 	}
 	add_to_list(token, mini);
 	//free(token);
@@ -89,7 +89,7 @@ void	input_to_tokens(char *input, t_mini *mini)
 	{
 		free_mini(mini);
 		ft_putstr_fd("Error expanding environmental variables\n", 2);
-		ft_error_close(input, NULL, mini); //FIX
+		ft_close(EXIT_FAILURE, input, NULL, mini); //FIX
 	}
 	token(input, mini);
 }

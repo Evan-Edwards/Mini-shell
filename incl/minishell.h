@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 09:34:23 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/28 10:25:03 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,9 +159,7 @@ int		ft_env(char **envp);
 /* ************************************************************************** */
 /*                             CLOSE PROGRAM                                  */
 /* ************************************************************************** */
-void	ft_error_close(char *input, char **arg, t_mini *mini);
-void	ft_close(char *input, char **arg, t_mini *mini);
-void	ft_perror_close(char *perror_message);
+void	ft_close(int exit_status, char *input, char **arg, t_mini *mini);
 
 /* ************************************************************************** */
 /*                                FREE                                      */

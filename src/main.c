@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 10:14:38 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 10:20:08 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ int	main(int ac, char *av[], char **envp)
 	{
 		input = readline("Input > ");
 		if (input == NULL)
-			ft_close(input, NULL, &mini);
+			ft_close(0, input, NULL, &mini);
 		if (input[0] == '\0')
 		{
 			free(input);
 			continue ;
 		}
 		if (ft_history(input, &mini) == 0)
-			ft_error_close(input, NULL, &mini);
+			ft_close(EXIT_FAILURE, input, NULL, &mini);
 		input_to_tokens(input, &mini);
 		print_list(&mini);
 		if (check_errors(mini.lst) == 0) //?

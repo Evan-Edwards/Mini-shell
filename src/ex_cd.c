@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:43:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 10:20:17 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 10:24:52 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static char	*handle_no_arg(void)
 	dest = getenv("HOME");
 	if (dest == NULL)
 	{
-		ft_perror_close("HOME not set");
+		ft_putstr_fd("HOME not set\n", 2);
 		return (NULL);
 	}
 	return (dest);
@@ -80,9 +80,9 @@ int	ft_cd(char **arg)
 	if (dest == NULL || chdir(dest) == -1)
 	{
 		if (dest == NULL)
-			ft_perror_close("Invalid path");
+			ft_putstr_fd("Invalid path\n", 2);
 		else
-			ft_perror_close("Chdir failed");
+			ft_putstr_fd("Chdir failed\n", 2);
 		if (arg[1] && arg[1][0] != '/' && dest)
 			free(dest);
 		return (0);
