@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 11:37:35 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 12:51:52 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 static int	add_token(char *s, int start, int end, t_mini *mini)
 {
 	char	*token;
+	int		result;
 
 	if (!s || end < start)
 		return (0);
@@ -28,11 +29,13 @@ static int	add_token(char *s, int start, int end, t_mini *mini)
 		ft_putstr_fd("malloc error\n", 2);
 		return (0);
 	}
-	if (!add_to_list(token, mini))
+	result = add_to_list(token, mini);
+	if (!result)
 	{
 		free(token);
 		return (0);
 	}
+	free(token);
 	return (1);
 }
 

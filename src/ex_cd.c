@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:43:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 10:24:52 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:17:08 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static char	*process_cd_path(char **arg)
 	if (cwd == NULL)
 		return (NULL);
 	dest = mod_cwd(cwd, arg[1]);
-	free(cwd);
 	return (dest);
 }
 

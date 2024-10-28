@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:44:26 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 10:20:31 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:21:49 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,13 @@ static char	*cat_cwd_path(char *cwd, char *path)
 //returns NULL if rm_last_dir fails, updated cwd otherwise
 static char	*handle_dot_paths(char *cwd, char *path, int *i)
 {
-	char	*new_cwd;
-
-	if (path[*i] == '.' && path[*i + 1] == '.')
+	if (ft_strncmp(&path[*i], "..", 2) == 0)
 	{
-		new_cwd = rm_last_dir(cwd);
-		free(cwd);
-		if (new_cwd == NULL)
-			return (NULL);
-		cwd = new_cwd;
+		cwd = rm_last_dir(cwd);
 		*i += 2;
-		if (path[*i] == '/')
+		while (path[*i] == '/')
 			(*i)++;
+		return (cwd);
 	}
 	else if (path[*i] == '.')
 	{

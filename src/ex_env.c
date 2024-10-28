@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:47:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 10:23:29 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:46:32 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,17 @@
 //failure: Prints error message and returns 0
 int	ft_env(char **envp)
 {
-	while (*envp)
+	int	i;
+
+	i = 0;
+	while (envp[i])
 	{
-		if (ft_putstr(*envp) == -1 || ft_putchar('\n') == -1)
-		{
-			ft_putstr_fd("Printing error", 2);
+		// Write the full string in one go
+		if (write(STDOUT_FILENO, envp[i], ft_strlen(envp[i])) == -1)
 			return (0);
-		}
-		envp++;
+		if (write(STDOUT_FILENO, "\n", 1) == -1)
+			return (0);
+		i++;
 	}
 	return (1);
 }

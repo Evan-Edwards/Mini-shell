@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 18:24:54 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 18:23:47 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:59:37 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,5 @@ char	*get_path2(char *argv, char **envp)
 		return (NULL);
 	}
 	result = handle_relative_path2(argv, envp);
-	if (result == NULL)
-		ft_printf_error("%s: command not found:\n", argv);
 	return (result);
 }

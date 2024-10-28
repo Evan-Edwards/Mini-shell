@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:03:11 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 10:19:11 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 14:00:46 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ int	builtin(char **arg, t_mini *mini)
 		status = ft_env(mini->envp);
 	else if (ft_strcmp(arg[0], "exit") == 0)
 		ft_close(EXIT_SUCCESS, NULL, arg, mini);
-	//else if (ft_strcmp(arg[0], "export") == 0)
-	//	status = ft_export(arg, mini); // Need to finish
+	else if (ft_strcmp(arg[0], "export") == 0)
+		status = ft_export(arg, mini);
 	else if (ft_strcmp(arg[0], "history") == 0)
 		status = ex_history(arg, mini->history);
 	else if (ft_strcmp(arg[0], "pwd") == 0)

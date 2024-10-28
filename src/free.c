@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 17:03:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 11:37:38 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:34:39 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 //frees the mini struct
 void	free_mini(t_mini *mini)
 {
-	t_token	*current;
-	t_token	*next;
-
 	if (!mini)
 		return ;
 	if (mini->history)
@@ -27,16 +24,24 @@ void	free_mini(t_mini *mini)
 	if (mini->out != -1)
 		close(mini->out);
 	if (mini->lst)
+		free_list(mini->lst);
+	if (mini->envp)
+		free_str_array(mini->envp);
+}
+
+void	free_list(t_token *lst)
+{
+	t_token	*current;
+	t_token	*next;
+
+	current = lst;
+	while (current)
 	{
-		current = mini->lst;
-		while (current)
-		{
-			next = current->next;
-			if (current->content)
-				free(current->content);
-			free(current);
-			current = next;
-		}
+		next = current->next;
+		if (current->content)
+			free(current->content);
+		free(current);
+		current = next;
 	}
 }
 
@@ -73,4 +78,18 @@ void	clear_t_history(t_mini *mini)
 		free(mini->history->commands);
 	}
 	free(mini->history);
+}
+
+void reset_input(char *input, t_mini *mini)
+{
+    if (mini->lst)
+    {
+        free_list(mini->lst);
+        mini->lst = NULL;
+    }
+    if (input)
+    {
+        free(input);
+        input = NULL;
+    }
 }

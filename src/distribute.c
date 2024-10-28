@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 11:37:39 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:56:44 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	**build_exe(t_token *lst)
 	return (arg_array);
 }*/
 
-//Processes a token list to build an array of arguments
+/* //Processes a token list to build an array of arguments
 //Handles redirection tokens (type >= 3) by marking following tokens
 //Collects command and argument tokens (type <= 2) into the array
 static void	process_token(t_token *lst, char **arg_array, int *i)
@@ -76,25 +76,80 @@ static void	process_token(t_token *lst, char **arg_array, int *i)
 		arg_array[*i] = lst->content;
 		(*i)++;
 	}
+} */
+
+
+//Processes a single token and updates the argument array
+//Returns: -1 on allocation error, 0 for redirection tokens, 1 for normal tokens
+//Updates: arg_array with new argument, i with new array position
+static int handle_token(t_token *lst, char **arg_array, int *i)
+{
+    if (lst->type >= 3)
+    {
+        lst->next->type = 8;
+        return (0);
+    }
+    arg_array[*i] = ft_strdup(lst->content);
+    if (!arg_array[*i])
+        return (-1);
+    (*i)++;
+    return (1);
+}
+
+//Processes tokens to build array of command arguments
+//Returns: -1 on allocation error, otherwise number of arguments processed
+//Handles: Command tokens, arguments, and marks redirection targets
+//Updates: arg_array with arguments, NULL terminated
+static int process_token_args(t_token *lst, char **arg_array)
+{
+	int i;
+	int result;
+
+	i = 0;
+	while (lst->next != NULL && lst->type != PIPE)
+	{
+		result = handle_token(lst, arg_array, &i);
+		if (result == -1)
+			return (-1);
+		if (result == 0)
+			lst = lst->next;
+		if (lst->next != NULL)
+			lst = lst->next;
+	}
+	if (lst->type <= 2)
+	{
+		arg_array[i] = ft_strdup(lst->content);
+		if (!arg_array[i])
+			return (-1);
+		i++;
+	}
+	arg_array[i] = NULL;
+	return (i);
 }
 
 //Builds an executable command array from a token list
-//Returns NULL if no arguments are found
+//Returns NULL if no arguments are found or on allocation failure
 //Allocates memory for the array and terminates it with NULL
-char	**build_exe(t_token *lst)
+//Caller must free the returned array using free_str_array
+char **build_exe(t_token *lst)
 {
-	int		arg_num;
-	char	**arg_array;
-	int		i;
+    int     arg_num;
+    char    **arg_array;
+    int     result;
 
-	i = 0;
-	arg_num = number_of_arguments(lst);
-	if (arg_num == 0)
-		return (NULL);
-	arg_array = malloc(sizeof(char *) * (arg_num + 1));
-	process_token(lst, arg_array, &i);
-	arg_array[i] = 0;
-	return (arg_array);
+    arg_num = number_of_arguments(lst);
+    if (arg_num == 0)
+        return (NULL);
+    arg_array = malloc(sizeof(char *) * (arg_num + 1));
+    if (!arg_array)
+        return (NULL);
+    result = process_token_args(lst, arg_array);
+    if (result == -1)
+    {
+        free_str_array(arg_array);
+        return (NULL);
+    }
+    return (arg_array);
 }
 
 //Executes a command, either built-in or external
@@ -168,18 +223,20 @@ int	dis_b(t_mini *mini)
 	i = 0;
 	if (pipe_num > 0)
 		mini->flag = 1;
+	// Execute first command
 	distribute(mini, current);
-	while (i < pipe_num)
+	
+	// Move to next commands after pipes
+	while (current != NULL)
 	{
 		if (current->type == PIPE)
 		{
-			if (i == pipe_num)
+			if (i == pipe_num - 1)  // Last pipe
 				mini->flag = 0;
 			distribute(mini, current->next);
 			i++;
 		}
 		current = current->next;
-		mini->flag = 0;
 	}
 	reset_dup2(mini);
 	return (1);

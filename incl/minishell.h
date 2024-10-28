@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 11:37:41 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 14:01:24 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_mini
 	int				out;
 	int				ret_value;
 	int				status;
+	int				exit_status;
 	char			**envp;
 	t_token			*lst;
 	t_history		*history;
@@ -144,6 +145,7 @@ char	**sort_array(char **to_sort, int iterations);
 char	**copy_str_array(char	**orig, char **copy);
 void	print_env(char *env);
 int		validate_name(char **command, int *i);
+int		ft_export(char **command, t_mini *mini);
 
 /* ************************************************************************** */
 /*                             EXECUTE UNSET                                  */
@@ -167,6 +169,8 @@ void	ft_close(int exit_status, char *input, char **arg, t_mini *mini);
 void	free_mini(t_mini *mini);
 void	free_str_array(char **to_free);
 void	clear_t_history(t_mini *mini);
+void	free_list(t_token *lst);
+void	reset_input(char *input, t_mini *mini);
 
 /* ************************************************************************** */
 /*                             DISTRIBUTE                                     */
