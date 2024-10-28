@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 10:16:27 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:37:39 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ int	distribute(t_mini *mini, t_token *current)
 	if (arg == NULL)
 		return (0);
 	execute_command(arg, mini);
+	free_str_array(arg);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 10:20:08 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:37:13 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ static void	init_mini(t_mini *mini, char **envp)
 	mini->envp = envp;
 	mini->history = NULL;
 	mini->lst = NULL;
+	mini->status = DEFAULT;
+	mini->in = dup(STDIN_FILENO);
+    mini->out = dup(STDOUT_FILENO);
 }
 //if readline returns null it indicates Ctrl-D/ EOF, causing end of program
 int	main(int ac, char *av[], char **envp)
@@ -38,11 +41,12 @@ int	main(int ac, char *av[], char **envp)
 		}
 		if (ft_history(input, &mini) == 0)
 			ft_close(EXIT_FAILURE, input, NULL, &mini);
-		input_to_tokens(input, &mini);
-		print_list(&mini);
+		if (input_to_tokens(input, &mini) == 0)
+			ft_close(EXIT_FAILURE, input, NULL, &mini);
+		//print_list(&mini);
+		set_types(mini.lst);
 		if (check_errors(mini.lst) == 0) //?
 			continue ;
-		set_types(mini.lst);
 		dis_b(&mini);
 		free(input);
 	}

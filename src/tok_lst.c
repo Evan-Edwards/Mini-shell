@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 11:15:03 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/26 11:53:10 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:37:40 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_token	*ft_t_lstnew(char *content)
 	new = malloc(sizeof(*new));
 	if (!(new))
 		return (NULL);
-	copy = strdup(content);
+	copy = ft_strdup(content);
 	if (!copy)
 	{
 		free(new);
@@ -67,11 +67,13 @@ void	print_list(t_mini *mini)
 }
 
 //adds str k to the list stored in mini.lst
+//returns 0 if malloc error
+//returns 1 if successful
 int	add_to_list(char *k, t_mini *mini)
 {
 	t_token	*new_token;
 
-	if (!k || *k == '\0')
+	if (!k)
 		return (0);
 	new_token = ft_t_lstnew(k);
 	if (!new_token)

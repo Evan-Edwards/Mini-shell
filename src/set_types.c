@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:53:35 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/27 18:20:31 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:37:33 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,22 @@
 //Returns 1 if no errors, 0 if errors are found
 int	check_errors(t_token *lst)
 {
-	if (lst == 0)
+	if (!lst)
 		return (0);
-	while (lst->next != NULL)
+	t_token *temp = lst;
+	while (temp)
 	{
-		if (lst->type >= 3)
+		if (temp->type >= 3)
 		{
-			if (lst->next == NULL || lst->next->type >= 3)
+			if (temp->next == NULL || temp->next->type >= 3)
 			{
-				printf("syntax error near unexpected token, %s\n",
-					lst->content);
+				ft_putstr_fd("minishell: syntax error near unexpected token, ", 2);
+				ft_putstr_fd(temp->content, 2);
+				ft_putstr_fd("\n", 2);
 				return (0);
 			}
 		}
-		lst = lst->next;
+		temp = temp->next;
 	}
 	return (1);
 }
@@ -64,9 +66,9 @@ int	reg(char *str)
 //Returns 1 on success, 0 if the list is empty
 int	set_types(t_token *lst)
 {
-	if (lst == 0)
+	if (!lst)
 		return (0);
-	while (lst->next != NULL)
+	while (lst)
 	{
 		lst->type = reg(lst->content);
 		lst = lst->next;

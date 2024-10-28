@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 08:20:36 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/26 11:56:01 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:14:42 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,15 @@ static int	handle_double_quote(int *i, t_mini *mini)
 //uses handle_single_quote and handle_double_quote to
 //change mini->status to reflect if next character is in or out of quotes
 //if next character is also quote, is_quotes is called again
+//returns 0 if not a quote
+//returns 1 if successful
 int	quotes(char *s, int *i, t_mini *mini)
 {
 	int	result;
 
+	if (!s || !i || !mini)
+		return (1);
+	
 	result = 0;
 	if (s[*i] == '\'')
 		result = handle_single_quote(i, mini);
@@ -61,7 +66,7 @@ int	quotes(char *s, int *i, t_mini *mini)
 		result = handle_double_quote(i, mini);
 	else
 		return (0);
-	if (result == 0 && is_quotes(s[*i]))
-		quotes(s, i, mini);
-	return (0);
+	if (result == 0 && s[*i] && is_quotes(s[*i]))
+		return (quotes(s, i, mini));
+	return (result);
 }

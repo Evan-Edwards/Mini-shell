@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 17:03:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 09:49:15 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:37:38 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ void	free_mini(t_mini *mini)
 		return ;
 	if (mini->history)
 		clear_t_history(mini);
+	if (mini->in != -1)
+		close(mini->in);
+	if (mini->out != -1)
+		close(mini->out);
 	if (mini->lst)
 	{
 		current = mini->lst;

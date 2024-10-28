@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 20:35:34 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 10:10:49 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/28 11:08:08 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,4 +135,5 @@ static int	execute_child_process(char *path, char **arg, t_mini *mini, int fd[2]
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (status);
-}
+} 
+*/

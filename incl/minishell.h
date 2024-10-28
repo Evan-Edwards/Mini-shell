@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 10:25:03 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:37:41 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ typedef struct s_token
 
 typedef struct s_mini
 {
-	int				status;
 	int				flag;
-	char			**envp;
 	int				in;
 	int				out;
 	int				ret_value;
+	int				status;
+	char			**envp;
 	t_token			*lst;
 	t_history		*history;
 }					t_mini;
@@ -76,9 +76,9 @@ typedef enum e_type
 /* ************************************************************************** */
 /*                              create_token                                  */
 /* ************************************************************************** */
-void	input_to_tokens(char *input, t_mini *mini);
-void	token(char *s, t_mini *mini);
-char	*env_var_expansion(char *str, t_mini *mini);
+int     input_to_tokens(char *input, t_mini *mini);
+int     token(char *s, t_mini *mini);
+char    *env_var_expansion(char *str, t_mini *mini);
 
 /* ************************************************************************** */
 /*                           create token utils                               */

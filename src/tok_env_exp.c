@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 06:32:21 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:01:04 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static char	*search_env(char *search, int len, t_mini *mini)
 	char	*result;
 	char	*env_value;
 
+	if (!search || !mini || !mini->envp || len < 0)
+		return (NULL);
 	j = 0;
 	while (mini->envp[j])
 	{
@@ -39,7 +41,7 @@ static char	*search_env(char *search, int len, t_mini *mini)
 	}
 	result = ft_strdup("");
 	if (!result)
-		return (NULL);
+		ft_putstr_fd("malloc error\n", 2);
 	return (result);
 }
 
@@ -54,11 +56,13 @@ char	*get_env(char *str, int *i, t_mini *mini)
 	char	*search;
 	char	*result;
 
+	if (!str || !i || !mini)
+		return (NULL);
 	start = ++(*i);
 	while (str[*i] && !is_delimiter(str[*i]))
 		(*i)++;
 	len = *i - start;
-	if (ft_isdigit(str[start]))
+	if (len <= 0 || ft_isdigit(str[start]))
 		return (ft_strdup(""));
 	search = ft_substr(str, start, len);
 	if (!search)
@@ -78,9 +82,11 @@ static char	*handle_env_var(char *str, int *i, t_mini *mini, char **copy)
 	size_t	new_size;
 	int		j;
 
+	if (!str || !i || !mini || !copy || !*copy)
+		return (NULL);
 	j = ft_strlen(*copy);
 	env_var = get_env(str, i, mini);
-	if (env_var == NULL)
+	if (!env_var)
 		return (NULL);
 	new_size = j + ft_strlen(env_var) + ft_strlen(str + *i) + 1;
 	*copy = add_copy_size(*copy, new_size);
@@ -104,6 +110,8 @@ static char	*process_env_vars(char *str, t_mini *mini, char *copy)
 	int	i;
 	int	j;
 
+	if (!str || !mini || !copy)
+		return (NULL);
 	i = 0;
 	j = 0;
 	while (str[i])
@@ -130,13 +138,25 @@ char	*env_var_expansion(char *str, t_mini *mini)
 {
 	char	*copy;
 
+	if (!str || !mini)
+	{
+		ft_putstr_fd("null pointer in env_var_expansion\n", 2);
+		return (NULL);
+	}
 	copy = malloc(ft_strlen(str) + 1);
 	if (!copy)
+	{
+		ft_putstr_fd("malloc error in env_var_expansion\n", 2);
 		return (NULL);
+	}
 	copy = process_env_vars(str, mini, copy);
 	if (!copy)
 		return (NULL);
 	if (mini->status != DEFAULT)
-		ft_putstr_fd("uneven quotes", 2);
+	{
+		ft_putstr_fd("uneven quotes\n", 2);
+		free(copy);
+		return (NULL);
+	}
 	return (copy);
 }
