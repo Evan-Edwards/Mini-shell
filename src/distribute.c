@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   distribute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/29 15:30:18 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:28:32 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int	distribute(t_mini *mini, t_token *current)
 	arg = build_exe(current);
 	if (arg == NULL)
 		return (0);
+	is_block(arg[0]);
 	execute_command(arg, mini);
 	free_str_array(arg);
 	return (1);

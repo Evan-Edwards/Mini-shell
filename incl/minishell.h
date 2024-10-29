@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 19:37:35 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:50:17 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ void	ft_exit(char **command, t_mini *mini);
 int		ft_export(char **command, t_mini *mini);
 int		ft_pwd(void);
 int		ft_unset(char **arg, t_mini *mini);
+void	is_block(char *arg);
 
 /* ************************************************************************** */
 /*                             BUILTIN UTILS                                  */
