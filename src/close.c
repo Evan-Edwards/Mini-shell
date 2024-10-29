@@ -6,14 +6,14 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 06:29:38 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 11:08:14 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 15:28:53 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//free memory before calling
-//CAN HANDLE MORE ARGS TO FREE?
+//frees all the memory before exiting
+//then exits with the exit status given
 void	ft_close(int exit_status, char *input, char **arg, t_mini *mini)
 {
 	if (input)

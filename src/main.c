@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 13:38:39 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:40:08 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main(int ac, char *av[], char **envp)
 		input = readline("Input > ");
 		if (input == NULL)
 			ft_close(0, input, NULL, &mini);
-		if (g_signal_status == 2)
+		if (g_signal_status == 130)
 		{
 			mini.exit_status = 130;
 			g_signal_status = 0;

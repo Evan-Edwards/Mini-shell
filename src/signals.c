@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:59:26 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 14:20:10 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:52:59 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,11 @@ volatile sig_atomic_t	g_signal_status = 0;
 static void	signal_interrupt(int sig)
 {
 	(void)sig;
-	g_signal_status = 2;
-	if (write(1, "\n", 1) == -1)
-		perror("write");
+	g_signal_status = 130;
+	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	rl_redisplay();
+	//rl_redisplay();
 }
 
 //should interupt any command running?

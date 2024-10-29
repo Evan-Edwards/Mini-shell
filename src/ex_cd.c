@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:43:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 12:06:05 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 15:35:08 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ static char	*process_cd_path(char **arg)
 	return (dest);
 }
 
+// Handles error cases for cd command
+// Prints appropriate error message and frees memory if needed
+// Returns 1 to indicate error
 static int	handle_cd_error(char **arg, char *dest)
 {
 	if (dest == NULL)

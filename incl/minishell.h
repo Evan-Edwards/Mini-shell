@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 13:41:08 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 15:47:20 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <errno.h> //errno
+# include <sys/ioctl.h> //ioctl
 # include "libft.h"
 # include <readline/readline.h> //readline + rl_* functions
 # include <readline/history.h> //readline + rl_* functions
@@ -75,6 +76,11 @@ typedef enum e_type
 }					t_type;
 
 /* ************************************************************************** */
+/*                                SIGNALS                                     */
+/* ************************************************************************** */
+void	ft_signal_setup(void);
+
+/* ************************************************************************** */
 /*                              create_token                                  */
 /* ************************************************************************** */
 int		input_to_tokens(char *input, t_mini *mini);
@@ -114,62 +120,72 @@ int		print_history(t_history *history);
 int		ex_history(char **arg, t_history *history);
 
 /* ************************************************************************** */
-/*                                SIGNALS                                     */
+/*                             SET TYPES                                      */
 /* ************************************************************************** */
-void	ft_signal_setup(void);
+int		count_pipes(t_token *lst);
+int		set_types(t_token *lst, t_mini *mini);
+int		reg(char *str);
+int		check_errors(t_token *lst);
 
 /* ************************************************************************** */
-/*                              EXECUTE ECHO                                  */
+/*                             DISTRIBUTE                                     */
 /* ************************************************************************** */
-int		ft_echo(char **command);
+char	**build_exe(t_token *lst);
+char	*find_path(char *argv, char *env[]);
+char	*get_path(char *argv, char **envp);
+char	*get_path2(char *argv, char **envp);
+int		builtin(char **arg, t_mini *mini);
+int		create_pipe(int pipe_fd[2]);
+int		dis_b(t_mini *mini);
+int		distribute(t_mini *mini, t_token *current);
+int		exe(char **arg, t_mini *mini);
+int		execute_builtin_with_redirection(char **arg, t_mini *mini, int fd[2]); [NEW]
+int		execute_external_command(char **arg, t_mini *mini, int fd[2]); [NEW]
+int		is_builtin(char *arg);
+int		is_env(char *env[]);
+int		number_of_arguments(t_token *lst);
+int		validate_command_path(char **arg, t_mini *mini, char **path);
+void	execute_command(char **arg, t_mini *mini);
+void	print_array(char **arg);
+void	reset_dup2(t_mini *mini); [NEW]
 
 /* ************************************************************************** */
-/*                              EXECUTE PWD                                   */
+/*                             FILE HANDLING                                  */
 /* ************************************************************************** */
-char	*get_current_directory(void);
-int		ft_pwd(void);
+int		file_in(t_token *lst);
+int		file_out(t_token *lst);
+int		input_file(int type, char *file_name);
+int		output_file(int type, char *file_name);
 
 /* ************************************************************************** */
-/*                              EXECUTE CD                                    */
+/*                              EXECUTE BUILTINS                              */
 /* ************************************************************************** */
-char	*rm_last_dir(char *cwd);
 int		ft_cd(char **arg);
-char	*mod_cwd(char *cwd, char *path);
+int		ft_echo(char **command);
+int		ft_env(char **envp);
+void	ft_exit(char **command, t_mini *mini);
+int		ft_export(char **command, t_mini *mini);
+int		ft_pwd(void);
+int		ft_unset(char **arg, t_mini *mini);
 
 /* ************************************************************************** */
-/*                             EXECUTE EXPORT                                 */
+/*                             BUILTIN UTILS                                  */
 /* ************************************************************************** */
+char	**copy_str_array(char **orig, char **copy);
+char	**sort_array(char **to_sort, int iterations);
+char	*get_current_directory(void);
+char	*mod_cwd(char *cwd, char *path);
+char	*rm_last_dir(char *cwd);
 int		count_env_variables(char **envp);
 int		export_no_arg(char **envp);
 int		export_with_arg(char **command, t_mini *mini);
 int		find_env_index(char *name, t_mini *mini);
-char	**sort_array(char **to_sort, int iterations);
-char	**copy_str_array(char	**orig, char **copy);
-void	print_env(char *env);
-int		validate_name(char **command, int *i);
-int		ft_export(char **command, t_mini *mini);
-
-/* ************************************************************************** */
-/*                             EXECUTE UNSET                                  */
-/* ************************************************************************** */
-int		ft_unset(char **arg, t_mini *mini);
-int		is_valid_identifier(char *str);
 int		find_env_var(char **envp, char *var);
-
-/* ************************************************************************** */
-/*                              EXECUTE ENV                                   */
-/* ************************************************************************** */
-int		ft_env(char **envp);
-
-/* ************************************************************************** */
-/*                              EXECUTE EXIT                                  */
-/* ************************************************************************** */
-void	ft_exit(char **command, t_mini *mini);
-
-/* ************************************************************************** */
-/*                             CLOSE PROGRAM                                  */
-/* ************************************************************************** */
-void	ft_close(int exit_status, char *input, char **arg, t_mini *mini);
+int		handle_new_env_variable(char *name, t_mini *mini);
+int		is_valid_identifier(char *str);
+int		parse_export_arg(char **command, int i, char **name, char **value);
+int		validate_name(char **command, int *i);
+void	print_env(char *env);
 
 /* ************************************************************************** */
 /*                                FREE                                      */
@@ -181,39 +197,8 @@ void	free_list(t_token *lst);
 void	reset_input(char *input, t_mini *mini);
 
 /* ************************************************************************** */
-/*                             DISTRIBUTE                                     */
+/*                             CLOSE PROGRAM                                  */
 /* ************************************************************************** */
-int		builtin(char **arg, t_mini *mini);
-int		distribute(t_mini *mini, t_token *current);
-int		number_of_arguments(t_token *lst);
-int		is_builtin(char *arg);
-char	**build_exe(t_token *lst);
-void	execute_command(char **arg, t_mini *mini);
-void	print_array(char **arg);
-char	*get_path(char *argv, char **envp);
-char	*get_path2(char *argv, char **envp);
-int		is_env(char *env[]);
-char	*find_path(char *argv, char *env[]);
-int		dis_b(t_mini *mini);
-int		exe(char **arg, t_mini *mini);
-
-/* ************************************************************************** */
-/*                             FILE HANDLING                                  */
-/* ************************************************************************** */
-int		file_in(t_token *lst);
-int		file_out(t_token *lst);
-int		input_file(int type, char *file_name);
-int		output_file(int type, char *file_name);
-
-/* ************************************************************************** */
-/*                             SET TYPES                                      */
-/* ************************************************************************** */
-int		count_pipes(t_token *lst);
-int		set_types(t_token *lst, t_mini *mini);
-int		reg(char *str);
-int		check_errors(t_token *lst);
-
-int	validate_command_path(char **arg, t_mini *mini, char **path);
-int	create_pipe(int pipe_fd[2]);
+void	ft_close(int exit_status, char *input, char **arg, t_mini *mini);
 
 #endif
