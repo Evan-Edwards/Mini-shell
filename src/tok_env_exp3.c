@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tok_env_exp_utils.c                                :+:      :+:    :+:   */
+/*   tok_env_exp3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/29 12:17:39 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:24:33 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ static size_t	get_env_len(char *str, int *i)
 	if (!env_val)
 		return (0);
 	len = ft_strlen(env_val);
-	return (len ? len : 1);
+	if (len)
+		return (len);
+	return (1);
 }
 
 //Handles size calculation for quoted content
@@ -99,4 +101,19 @@ size_t	get_total_size(char *str, t_mini *mini)
 		}
 	}
 	return (size + 1);
-} 
+}
+
+char	*env_var_expansion(char *str, t_mini *mini)
+{
+	char	*copy;
+	size_t	size;
+
+	if (!str)
+		return (NULL);
+	size = get_total_size(str, mini);
+	copy = malloc(size * sizeof(char));
+	if (!copy)
+		return (NULL);
+	ft_bzero(copy, size);
+	return (process_env_vars(str, copy, mini));
+}

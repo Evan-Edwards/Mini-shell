@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:53:35 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/29 09:43:15 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:05:14 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 int	check_errors(t_token *lst)
 {
 	t_token	*temp;
-	
+
 	if (!lst)
 		return (0);
 	temp = lst;
@@ -27,7 +27,7 @@ int	check_errors(t_token *lst)
 		{
 			if (temp->next == NULL || temp->next->type >= 3)
 			{
-				ft_putstr_fd("minishell: syntax error near unexpected token, ", 2);
+				ft_putstr_fd("syntax error near unexpected token, ", 2);
 				ft_putstr_fd(temp->content, 2);
 				ft_putstr_fd("\n", 2);
 				return (0);

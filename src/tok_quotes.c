@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 08:20:36 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 12:19:18 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:29:00 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,18 @@ static int	handle_double_quote(int *i, t_mini *mini)
 
 int	quotes(char *s, int *i, t_mini *mini)
 {
+	int	result;
+
 	if (!s || !i || !mini)
 		return (1);
-	
+	result = 0;
 	if (s[*i] == '\'')
-		return (handle_single_quote(i, mini));
+		result = handle_single_quote(i, mini);
 	else if (s[*i] == '\"')
-		return (handle_double_quote(i, mini));
-	
-	return (0);
+		result = handle_double_quote(i, mini);
+	else
+		return (0);
+	if (result == 0 && s[*i] && is_quotes(s[*i]))
+		return (quotes(s, i, mini));
+	return (result);
 }

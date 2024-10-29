@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 15:47:20 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:29:38 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,6 @@ void	skip_spaces(char *s, int *i);
 int		quotes(char *s, int *i, t_mini *mini);
 char	*process_env_vars(char *str, char *copy, t_mini *mini);
 size_t	get_total_size(char *str, t_mini *mini);
-//char	*get_env(char *str, int *i);
-//char	*add_copy_size(char *copy, size_t new_total_size);
-//char	*add_mem(char *str, int add, int old);
-//char	*add_end(char *dst, char *add, int j);
 
 /* ************************************************************************** */
 /*                          token list utils                                  */
@@ -139,15 +135,15 @@ int		create_pipe(int pipe_fd[2]);
 int		dis_b(t_mini *mini);
 int		distribute(t_mini *mini, t_token *current);
 int		exe(char **arg, t_mini *mini);
-int		execute_builtin_with_redirection(char **arg, t_mini *mini, int fd[2]); [NEW]
-int		execute_external_command(char **arg, t_mini *mini, int fd[2]); [NEW]
+int		execute_builtin_with_redirection(char **arg, t_mini *mini, int fd[2]);
+int		execute_external_command(char **arg, t_mini *mini, int fd[2]);
 int		is_builtin(char *arg);
 int		is_env(char *env[]);
 int		number_of_arguments(t_token *lst);
 int		validate_command_path(char **arg, t_mini *mini, char **path);
 void	execute_command(char **arg, t_mini *mini);
 void	print_array(char **arg);
-void	reset_dup2(t_mini *mini); [NEW]
+void	reset_dup2(t_mini *mini);
 
 /* ************************************************************************** */
 /*                             FILE HANDLING                                  */

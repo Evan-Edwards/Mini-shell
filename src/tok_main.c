@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/29 12:19:48 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:27:50 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,21 @@ static int	handle_delimiter(char *s, int *i, t_mini *mini)
 	return (1);
 }
 
-//sets start of token by skipping spaces
-//increments i while s[i] is not a space or delimiter
-//uses add_token to make substr given i and start, and add to mini->lst
-//uses handle_delimiter to handle delimiters
-//returns 0 if malloc error, or if add_token fails
-//returns 1 if successful
+//Process a single token from the input string
+//Returns 0 on error, 1 on success
+static int	process_token(char *s, int *i, int start, t_mini *mini)
+{
+	if (i > start && !add_token(s, start, *i, mini))
+		return (0);
+	if (s[*i] && is_delimiter(s[*i]) && mini->status == DEFAULT
+		&& !handle_delimiter(s, i, mini))
+		return (0);
+	return (1);
+}
+
+//Main tokenization function
+//Splits input string into tokens based on delimiters and quotes
+//Returns 0 on error, 1 on success
 int	token(char *s, t_mini *mini)
 {
 	int	i;
@@ -81,7 +90,6 @@ int	token(char *s, t_mini *mini)
 	if (!s || !mini)
 		return (0);
 	i = 0;
-	start = 0;
 	while (s[i])
 	{
 		skip_spaces(s, &i);
@@ -90,15 +98,12 @@ int	token(char *s, t_mini *mini)
 		{
 			if (quotes(s, &i, mini) > 0)
 				return (0);
-			if (s[i] == '\0')
-				break;
+			if (!s[i])
+				break ;
 			i++;
 		}
-		if (i > start && !add_token(s, start, i, mini))
+		if (!process_token(s, &i, start, mini))
 			return (0);
-		if (s[i] && is_delimiter(s[i]) && mini->status == DEFAULT)
-			if (!handle_delimiter(s, &i, mini))
-				return (0);
 	}
 	return (1);
 }
