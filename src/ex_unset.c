@@ -6,23 +6,11 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:43:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 15:53:27 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:42:37 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// Allocates and initializes new array without string at index
-// Returns NULL on allocation failure
-static char	**init_new_array(char **arr, int size)
-{
-	char	**new_arr;
-
-	new_arr = malloc(sizeof(char *) * size);
-	if (!new_arr)
-		return (NULL);
-	return (new_arr);
-}
 
 // Copies strings from old array to new, skipping specified index
 // Returns new array or NULL on failure
@@ -61,7 +49,7 @@ static char	**remove_str_from_array(char **arr, int index)
 	size = 0;
 	while (arr[size])
 		size++;
-	new_arr = init_new_array(arr, size);
+	new_arr = malloc(sizeof(char *) * size);
 	if (!new_arr)
 		return (NULL);
 	return (copy_array_except_index(arr, new_arr, index));

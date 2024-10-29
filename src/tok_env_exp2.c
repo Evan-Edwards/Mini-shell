@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:11:40 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 18:23:28 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 20:23:50 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	*handle_special_env(char *str, int *i, t_mini *mini)
 }
 
 // Gets environment variable value or returns empty string
-static char	*get_env_value(char *str, int *i, t_mini *mini)
+char	*get_env_value(char *str, int *i, t_mini *mini)
 {
 	int		start;
 	char	*var_name;
@@ -74,7 +74,7 @@ char	*process_env_vars(char *str, char *copy, t_mini *mini)
 		}
 		else if ((str[i] == '\'' || str[i] == '\"')
 			&& mini->status == DEFAULT)
-			copy_quoted(str, &i, copy, &j);
+			copy_quoted(str, &i, copy, &j, mini);
 		else
 			copy[j++] = str[i++];
 	}
@@ -82,33 +82,12 @@ char	*process_env_vars(char *str, char *copy, t_mini *mini)
 	return (copy);
 }
 
-static void	copy_quoted(char *str, int *i, char *copy, int *j)
+void	copy_quoted(char *str, int *i, char *copy, int *j, t_mini *mini)
 {
 	if (str[*i] == '"')
-		copy_double_quoted(str, i, copy, j);
+		copy_double_quoted(str, i, copy, j, mini);
 	else
 		copy_single_quoted(str, i, copy, j);
 }
 
-char	*process_env_vars(char *str, char *copy)
-{
-	int	i;
-	int	j;
 
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (str[i] == '$')
-		{
-			if (!handle_dollar(str, &i, copy, &j))
-				return (NULL);
-		}
-		else if (str[i] == '\'' || str[i] == '\"')
-			copy_quoted(str, &i, copy, &j);
-		else
-			copy[j++] = str[i++];
-	}
-	copy[j] = '\0';
-	return (copy);
-}

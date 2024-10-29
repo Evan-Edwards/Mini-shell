@@ -6,7 +6,7 @@
 #    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/29 10:20:34 by eedwards         ###   ########.fr        #
+#    Updated: 2024/10/29 20:06:16 by eedwards         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,19 +34,22 @@ INC = -I./libft/incl -I./$(INC_DIR)
 SOURCES = close.c \
 	distribute.c \
 	distribute2.c \
+	distribute3.c \
 	ex_cd.c \
 	ex_cd2.c \
 	ex_echo.c \
 	ex_env.c \
 	ex_exit.c \
-	ex_export_arg.c \
 	ex_export.c \
 	ex_export2.c \
+	ex_export3.c \
 	ex_history.c \
 	ex_pwd.c \
 	ex_unset.c \
+	ex_unset2.c \
 	execute_commands.c \
 	file_handling.c \
+	file_handling2.c \
 	find_path.c \
 	free.c \
 	history.c \
@@ -56,12 +59,14 @@ SOURCES = close.c \
 	set_types.c \
 	signals.c \
 	tok_env_exp.c \
-	tok_env_exp_utils.c \
+	tok_env_exp2.c \
+	tok_env_exp3.c \
 	tok_lst.c \
 	tok_main.c \
 	tok_quotes.c \
 	tok_utils.c \
 
+	
 # Object files
 SRCS = $(addprefix $(SRC_DIR)/, $(SOURCES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))

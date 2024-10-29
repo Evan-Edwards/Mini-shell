@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/29 18:27:50 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:16:22 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int	handle_delimiter(char *s, int *i, t_mini *mini)
 //Returns 0 on error, 1 on success
 static int	process_token(char *s, int *i, int start, t_mini *mini)
 {
-	if (i > start && !add_token(s, start, *i, mini))
+	if (*i > start && !add_token(s, start, *i, mini))
 		return (0);
 	if (s[*i] && is_delimiter(s[*i]) && mini->status == DEFAULT
 		&& !handle_delimiter(s, i, mini))
