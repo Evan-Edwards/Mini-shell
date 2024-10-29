@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 18:29:38 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:37:35 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ char	*env_var_expansion(char *str, t_mini *mini);
 /* ************************************************************************** */
 bool	is_delimiter(char ch);
 bool	is_quotes(char ch);
+char	*get_env_value(char *str, int *i, t_mini *mini);
 void	skip_spaces(char *s, int *i);
 int		quotes(char *s, int *i, t_mini *mini);
 char	*process_env_vars(char *str, char *copy, t_mini *mini);
@@ -152,12 +153,13 @@ int		file_in(t_token *lst);
 int		file_out(t_token *lst);
 int		input_file(int type, char *file_name);
 int		output_file(int type, char *file_name);
+void	here_doc(char *limiter);
 
 /* ************************************************************************** */
 /*                              EXECUTE BUILTINS                              */
 /* ************************************************************************** */
 int		ft_cd(char **arg);
-int		ft_echo(char **command);
+int		ft_echo(char **arg, t_mini *mini);
 int		ft_env(char **envp);
 void	ft_exit(char **command, t_mini *mini);
 int		ft_export(char **command, t_mini *mini);

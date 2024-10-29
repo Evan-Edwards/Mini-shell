@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:03:11 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 10:46:35 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:37:51 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	builtin(char **arg, t_mini *mini)
 	if (ft_strcmp(arg[0], "cd") == 0)
 		mini->exit_status = ft_cd(arg);
 	else if (ft_strcmp(arg[0], "echo") == 0)
-		mini->exit_status = ft_echo(arg);
+		mini->exit_status = ft_echo(arg, mini);
 	else if (ft_strcmp(arg[0], "env") == 0)
 		mini->exit_status = ft_env(mini->envp);
 	else if (ft_strcmp(arg[0], "exit") == 0)
