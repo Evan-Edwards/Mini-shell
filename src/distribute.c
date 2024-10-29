@@ -6,7 +6,7 @@
 /*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 20:55:49 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/29 12:47:04 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,23 +152,86 @@ char **build_exe(t_token *lst)
     return (arg_array);
 }
 
-//Executes a command, either built-in or external
-//Checks command type and routes to appropriate handler
-//Reports errors for failed built-in commands
-void	execute_command(char **arg, t_mini *mini)
+int execute_builtin_with_redirection(char **arg, t_mini *mini, int fd[2])
 {
-	if (is_builtin(arg[0]) == 1)
+	int original_stdout;
+	int status;
+
+	original_stdout = dup(STDOUT_FILENO);
+	if (mini->flag == 1)
+		dup2(fd[1], STDOUT_FILENO);
+	close(fd[1]);
+	status = builtin(arg, mini);
+	dup2(original_stdout, STDOUT_FILENO);
+	close(original_stdout);
+	if (status != 0)
 	{
-		if (builtin(arg, mini) == 1)
+		ft_putstr_fd("Error: ", 2);
+		ft_putstr_fd(arg[0], 2);
+		ft_putstr_fd(" command failed\n", 2);
+		ft_close(EXIT_FAILURE, NULL, arg, mini);
+	}
+	return status;
+}
+
+int execute_external_command(char **arg, t_mini *mini, int fd[2])
+{
+	int exec_result;
+	char *path;
+
+	close(fd[0]);
+	if (!validate_command_path(arg, mini, &path))
+		return (1);
+	if (mini->flag == 1) // Redirect output if in pipeline
+		dup2(fd[1], STDOUT_FILENO);
+	close(fd[1]);
+
+	exec_result = execve(path, arg, mini->envp);
+	if (exec_result == -1)
+	{
+		ft_printf_error("%s: %s\n", path, strerror(errno));
+		exit(errno);
+	}
+	return (0);
+}
+
+// Executes a command, either built-in or external
+// Manages piping for both types of commands
+void execute_command(char **arg, t_mini *mini)
+{
+	int fd[2];
+	pid_t pid ;
+	int is_builtin_cmd;
+
+	is_builtin_cmd = is_builtin(arg[0]);
+	if (is_builtin_cmd && mini->flag == 0)
+		mini->exit_status = builtin(arg, mini);
+	else
+	{
+		if (mini->flag == 1 && !create_pipe(fd))
+			return;
+		pid = fork();
+		if (pid == -1)
 		{
-			//ft_putstr_fd("Error: ", 2);
-			//ft_putstr_fd(arg[0], 2);
-			//ft_putstr_fd(" command failed\n", 2);
-			ft_close(EXIT_FAILURE, NULL, arg, mini);
+			ft_printf_error("Fork error\n");
+			return;
+		}
+		else if (pid == 0)
+		{
+			if (is_builtin_cmd)
+				execute_builtin_with_redirection(arg, mini, fd);
+			else
+				execute_external_command(arg, mini, fd);
+			exit(EXIT_SUCCESS);
+		}
+		else
+		{
+			close(fd[1]);
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[0]);
+			waitpid(pid, &(mini->exit_status), 0);
 		}
 	}
-	else
-		mini->exit_status = exe(arg, mini); //need to finish
 }
 
 //Handles input and output redirection using file_in and file_out
@@ -197,6 +260,8 @@ int	distribute(t_mini *mini, t_token *current)
 	if (arg == NULL)
 		return (0);
 	execute_command(arg, mini);
+	/* if (mini->exit_status != 0)
+		mini->loop = 0; */
 	free_str_array(arg);
 	return (1);
 }
@@ -211,7 +276,7 @@ void	reset_dup2(t_mini *mini)
 //Distributes commands across pipes
 //Processes multiple commands separated by pipes
 //Sets flags for pipe handling and manages command flow
-int	dis_b(t_mini *mini)
+ int	dis_b(t_mini *mini)
 {
 	t_token	*current;
 	int		pipe_num;
@@ -241,3 +306,4 @@ int	dis_b(t_mini *mini)
 	reset_dup2(mini);
 	return (1);
 }
+
