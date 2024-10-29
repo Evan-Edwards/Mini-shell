@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 12:41:47 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:29:40 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,5 +212,8 @@ int		count_pipes(t_token *lst);
 int		set_types(t_token *lst, t_mini *mini);
 int		reg(char *str);
 int		check_errors(t_token *lst);
+
+int	validate_command_path(char **arg, t_mini *mini, char **path);
+int	create_pipe(int pipe_fd[2]);
 
 #endif
