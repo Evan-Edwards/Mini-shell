@@ -6,7 +6,7 @@
 #    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/28 17:35:36 by eedwards         ###   ########.fr        #
+#    Updated: 2024/10/29 07:04:44 by eedwards         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = minishell
 CC = cc -g
 
 # Compiler and linker flags
-CFLAGS = -Wall -Wextra -Ofast
+CFLAGS = -Wall -Wextra -Werror -Ofast
 LFLAGS = -L./$(LIBFT) -lft -lreadline
 
 # Libraries
@@ -87,27 +87,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
-
-# Test files
-TEST_DIR = tests
-TEST_SRC = test_env_expansion.c
-TEST_OBJ = $(addprefix $(OBJ_DIR)/, $(TEST_SRC:.c=.o))
-TEST_NAME = test_env
-
-# Add test object compilation rule
-$(OBJ_DIR)/%.o: $(TEST_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INC) -c $< -o $@
-
-# New test targets
-test: $(TEST_NAME)
-	./$(TEST_NAME)
-
-$(TEST_NAME): $(filter-out $(OBJ_DIR)/main.o, $(OBJS)) $(TEST_OBJ)
-	@make -C $(LIBFT)
-	$(CC) $(CFLAGS) -o $(TEST_NAME) $^ $(LFLAGS)
-
-test_clean: fclean
-	$(RM) $(TEST_NAME)
-
-.PHONY: all clean fclean re test test_clean

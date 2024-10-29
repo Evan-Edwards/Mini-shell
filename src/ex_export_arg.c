@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 17:00:24 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 17:13:51 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:10:16 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	validate_name(char **command, int *i)
 {
 	if (command == NULL || command[0] == NULL || command[1] == NULL)
 		return (0);
-	
 	if (ft_isdigit(command[1][0]))
 		return (0);
 	while (command[1][*i] && command[1][*i] != '=')

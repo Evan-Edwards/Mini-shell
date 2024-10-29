@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:53:35 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 11:37:33 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:09:13 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@
 //Returns 1 if no errors, 0 if errors are found
 int	check_errors(t_token *lst)
 {
+	t_token	*temp;
+	
 	if (!lst)
 		return (0);
-	t_token *temp = lst;
+	temp = lst;
 	while (temp)
 	{
 		if (temp->type >= 3)

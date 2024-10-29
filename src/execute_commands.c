@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 20:35:34 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 16:39:26 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 07:00:15 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ int	create_pipe(int pipe_fd[2])
 //Validates and retrieves the command path
 //Returns 1 on success, 0 if path not found
 //Sets path pointer to resolved command path
-static int	validate_command_path(char **arg, char **envp, char **path)
+static int	validate_command_path(char **arg, t_mini *mini, char **path)
 {
-	*path = get_path2(arg[0], envp);
+	*path = get_path2(arg[0], mini->envp);
 	if (*path == NULL)
 	{
-		
+		mini->exit_status = 127;
 		ft_printf_error("%s: command not found:\n", arg[0]);
 		return (0);
 	}
@@ -69,7 +69,7 @@ static int	execute_child_process(char *path, char **arg, t_mini *mini, int fd[2]
 	int		status;
 	int		fd[2];
 
-	if (!validate_command_path(arg, mini->envp, &path))
+	if (!validate_command_path(arg, mini, &path))
 		return (1);
 	create_pipe(fd);
 	pid1 = fork();

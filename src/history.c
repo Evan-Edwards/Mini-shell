@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 15:52:22 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 07:23:37 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:08:49 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	clear_history_contents(t_history *history)
 		free(history->commands[i]);
 		i++;
 	}
-	history->count = 0;  // Just reset the count, keep the allocated array
+	history->count = 0;
 	return (1);
 }
 

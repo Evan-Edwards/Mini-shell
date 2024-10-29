@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 17:03:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 13:34:39 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:12:28 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,16 @@ void	clear_t_history(t_mini *mini)
 	free(mini->history);
 }
 
-void reset_input(char *input, t_mini *mini)
+void	reset_input(char *input, t_mini *mini)
 {
-    if (mini->lst)
-    {
-        free_list(mini->lst);
-        mini->lst = NULL;
-    }
-    if (input)
-    {
-        free(input);
-        input = NULL;
-    }
+	if (mini->lst)
+	{
+		free_list(mini->lst);
+		mini->lst = NULL;
+	}
+	if (input)
+	{
+		free(input);
+		input = NULL;
+	}
 }
