@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 22:12:12 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/29 12:40:15 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_duplicate(char **envp, char *var, int current_pos)
+/* static int	is_duplicate(char **envp, char *var, int current_pos)
 {
 	int		i;
 	char	*eq_pos1;
@@ -42,9 +42,9 @@ static int	is_duplicate(char **envp, char *var, int current_pos)
 		i--;
 	}
 	return (0);
-}
+} */
 
-static char	**copy_env(char **envp)
+/* static char	**copy_env(char **envp)
 {
 	char	**new_env;
 	int		i;
@@ -81,19 +81,18 @@ static char	**copy_env(char **envp)
 	}
 	new_env[j] = NULL;
 	return (new_env);
-}
+} */
 
 static void	init_mini(t_mini *mini, char **envp)
 {
-	mini->envp = copy_env(envp);
-	if (!mini->envp)
-		exit(EXIT_FAILURE);
+	mini->envp = envp;
 	mini->history = NULL;
 	mini->lst = NULL;
 	mini->status = DEFAULT;
 	mini->exit_status = 0;
 	mini->in = dup(STDIN_FILENO);
 	mini->out = dup(STDOUT_FILENO);
+	mini->env_allocated = 0;
 }
 
 //if readline returns null it indicates Ctrl-D/ EOF, causing end of program
@@ -109,6 +108,13 @@ int	main(int ac, char *av[], char **envp)
 		input = readline("Input > ");
 		if (input == NULL)
 			ft_close(0, input, NULL, &mini);
+		if (g_signal_status)
+		{
+			mini.exit_status = 130;
+			g_signal_status = 0;
+			free(input);
+			continue ;
+		}
 		if (input[0] == '\0')
 		{
 			free(input);
@@ -118,7 +124,7 @@ int	main(int ac, char *av[], char **envp)
 			ft_close(EXIT_FAILURE, input, NULL, &mini);
 		if (input_to_tokens(input, &mini) == 0)
 			ft_close(EXIT_FAILURE, input, NULL, &mini);
-		set_types(mini.lst);
+		set_types(mini.lst, &mini);
 		if (check_errors(mini.lst) == 0)
 		{
 			reset_input(input, &mini);

@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 20:35:34 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/29 07:07:45 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 10:09:14 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static int	validate_command_path(char **arg, t_mini *mini, char **path)
 		*path = get_path2(arg[0], mini->envp);
 	if (*path == NULL)
 	{
-		//return (0);
+		ft_putstr_fd(arg[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
 		if (mini->flag == 0)
 			exit(127);
 		else
@@ -89,7 +90,7 @@ static int	execute_child_process(char **arg, t_mini *mini, int fd[2])
 	pid1 = fork();
 	if (pid1 == -1)
 	{
-		ft_printf_error("Fork error");
+		ft_putstr_fd("Fork error", 2);
 		//free(path);
 		return (1);
 	}

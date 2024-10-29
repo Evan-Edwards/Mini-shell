@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 17:03:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 18:12:28 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 11:40:04 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	free_mini(t_mini *mini)
 		close(mini->out);
 	if (mini->lst)
 		free_list(mini->lst);
-	if (mini->envp)
+	if (mini->envp && mini->env_allocated == 1)
 		free_str_array(mini->envp);
 }
 
@@ -51,10 +51,14 @@ void	free_str_array(char **to_free)
 	int	i;
 
 	i = 0;
-	if (to_free == NULL)
+	if (!to_free)
 		return ;
 	while (to_free[i])
-		free(to_free[i++]);
+	{
+		if (to_free[i])
+			free(to_free[i]);
+		i++;
+	}
 	free(to_free);
 }
 

@@ -6,11 +6,13 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:59:26 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 12:08:32 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:25:30 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+volatile sig_atomic_t	g_signal_status = 0;
 
 //happens when ctrl + C pressed
 //interrupts current foreground process
@@ -19,8 +21,11 @@
 static void	signal_interrupt(int sig)
 {
 	(void)sig;
-	rl_replace_line("", 0);
+	g_signal_status = 1;
+	if (write(1, "\n", 1) == -1)
+		perror("write");
 	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
 }
 

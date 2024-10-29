@@ -6,113 +6,161 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 18:32:22 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 12:44:55 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*search_env(char *search, int len, t_mini *mini)
-{
-	int		j;
-	char	*result;
-	char	*env_value;
+// Forward declaration at the top of the file
+static int handle_dollar(char *str, int *i, char *copy, int *j, t_mini *mini);
 
-	if (!search || !mini || !mini->envp || len < 0)
-		return (NULL);
-	j = 0;
-	while (mini->envp[j])
+//Copies content between quotes, excluding the quotes themselves
+//Updates indices to track position in input and output strings
+static void	copy_quoted(char *str, int *i, char *copy, int *j, t_mini *mini)
+{
+	char quote_type;
+
+	quote_type = str[*i];
+	if (quote_type == '"')  // For double quotes, keep processing env vars
 	{
-		if (strncmp(mini->envp[j], search, len) == 0
-			&& mini->envp[j][len] == '=')
+		(*i)++;  // Skip opening quote
+		while (str[*i] && str[*i] != quote_type)
 		{
-			env_value = mini->envp[j] + len + 1;
-			result = ft_strdup(env_value);
-			if (!result)
-				return (NULL);
-			return (result);
+			if (str[*i] == '$')
+			{
+				if (!handle_dollar(str, i, copy, j, mini))
+					return;
+			}
+			else
+			{
+				copy[*j] = str[*i];
+				(*i)++;
+				(*j)++;
+			}
 		}
-		j++;
 	}
-	result = ft_strdup("");
-	if (!result)
-		ft_putstr_fd("malloc error\n", 2);
-	return (result);
+	else  // For single quotes, copy everything literally
+	{
+		(*i)++;  // Skip opening quote
+		while (str[*i] && str[*i] != quote_type)
+		{
+			copy[*j] = str[*i];
+			(*i)++;
+			(*j)++;
+		}
+	}
+	if (str[*i] == quote_type)
+		(*i)++;  // Skip closing quote
 }
 
-char	*get_env(char *str, int *i, t_mini *mini)
+//Gets value of environment variable or exit status
+//Returns malloc'd string containing value or NULL on error
+static char	*get_env_value(char *str, int *i, t_mini *mini)
 {
 	int		start;
-	int		len;
-	char	*search;
+	char	*var_name;
+	char	*env_val;
 	char	*result;
 
-	if (!str || !i || !mini)
-		return (NULL);
-	start = ++(*i);
-	if (str[*i] == '?')
+	start = ++(*i);  // Skip the $
+	// Handle $? first
+	if (str[start] == '?')
 	{
-		result = ft_itoa(mini->exit_status);
-		(*i)++;
-		return (result);
+		(*i)++;  // Move past the ?
+		return (ft_itoa(mini->exit_status));
+	}
+	if (!str[start] || is_delimiter(str[start]))
+	{
+		(*i)--;  // Move back to $ position
+		return (ft_strdup("$"));
 	}
 	while (str[*i] && !is_delimiter(str[*i]))
 		(*i)++;
-	len = *i - start;
-	if (len <= 0)
-		return (ft_strdup(""));
-	search = ft_substr(str, start, len);
-	if (!search)
+	if (*i == start)
+		return (ft_strdup("$"));
+	var_name = ft_substr(str, start, *i - start);
+	if (!var_name)
 		return (NULL);
-	result = search_env(search, len, mini);
-	free(search);
+	env_val = getenv(var_name);
+	free(var_name);
+	if (!env_val)
+		return (ft_strdup(""));
+	result = ft_strdup(env_val);
 	return (result);
 }
 
-static char	*handle_env_var(char *str, int *i, t_mini *mini, char **copy)
+//Handles expansion of environment variables and $ symbol
+//Returns 1 on success, 0 on error
+static int	handle_dollar(char *str, int *i, char *copy, int *j, t_mini *mini)
 {
-	char	*env_var;
-	size_t	new_size;
-	int		j;
+	char	*env_val;
+	size_t	val_len;
 
-	if (!str || !i || !mini || !copy || !*copy)
-		return (NULL);
-	j = ft_strlen(*copy);
-	env_var = get_env(str, i, mini);
-	if (!env_var)
-		return (NULL);
-	new_size = j + ft_strlen(env_var) + ft_strlen(str + *i) + 1;
-	*copy = add_copy_size(*copy, new_size);
-	if (!*copy)
+	// Handle single $ case directly
+	if (!str[*i + 1] || str[*i + 1] == '"' || str[*i + 1] == '\'' || is_delimiter(str[*i + 1]))
 	{
-		free(env_var);
-		return (NULL);
+		copy[*j] = '$';
+		(*i)++;
+		(*j)++;
+		return (1);
 	}
-	ft_strlcat(*copy + j, env_var, new_size - j);
-	free(env_var);
-	return (*copy);
+
+	env_val = get_env_value(str, i, mini);
+	if (!env_val)
+		return (0);
+	val_len = ft_strlen(env_val);
+	ft_strlcpy(copy + *j, env_val, val_len + 1);
+	*j += val_len;
+	free(env_val);
+	return (1);
 }
 
+//Main function to process environment variables and quotes
+//Returns processed string or NULL on error
+char	*process_env_vars(char *str, char *copy, t_mini *mini)
+{
+	int	i;
+	int	j;
+	int	in_quotes;
+
+	i = 0;
+	j = 0;
+	in_quotes = 0;
+	while (str[i])
+	{
+		if (str[i] == '"' && mini->status == DEFAULT)
+			in_quotes = !in_quotes;
+		
+		if (str[i] == '$' && (in_quotes || mini->status == DEFAULT))
+		{
+			if (!handle_dollar(str, &i, copy, &j, mini))
+				return (NULL);
+		}
+		else if ((str[i] == '\'' || str[i] == '\"') && mini->status == DEFAULT)
+			copy_quoted(str, &i, copy, &j, mini);
+		else
+		{
+			copy[j++] = str[i++];
+		}
+	}
+	copy[j] = '\0';
+	return (copy);
+}
+
+//Entry point for environment variable expansion
+//Returns expanded string or NULL on error
 char	*env_var_expansion(char *str, t_mini *mini)
 {
 	char	*copy;
-	size_t	alloc_size;
+	size_t	size;
 
-	if (!str || !mini)
-	{
-		ft_putstr_fd("null pointer in env_var_expansion\n", 2);
+	if (!str)
 		return (NULL);
-	}
-	alloc_size = (ft_strlen(str) * 4 + 1);
-	copy = malloc(alloc_size * sizeof(char));
-	if (!copy)
-	{
-		ft_putstr_fd("malloc error in env_var_expansion\n", 2);
-		return (NULL);
-	}
-	ft_bzero(copy, alloc_size);
-	copy = process_env_vars(str, mini, copy);
+	size = get_total_size(str, mini);
+	copy = malloc(size * sizeof(char));
 	if (!copy)
 		return (NULL);
-	return (copy);
+	ft_bzero(copy, size);
+	return (process_env_vars(str, copy, mini));
 }

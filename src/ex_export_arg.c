@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 17:00:24 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 18:10:16 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 11:37:30 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,29 @@ static int	handle_new_env_variable(char *name, t_mini *mini)
 		return (1);
 	}
 	new_env[env_count + 1] = NULL;
+	if (mini->env_allocated)
+		free_str_array(mini->envp);	
 	mini->envp = new_env;
+	mini->env_allocated = 1;
+	return (0);
+}
+
+static int	copy_env_if_needed(t_mini *mini)
+{
+	char	**new_env;
+
+	if (mini->env_allocated)
+		return (0);
+	new_env = malloc((count_env_variables(mini->envp) + 1) * sizeof(char *));
+	if (!new_env)
+		return (1);
+	if (!copy_str_array(mini->envp, new_env))
+	{
+		free(new_env);
+		return (1);
+	}
+	mini->envp = new_env;
+	mini->env_allocated = 1;
 	return (0);
 }
 
@@ -81,18 +103,24 @@ static int	update_existing_env_variable(char *name, char *value, int index,
 {
 	char	*temp;
 
+	if (copy_env_if_needed(mini))
+		return (1);
 	free(mini->envp[index]);
 	if (value == NULL)
 	{
 		mini->envp[index] = ft_strdup(name);
-		return (mini->envp[index] == NULL);
+		if (mini->envp[index] == NULL)
+			return (1);
+		return (0);
 	}
 	temp = ft_strjoin(name, "=");
 	if (temp == NULL)
 		return (1);
 	mini->envp[index] = ft_strjoin(temp, value);
 	free(temp);
-	return (mini->envp[index] == NULL);
+	if (mini->envp[index] == NULL)
+		return (1);
+	return (0);
 }
 
 // Handles the export command with arguments
@@ -123,6 +151,7 @@ int	export_with_arg(char **command, t_mini *mini)
 	else
 		result = update_existing_env_variable(name, value, i, mini);
 	free(name);
-	free(value);
+	if (value)
+		free(value);
 	return (result);
 }

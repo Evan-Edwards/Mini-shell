@@ -5,96 +5,108 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/24 13:08:25 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 16:06:35 by eedwards         ###   ########.fr       */
+/*   Created: 2024/10/23 15:43:08 by eedwards          #+#    #+#             */
+/*   Updated: 2024/10/29 10:44:59 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//returns 1 if arg starts with a letter or underscore and then only contains
-//letters, numbers, or underscores
-//otherwise returns 0
-static int	check_arg_valid(char *env)
+int	is_valid_identifier(char *str)
 {
 	int	i;
 
 	i = 0;
-	if (ft_isalpha(env[i]) == 0 && env[i] != '_')
+	if (!str || !str[0] || (!ft_isalpha(str[0]) && str[0] != '_'))
 		return (0);
-	while (env[i])
+	while (str[i])
 	{
-		if (ft_isalnum(env[i]) == 0 && env[i] != '_')
+		if (!ft_isalnum(str[i]) && str[i] != '_')
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-//removes str at position j in the envp arr
-//moves the rest up 1 position and sets previous last position to NULL
-void	remove_str_from_array(char ***envp, int *j)
-{
-	int	i;
-
-	free((*envp)[*j]);
-	i = *j;
-	while ((*envp)[i])
-	{
-		(*envp)[i] = (*envp)[i + 1];
-		i++;
-	}
-}
-
-//checks that args to unset are valid
-//if all args valid returns 1
-//if not prints out which arg is not valid and returns 0
-static int	validate_unset_args(char **to_unset)
-{
-	int	i;
-
-	i = 1;
-	while (to_unset[i])
-	{
-		if (check_arg_valid(to_unset[i]) == 0)
-		{
-			ft_putstr_fd("unset: `", 2);
-			ft_putstr_fd(to_unset[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			return (0);
-		}
-		i++;
-	}
-	return (1);
-}
-
-//unsets (removes) args in the array to_unset from envp
-//uses validate_unset_args to check that args have valid characters
-//finds variables to be removed from envp and removes with remove_str_from_array
-int	ft_unset(char **envp, char **to_unset)
+int	find_env_var(char **envp, char *var)
 {
 	int		i;
-	int		j;
 	size_t	len;
 
-	if (!envp || !to_unset || !validate_unset_args(to_unset))
-		return (EXIT_FAILURE);
-	i = 1;
-	while (to_unset[i])
+	i = 0;
+	len = ft_strlen(var);
+	while (envp[i])
 	{
-		j = 0;
-		while (envp[j])
+		if (ft_strncmp(envp[i], var, len) == 0 && 
+			(envp[i][len] == '=' || envp[i][len] == '\0'))
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+static char	**remove_str_from_array(char **arr, int index)
+{
+	char	**new_arr;
+	int		i;
+	int		j;
+	int		size;
+
+	size = 0;
+	while (arr[size])
+		size++;
+	new_arr = malloc(sizeof(char *) * size);
+	if (!new_arr)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (arr[i])
+	{
+		if (i != index)
 		{
-			len = ft_strlen(to_unset[i]);
-			if (ft_strncmp(to_unset[i], envp[j], len) == 0
-				&& (envp[j][len] == '=' || envp[j][len] == '\0'))
+			new_arr[j] = ft_strdup(arr[i]);
+			if (!new_arr[j])
 			{
-				remove_str_from_array(&envp, &j);
-				j--;
+				free_str_array(new_arr);
+				return (NULL);
 			}
 			j++;
 		}
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	new_arr[j] = NULL;
+	return (new_arr);
+}
+
+int	ft_unset(char **arg, t_mini *mini)
+{
+	int		i;
+	int		env_index;
+	char	**new_envp;
+
+	i = 1;
+	while (arg[i])
+	{
+		if (!is_valid_identifier(arg[i]))
+		{
+			ft_putstr_fd("unset: '", 2);
+			ft_putstr_fd(arg[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			return (1);
+		}
+		env_index = find_env_var(mini->envp, arg[i]);
+		if (env_index != -1)
+		{
+			new_envp = remove_str_from_array(mini->envp, env_index);
+			if (new_envp)
+			{
+				if (mini->env_allocated)
+					free_str_array(mini->envp);
+				mini->envp = new_envp;
+				mini->env_allocated = 1;
+			}
+		}
+		i++;
+	}
+	return (0);
 }

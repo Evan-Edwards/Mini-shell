@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:43:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 15:54:43 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 12:06:05 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,24 +68,40 @@ static char	*process_cd_path(char **arg)
 	return (dest);
 }
 
+static int	handle_cd_error(char **arg, char *dest)
+{
+	if (dest == NULL)
+		ft_putstr_fd("cd: Invalid path\n", 2);
+	else
+	{
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(arg[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+	}
+	if (arg[1] && arg[1][0] != '/' && dest)
+		free(dest);
+	return (1);
+}
+
 //changes the current working directory based on the given arguments
 //calls process_cd_path to get the destination path
 //returns 1 on success, 0 on failure
 int	ft_cd(char **arg)
 {
 	char	*dest;
+	int		arg_count;
 
-	dest = process_cd_path(arg);
-	if (dest == NULL || chdir(dest) == -1)
+	arg_count = 0;
+	while (arg[arg_count])
+		arg_count++;
+	if (arg_count > 2)
 	{
-		if (dest == NULL)
-			ft_putstr_fd("Invalid path\n", 2);
-		else
-			ft_putstr_fd("Chdir failed\n", 2);
-		if (arg[1] && arg[1][0] != '/' && dest)
-			free(dest);
+		ft_putstr_fd("cd: too many arguments\n", 2);
 		return (1);
 	}
+	dest = process_cd_path(arg);
+	if (dest == NULL || chdir(dest) == -1)
+		return (handle_cd_error(arg, dest));
 	if (arg[1] && arg[1][0] != '/')
 		free(dest);
 	return (0);

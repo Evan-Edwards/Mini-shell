@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:53:35 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 18:09:13 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 09:43:15 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,20 @@ int	check_errors(t_token *lst)
 	return (1);
 }
 
+static void	expand_exit_status(t_token *token, t_mini *mini)
+{
+	char	*exit_status_str;
+
+	if (strcmp(token->content, "$?") == 0)
+	{
+		exit_status_str = ft_itoa(mini->exit_status);
+		if (!exit_status_str)
+			return ;
+		free(token->content);
+		token->content = exit_status_str;
+	}
+}
+
 //Determines the type of a token based on its content
 //Returns the corresponding token type
 int	reg(char *str)
@@ -66,12 +80,13 @@ int	reg(char *str)
 
 //Sets the type for each token in the linked list
 //Returns 1 on success, 0 if the list is empty
-int	set_types(t_token *lst)
+int	set_types(t_token *lst, t_mini *mini)
 {
 	if (!lst)
 		return (0);
 	while (lst)
 	{
+		expand_exit_status(lst, mini);
 		lst->type = reg(lst->content);
 		lst = lst->next;
 	}

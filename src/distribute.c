@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   distribute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/28 20:55:49 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/29 12:01:54 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,16 +159,11 @@ void	execute_command(char **arg, t_mini *mini)
 {
 	if (is_builtin(arg[0]) == 1)
 	{
-		if (builtin(arg, mini) == 1)
-		{
-			//ft_putstr_fd("Error: ", 2);
-			//ft_putstr_fd(arg[0], 2);
-			//ft_putstr_fd(" command failed\n", 2);
-			ft_close(EXIT_FAILURE, NULL, arg, mini);
-		}
+		mini->exit_status = builtin(arg, mini);
+		return;
 	}
 	else
-		mini->exit_status = exe(arg, mini); //need to finish
+		mini->exit_status = exe(arg, mini);
 }
 
 //Handles input and output redirection using file_in and file_out
@@ -225,8 +220,6 @@ int	dis_b(t_mini *mini)
 		mini->flag = 1;
 	// Execute first command
 	distribute(mini, current);
-
-	// Move to next commands after pipes
 	while (current != NULL)
 	{
 		if (current->type == PIPE)

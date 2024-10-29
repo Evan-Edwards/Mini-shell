@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:44:26 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 13:21:49 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 11:58:27 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	*handle_dot_paths(char *cwd, char *path, int *i)
 //joins extracted path with cwd using cat_cwd_path
 //frees temporary allocations and returns new combined path
 //returns NULL if memory allocation fails
-static char	*handle_alpha_path(char *cwd, char *path, int i)
+static char	*handle_path_component(char *cwd, char *path, int i)
 {
 	char	*temp_path;
 	char	*new_cwd;
@@ -89,8 +89,8 @@ char	*mod_cwd(char *cwd, char *path)
 			if (cwd == NULL)
 				return (NULL);
 		}
-		else if (ft_isalpha(path[i]) == 1)
-			return (handle_alpha_path(cwd, path, i));
+		else if (path[i] != '/')
+			return (handle_path_component(cwd, path, i));
 		else
 			i++;
 	}

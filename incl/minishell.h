@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 07:07:05 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 12:41:47 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 # define MINISHELL_H
 
 # include <errno.h> //errno
-# include <fcntl.h>
 # include "libft.h"
 # include <readline/readline.h> //readline + rl_* functions
 # include <readline/history.h> //readline + rl_* functions
 # include <signal.h> //signal, sig* functions
-# include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/wait.h>
-# include <unistd.h>
+# include <stdbool.h> //bool
+# include <stdlib.h> //malloc, free, exit, getenv
+# include <string.h> //strerror
+# include <sys/wait.h> //waitpid
+# include <unistd.h> //chdir, fork, dup, dup2, etc.
+
+extern volatile sig_atomic_t	g_signal_status;
 
 typedef struct s_history
 {
@@ -43,16 +43,16 @@ typedef struct s_token
 
 typedef struct s_mini
 {
-	int				flag;
-	int				in;
-	int				out;
-	int				ret_value;
-	int				status;
-	int				exit_status;
-	char			**envp;
-	t_token			*lst;
-	t_history		*history;
-}					t_mini;
+	char		**envp;
+	t_history	*history;
+	t_token		*lst;
+	int			status;
+	int			exit_status;
+	int			in;
+	int			out;
+	int			flag;
+	int			env_allocated;
+}				t_mini;
 
 typedef enum e_status
 {
@@ -88,10 +88,12 @@ bool	is_delimiter(char ch);
 bool	is_quotes(char ch);
 void	skip_spaces(char *s, int *i);
 int		quotes(char *s, int *i, t_mini *mini);
-char	*add_mem(char *str, int add, int old);
-char	*add_end(char *dst, char *add, int j);
-char	*get_env(char *str, int *i, t_mini *mini);
-char	*add_copy_size(char *copy, size_t new_total_size);
+char	*process_env_vars(char *str, char *copy, t_mini *mini);
+size_t	get_total_size(char *str, t_mini *mini);
+//char	*get_env(char *str, int *i);
+//char	*add_copy_size(char *copy, size_t new_total_size);
+//char	*add_mem(char *str, int add, int old);
+//char	*add_end(char *dst, char *add, int j);
 
 /* ************************************************************************** */
 /*                          token list utils                                  */
@@ -150,8 +152,9 @@ int		ft_export(char **command, t_mini *mini);
 /* ************************************************************************** */
 /*                             EXECUTE UNSET                                  */
 /* ************************************************************************** */
-int		ft_unset(char **envp, char **to_unset);
-void	remove_str_from_array(char ***envp, int *j);
+int		ft_unset(char **arg, t_mini *mini);
+int		is_valid_identifier(char *str);
+int		find_env_var(char **envp, char *var);
 
 /* ************************************************************************** */
 /*                              EXECUTE ENV                                   */
@@ -206,7 +209,7 @@ int		output_file(int type, char *file_name);
 /*                             SET TYPES                                      */
 /* ************************************************************************** */
 int		count_pipes(t_token *lst);
-int		set_types(t_token *lst);
+int		set_types(t_token *lst, t_mini *mini);
 int		reg(char *str);
 int		check_errors(t_token *lst);
 

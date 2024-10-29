@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:03:11 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 17:35:14 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 10:46:35 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,6 @@ int	builtin(char **arg, t_mini *mini)
 	else if (ft_strcmp(arg[0], "pwd") == 0)
 		mini->exit_status = ft_pwd();
 	else if (ft_strcmp(arg[0], "unset") == 0)
-		mini->exit_status = ft_unset(mini->envp, arg);
+		mini->exit_status = ft_unset(arg, mini);
 	return (mini->exit_status);
 }

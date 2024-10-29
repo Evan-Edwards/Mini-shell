@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:36:16 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 22:10:54 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/29 08:30:33 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void here_doc(char *limiter)
 				free(line);
 				exit(EXIT_SUCCESS);
 			}
-			write(fd[1], line, ft_strlen(line));
+			if (write(fd[1], line, ft_strlen(line)) == -1)
+				ft_putstr_fd("Write error", 2);
 			free(line);
 		}
 		close(fd[1]);
