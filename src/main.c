@@ -6,82 +6,11 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 12:40:15 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:38:39 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* static int	is_duplicate(char **envp, char *var, int current_pos)
-{
-	int		i;
-	char	*eq_pos1;
-	char	*eq_pos2;
-	size_t	name_len1;
-	size_t	name_len2;
-
-	eq_pos1 = ft_strchr(var, '=');
-	if (!eq_pos1)
-		return (0);
-	name_len1 = eq_pos1 - var;
-
-	// Start from current_pos - 1 and work backwards
-	i = current_pos - 1;
-	while (i >= 0)
-	{
-		eq_pos2 = ft_strchr(envp[i], '=');
-		if (eq_pos2)
-		{
-			name_len2 = eq_pos2 - envp[i];
-			if (name_len1 == name_len2 &&
-				ft_strncmp(var, envp[i], name_len1) == 0)
-			{
-				return (1);
-			}
-		}
-		i--;
-	}
-	return (0);
-} */
-
-/* static char	**copy_env(char **envp)
-{
-	char	**new_env;
-	int		i;
-	int		j;
-
-	// Count total variables first
-	i = 0;
-	while (envp[i])
-		i++;
-
-	// Allocate new array with full size initially
-	new_env = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!new_env)
-		return (NULL);
-
-	// Copy variables in reverse order, skipping duplicates
-	i--;
-	j = 0;
-	while (i >= 0)
-	{
-		if (!is_duplicate(envp, envp[i], i))
-		{
-			new_env[j] = ft_strdup(envp[i]);
-			if (!new_env[j])
-			{
-				while (--j >= 0)
-					free(new_env[j]);
-				free(new_env);
-				return (NULL);
-			}
-			j++;
-		}
-		i--;
-	}
-	new_env[j] = NULL;
-	return (new_env);
-} */
 
 static void	init_mini(t_mini *mini, char **envp)
 {
@@ -108,11 +37,11 @@ int	main(int ac, char *av[], char **envp)
 		input = readline("Input > ");
 		if (input == NULL)
 			ft_close(0, input, NULL, &mini);
-		if (g_signal_status)
+		if (g_signal_status == 2)
 		{
 			mini.exit_status = 130;
 			g_signal_status = 0;
-			free(input);
+			reset_input(input, &mini);
 			continue ;
 		}
 		if (input[0] == '\0')

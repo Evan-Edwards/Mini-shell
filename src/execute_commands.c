@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 20:35:34 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/29 10:09:14 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:33:01 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	create_pipe(int pipe_fd[2])
 //Validates and retrieves the command path
 //Returns 1 on success, 0 if path not found
 //Sets path pointer to resolved command path
-static int	validate_command_path(char **arg, t_mini *mini, char **path)
+int	validate_command_path(char **arg, t_mini *mini, char **path)
 {
 	if (mini->flag == 0)
 			*path = get_path(arg[0], mini->envp);
@@ -39,6 +39,7 @@ static int	validate_command_path(char **arg, t_mini *mini, char **path)
 	{
 		ft_putstr_fd(arg[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
+		mini->exit_status = 127;
 		if (mini->flag == 0)
 			exit(127);
 		else
