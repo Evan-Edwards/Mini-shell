@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   distribute2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:03:11 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 10:46:35 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:25:54 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,3 +96,12 @@ int	builtin(char **arg, t_mini *mini)
 		mini->exit_status = ft_unset(arg, mini);
 	return (mini->exit_status);
 }
+
+void	is_block(char *arg)
+{
+	if (ft_strcmp(arg, "cat") == 0)
+		g_signal_status = 2;
+	if (ft_strcmp(arg, "grep") == 0)
+		g_signal_status = 2;
+}
+
