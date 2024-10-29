@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/28 15:29:51 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/28 22:12:12 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	is_duplicate(char **envp, char *var, int current_pos)
 	if (!eq_pos1)
 		return (0);
 	name_len1 = eq_pos1 - var;
-	
+
 	// Start from current_pos - 1 and work backwards
 	i = current_pos - 1;
 	while (i >= 0)
@@ -33,7 +33,7 @@ static int	is_duplicate(char **envp, char *var, int current_pos)
 		if (eq_pos2)
 		{
 			name_len2 = eq_pos2 - envp[i];
-			if (name_len1 == name_len2 && 
+			if (name_len1 == name_len2 &&
 				ft_strncmp(var, envp[i], name_len1) == 0)
 			{
 				return (1);
@@ -95,6 +95,7 @@ static void	init_mini(t_mini *mini, char **envp)
 	mini->in = dup(STDIN_FILENO);
 	mini->out = dup(STDOUT_FILENO);
 }
+
 //if readline returns null it indicates Ctrl-D/ EOF, causing end of program
 int	main(int ac, char *av[], char **envp)
 {
