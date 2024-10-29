@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 20:18:43 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 21:02:01 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,13 @@ bool	is_quotes(char ch);
 char	*get_env_value(char *str, int *i, t_mini *mini);
 void	skip_spaces(char *s, int *i);
 int		quotes(char *s, int *i, t_mini *mini);
-char	*process_env_vars(char *str, char *copy, t_mini *mini);
+//char	*process_env_vars(char *str, char *copy, t_mini *mini);
 size_t	get_total_size(char *str, t_mini *mini);
 void	copy_single_quoted(char *str, int *i, char *copy, int *j);
 void	copy_double_quoted(char *str, int *i, char *copy, int *j, t_mini *mini);
 void	copy_quoted(char *str, int *i, char *copy, int *j, t_mini *mini);
 int		handle_dollar(char *str, int *i, char *copy, int *j, t_mini *mini);
-int		handle_env_var(char *str, int *i, char *copy, int *j, t_mini *mini);
+//int		handle_env_var(char *str, int *i, char *copy, int *j, t_mini *mini);
 
 /* ************************************************************************** */
 /*                          token list utils                                  */
@@ -204,5 +204,9 @@ void	reset_input(char *input, t_mini *mini);
 /*                             CLOSE PROGRAM                                  */
 /* ************************************************************************** */
 void	ft_close(int exit_status, char *input, char **arg, t_mini *mini);
+
+//static char	*handle_env_var(char *str, int *i, t_mini *mini, char **copy);
+char	*add_copy_size(char *copy, size_t new_total_size);
+
 
 #endif

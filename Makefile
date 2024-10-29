@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
+#    By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/29 20:06:16 by eedwards         ###   ########.fr        #
+#    Updated: 2024/10/29 22:57:05 by ttero            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,10 @@ NAME = minishell
 CC = cc -g
 
 # Compiler and linker flags
-CFLAGS = -Wall -Wextra -Werror -Ofast
+CFLAGS = -Wall -Wextra -Ofast
 LFLAGS = -L./$(LIBFT) -lft -lreadline
 
+#-Werror
 # Libraries
 LIBFT = libft
 LIBFTA = libft.a
@@ -65,8 +66,9 @@ SOURCES = close.c \
 	tok_main.c \
 	tok_quotes.c \
 	tok_utils.c \
+	tok_env_exp_old.c \
 
-	
+
 # Object files
 SRCS = $(addprefix $(SRC_DIR)/, $(SOURCES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))

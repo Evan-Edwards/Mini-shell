@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tok_quotes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 08:20:36 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 18:29:00 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 23:19:38 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	handle_single_quote(int *i, t_mini *mini)
 		(*i)++;
 		return (0);
 	}
-	return (1);
+	return (2);
 }
 
 static int	handle_double_quote(int *i, t_mini *mini)
@@ -43,10 +43,10 @@ static int	handle_double_quote(int *i, t_mini *mini)
 		(*i)++;
 		return (0);
 	}
-	return (1);
+	return (2);
 }
 
-int	quotes(char *s, int *i, t_mini *mini)
+/* int	quotes(char *s, int *i, t_mini *mini)
 {
 	int	result;
 
@@ -62,4 +62,17 @@ int	quotes(char *s, int *i, t_mini *mini)
 	if (result == 0 && s[*i] && is_quotes(s[*i]))
 		return (quotes(s, i, mini));
 	return (result);
+}
+ */
+int	quotes(char *s, int *i, t_mini *mini)
+{
+	if (!s || !i || !mini)
+		return (1);
+
+	if (s[*i] == '\'')
+		return (handle_single_quote(i, mini));
+	else if (s[*i] == '\"')
+		return (handle_double_quote(i, mini));
+
+	return (0);
 }

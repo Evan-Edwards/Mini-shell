@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:43:08 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 19:45:22 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 23:41:51 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ int	ft_echo(char **arg, t_mini *mini)
 		expanded = env_var_expansion(arg[i], mini);
 		if (!expanded)
 			return (-1); // Handle memory allocation failure appropriately
-		ft_putstr_fd(expanded, 1);
+		//ft_putstr_fd(expanded, 1);   
+		ft_putstr_fd(arg[i], 1);
 		free(expanded);
 		if (arg[i + 1])
 			ft_putchar_fd(' ', 1);

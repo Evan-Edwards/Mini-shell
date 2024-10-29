@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tok_env_exp_old.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/29 18:25:00 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 23:05:51 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,16 @@ char	*get_env(char *str, int *i, t_mini *mini)
 	int		len;
 	char	*search;
 	char	*result;
+	int		j;
 
+	j = *i;
 	start = ++(*i);
-	while (str[*i] && !is_delimiter(str[*i]))
+	if (str[start] == '?')
+	{
+		(*i)++;  // Move past the ?
+		return (ft_itoa(mini->exit_status));
+	}
+	while (str[*i] && !is_delimiter(str[*i]) && !is_quotes(str[*i]))
 		(*i)++;
 	len = *i - start;
 	if (ft_isdigit(str[start]))
@@ -64,6 +71,8 @@ char	*get_env(char *str, int *i, t_mini *mini)
 	if (!search)
 		return (NULL);
 	result = search_env(search, len, mini);
+	if (result == NULL)
+		*i = j;
 	free(search);
 	return (result);
 }
@@ -94,6 +103,40 @@ static char	*handle_env_var(char *str, int *i, t_mini *mini, char **copy)
 	return (*copy);
 }
 
+int quotes2(char *s, int *i, t_mini *mini)
+{
+	if (s[*i] == '\'')
+	{
+		if (mini->status == DEFAULT)
+			mini->status = SINGLEQ;
+		else if (mini->status == SINGLEQ)
+			mini->status = DEFAULT;
+		else
+		{
+			return (1);
+		}
+		return (1);
+	}
+	if (s[*i] == '\"')
+	{
+		if (mini->status == DEFAULT)
+		{
+			mini->status = DOUBLEQ;
+		}
+		else if (mini->status == DOUBLEQ)
+		{
+			mini->status = DEFAULT;
+		}
+		else
+		{
+			return (1);
+		}
+		return (1);
+	}
+	return (0);
+}
+
+
 //iterates through str, expanding environment variables
 //checks for quotes using quotes function
 //expands $ variables outside single quotes using handle_env_var
@@ -108,7 +151,7 @@ static char	*process_env_vars(char *str, t_mini *mini, char *copy)
 	j = 0;
 	while (str[i])
 	{
-		quotes(str, &i, mini);
+		quotes2(str, &i, mini);
 		if (str[i] == '$' && mini->status != SINGLEQ)
 		{
 			if (!handle_env_var(str, &i, mini, &copy))
@@ -125,18 +168,22 @@ static char	*process_env_vars(char *str, t_mini *mini, char *copy)
 //allocates room for expanded copy of str
 //uses process_env_vars to expand env variables
 //null-terminates copy string
-//if there was starting but not ending quote 
+//if there was starting but not ending quote
 char	*env_var_expansion(char *str, t_mini *mini)
 {
 	char	*copy;
 
-	copy = malloc(ft_strlen(str) + 1);
+	copy = calloc(ft_strlen(str) + 1, 1);
 	if (!copy)
 		return (NULL);
 	copy = process_env_vars(str, mini, copy);
 	if (!copy)
 		return (NULL);
 	if (mini->status != DEFAULT)
-		ft_putstr_fd("uneven quotes", 2);
+	{
+		ft_putstr_fd("uneven quotes\n", 2);
+		free (copy);
+	}
+	//printf("%s\n", copy);
 	return (copy);
 }

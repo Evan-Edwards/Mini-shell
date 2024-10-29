@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tok_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 11:12:13 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/27 12:23:46 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 23:33:53 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	is_delimiter(char ch)
 {
-	if (ch == ' ' || ch == '<' || ch == '>' || ch == '*' || ch == '|')
+	if (ft_isspace(ch) || ch == '<' || ch == '>' || ch == '*' || ch == '|')
 		return (true);
 	return (false);
 }
@@ -28,9 +28,9 @@ bool	is_quotes(char ch)
 
 void	skip_spaces(char *s, int *i)
 {
-	if (s[*i] == ' ')
+	if (ft_isspace(s[*i]))
 	{
-		while (s[*i] == ' ')
+		while (ft_isspace(s[*i]))
 			(*i)++;
 	}
 }

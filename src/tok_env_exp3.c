@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tok_env_exp3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/29 20:23:20 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/29 21:00:56 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ size_t	get_total_size(char *str, t_mini *mini)
 	return (size + 1);
 }
 
-char	*env_var_expansion(char *str, t_mini *mini)
+/* char	*env_var_expansion(char *str, t_mini *mini)
 {
 	char	*copy;
 	size_t	size;
@@ -117,3 +117,4 @@ char	*env_var_expansion(char *str, t_mini *mini)
 	ft_bzero(copy, size);
 	return (process_env_vars(str, copy, mini));
 }
+ */
