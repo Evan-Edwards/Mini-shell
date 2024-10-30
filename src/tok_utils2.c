@@ -6,39 +6,11 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:31:32 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/30 19:43:04 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 20:04:00 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*create_token(char c, char *k, int double_char)
-{
-	if (double_char)
-	{
-		k = malloc(3);
-		if (!k)
-		{
-			ft_putstr_fd("malloc error\n", 2);
-			return (NULL);
-		}
-		k[0] = c;
-		k[1] = c;
-		k[2] = '\0';
-	}
-	else
-	{
-		k = malloc(2);
-		if (!k)
-		{
-			ft_putstr_fd("malloc error\n", 2);
-			return (NULL);
-		}
-		k[0] = c;
-		k[1] = '\0';
-	}
-	return (k);
-}
 
 char	*allocate_token(int len)
 {
@@ -76,43 +48,9 @@ int	handle_empty_quotes(char *s, int *i)
 	return (0);
 }
 
-/* int	len_next(char *str, int i, t_mini mini)
+// Handle special cases for token length calculation
+int	handle_special_len(char *str, int i)
 {
-	int	j;
-
-	j = 0;
-	skip_spaces(str, &i);
-	if (str[i] == '>' || str[i] == '<' || str[i] == '|')
-	{
-		if ((str[i] == '>' || str[i] == '<') && str[i + 1] == str[i])
-			return (2);  // For >> or <<
-		return (1);      // For >, <, or |
-	}
-	if ((str[i] == '\'' && str[i + 1] == '\'')
-		|| (str[i] == '\"' && str[i + 1] == '\"'))
-		return (0);
-	if (str[i] == '$' && (!str[i + 1] || is_delimiter(str[i + 1])
-			|| is_quotes(str[i + 1])))
-		return (1);
-	while (str[i])
-	{
-		if (is_delimiter(str[i]) && mini.status == DEFAULT)
-			break;
-		quotes(str, &i, &mini);
-		if (str[i] == '\0')
-			break;
-		i++;
-		j++;
-	}
-	return (j);
-} */
-
-int	len_next(char *str, int i, t_mini mini)
-{
-	int	j;
-
-	j = 0;
-	skip_spaces(str, &i);
 	if (is_delimiter(str[i]))
 	{
 		if ((str[i] == '>' || str[i] == '<') && str[i + 1] == str[i])
@@ -125,13 +63,30 @@ int	len_next(char *str, int i, t_mini mini)
 	if (str[i] == '$' && (!str[i + 1] || is_delimiter(str[i + 1])
 			|| is_quotes(str[i + 1])))
 		return (1);
-	while (str[i] && !is_delimiter(str[i]) && mini.status == DEFAULT)
+	return (-1);
+}
+
+// Calculate length of next token in input string
+int	len_next(char *str, int i, t_mini mini)
+{
+	int	j;
+	int	special_len;
+
+	j = 0;
+	skip_spaces(str, &i);
+	special_len = handle_special_len(str, i);
+	if (special_len >= 0)
+		return (special_len);
+	while (str[i])
 	{
+		if (!is_quotes(str[i]) || mini.status != DEFAULT)
+			j++;
 		quotes(str, &i, &mini);
 		if (str[i] == '\0')
 			break ;
+		if (is_delimiter(str[i]) && mini.status == DEFAULT)
+			break ;
 		i++;
-		j++;
 	}
 	return (j);
 }

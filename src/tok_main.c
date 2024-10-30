@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/30 19:43:35 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 20:00:17 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,34 @@ static void	init_token(t_tok *tok)
 	tok->j = 0;
 	tok->malloc_flag = 0;
 	tok->k = NULL;
+}
+
+char	*create_token(char c, char *k, int double_char)
+{
+	if (double_char)
+	{
+		k = malloc(3);
+		if (!k)
+		{
+			ft_putstr_fd("malloc error\n", 2);
+			return (NULL);
+		}
+		k[0] = c;
+		k[1] = c;
+		k[2] = '\0';
+	}
+	else
+	{
+		k = malloc(2);
+		if (!k)
+		{
+			ft_putstr_fd("malloc error\n", 2);
+			return (NULL);
+		}
+		k[0] = c;
+		k[1] = '\0';
+	}
+	return (k);
 }
 
 //Main tokenization function
@@ -63,10 +91,7 @@ int	input_to_tokens(char *input, t_mini *mini)
 	mini->status = DEFAULT;
 	expanded_input = env_var_expansion(input, mini);
 	if (!expanded_input)
-	{
-		ft_putstr_fd("error expanding environmental variables\n", 2);
 		return (0);
-	}
 	if (!token(expanded_input, mini))
 	{
 		free(expanded_input);
