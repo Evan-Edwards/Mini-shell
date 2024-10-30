@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 18:24:59 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/30 12:07:36 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/30 12:52:41 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Checks if the last character of argv[0] is a slash and handles directory error
-// Returns NULL after printing error message and calling ft_close if it's a directory
+// Checks if argv[0] ends with slash, handles dir error
+// Returns NULL if directory, prints error and closes
 char	*handle_dir_slash(char *argv, char **arg, t_mini *mini)
 {
 	int	i;
@@ -56,7 +56,7 @@ char	*handle_relative_path(char *argv, char **envp, char **arg, t_mini *mini)
 	if (i == -1)
 	{
 		ft_printf_error("%s: No such file or directory\n", argv);
-		ft_close(127, NULL, arg, mini);  
+		ft_close(127, NULL, arg, mini);
 	}
 	return (find_path(argv, envp));
 }

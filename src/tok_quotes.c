@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 08:20:36 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/30 11:22:19 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 13:00:00 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,9 @@ int	quotes(char *s, int *i, t_mini *mini)
 {
 	if (!s || !i || !mini)
 		return (1);
-
 	if (s[*i] == '\'')
 		return (handle_single_quote(i, mini));
 	else if (s[*i] == '\"')
 		return (handle_double_quote(i, mini));
-
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/30 12:46:25 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 13:13:35 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ int		distribute(t_mini *mini, t_token *current);
 int		exe(char **arg, t_mini *mini);
 int		execute_builtin_with_redirection(char **arg, t_mini *mini, int fd[2]);
 int		execute_external_command(char **arg, t_mini *mini, int fd[2]);
+int		execute_external_command2(char **arg, t_mini *mini, int fd[2]);
 int		is_builtin(char *arg);
 int		is_env(char *env[]);
 int		number_of_arguments(t_token *lst);
@@ -173,6 +174,8 @@ int		validate_command_path(char **arg, t_mini *mini, char **path);
 void	execute_command(char **arg, t_mini *mini);
 void	print_array(char **arg);
 void	reset_dup2(t_mini *mini);
+int		setup_pipe(int fd[2], int flag);
+void	handle_parent_process(int fd[2], int flag, pid_t pid, t_mini *mini);
 
 /* ************************************************************************** */
 /*                             FILE HANDLING                                  */
@@ -227,9 +230,5 @@ void	reset_input(char *input, t_mini *mini);
 /*                             CLOSE PROGRAM                                  */
 /* ************************************************************************** */
 void	ft_close(int exit_status, char *input, char **arg, t_mini *mini);
-
-//static char	*handle_env_var(char *str, int *i, t_mini *mini, char **copy);
-char	*add_copy_size(char *copy, size_t new_total_size);
-
 
 #endif
