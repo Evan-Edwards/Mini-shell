@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 13:10:53 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/30 13:16:22 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 13:24:19 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	handle_parent_process(int fd[2], int flag, pid_t pid, t_mini *mini)
 		bytes_read = read(fd[0], buffer, sizeof(buffer));
 		while (bytes_read > 0)
 		{
-			write(STDOUT_FILENO, buffer, bytes_read);
+			if (write(STDOUT_FILENO, buffer, bytes_read) == -1)
+				ft_putstr_fd("Error: Failed to write to stdout\n", 2);
 			bytes_read = read(fd[0], buffer, sizeof(buffer));
 		}
 		close(fd[0]);

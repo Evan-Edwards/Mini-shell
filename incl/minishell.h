@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/30 13:13:35 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 13:22:56 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ int		check_errors(t_token *lst);
 /* ************************************************************************** */
 char	**build_exe(t_token *lst);
 char	*find_path(char *argv, char *env[]);
-char	*get_path(char *argv, char **envp);
+char	*get_path(char **argv, char **envp, t_mini *mini);
 char	*get_path2(char *argv, char **envp);
 int		builtin(char **arg, t_mini *mini);
 int		create_pipe(int pipe_fd[2]);

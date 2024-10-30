@@ -6,7 +6,7 @@
 #    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/30 12:42:42 by eedwards         ###   ########.fr        #
+#    Updated: 2024/10/30 13:31:12 by eedwards         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SOURCES = close.c \
 	distribute.c \
 	distribute2.c \
 	distribute3.c \
+	distribute4.c \
 	ex_cd.c \
 	ex_cd2.c \
 	ex_echo.c \
@@ -60,7 +61,7 @@ SOURCES = close.c \
 	set_types.c \
 	signals.c \
 	tok_delim.c \
-	tok_env_exp_old.c \
+	tok_env_exp.c \
 	tok_get_env.c \
 	tok_lst.c \
 	tok_main.c \
