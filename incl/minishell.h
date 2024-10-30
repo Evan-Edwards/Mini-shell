@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/30 19:36:56 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 22:08:20 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,8 @@ char	*add_copy_size(char *copy, size_t new_total_size);
 char	*create_token(char c, char *k, int double_char);
 char	*allocate_token(int len);
 int		handle_token_start(char *s, t_tok *tok, t_mini *mini);
-int		handle_empty_quotes(char *s, int *i);
+//int		handle_empty_quotes(char *s, int *i);
+int		handle_empty_quotes(char *s, int *i, t_mini *mini);
 int		len_next(char *str, int i, t_mini mini);
 int		handle_token2(t_tok *tok, t_mini *mini);
 
@@ -134,6 +135,7 @@ int		add_to_list(char *k, t_mini *mini);
 void	ft_t_lstadd_back(t_token **lst, t_token *new);
 void	print_list(t_mini *mini);
 t_token	*ft_t_lstnew(char *content);
+void	add_empty(t_mini *mini);
 
 /* ************************************************************************** */
 /*                              HISTORY                                      */

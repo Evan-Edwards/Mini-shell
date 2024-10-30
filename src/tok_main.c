@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tok_main.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/30 20:00:17 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 22:06:04 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	token(char *s, t_mini *mini)
 		if (tok.malloc_flag == 0)
 		{
 			skip_spaces(s, &tok.i);
-			if (handle_empty_quotes(s, &tok.i))
+			if (handle_empty_quotes(s, &tok.i, mini))
 				continue ;
 			if (is_delimiter(s[tok.i]) && mini->status == DEFAULT)
 			{

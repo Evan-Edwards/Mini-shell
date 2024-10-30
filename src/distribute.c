@@ -6,7 +6,7 @@
 /*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/30 18:11:34 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/30 21:38:48 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int	distribute(t_mini *mini, t_token *current)
 	char	**arg;
 	int		file_fd;
 
+	g_signal_status = 2;
 	file_fd = -1;
 	if (file_in(current) < 0)
 	{
@@ -121,7 +122,6 @@ int	distribute(t_mini *mini, t_token *current)
 	arg = build_exe(current);
 	if (arg == NULL)
 		return (0);
-	is_block(arg[0]);
 	execute_command(arg, mini);
 	free_str_array(arg);
 	return (1);

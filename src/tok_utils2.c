@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tok_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:31:32 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/30 20:04:00 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 22:31:04 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,15 @@ int	handle_token_start(char *s, t_tok *tok, t_mini *mini)
 	return (1);
 }
 
-int	handle_empty_quotes(char *s, int *i)
+int	handle_empty_quotes(char *s, int *i, t_mini *mini)
 {
 	if ((s[*i] == '\'' && s[*i + 1] == '\'')
 		|| (s[*i] == '\"' && s[*i + 1] == '\"'))
 	{
+		if (ft_isspace(s[*i + 2]) == 1 || s[*i + 2] == '\0')
+		{
+			add_empty(mini);
+		}
 		*i += 2;
 		return (1);
 	}
