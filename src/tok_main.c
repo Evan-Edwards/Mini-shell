@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/30 13:04:38 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 19:43:35 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ int	token(char *s, t_mini *mini)
 			skip_spaces(s, &tok.i);
 			if (handle_empty_quotes(s, &tok.i))
 				continue ;
+			if (is_delimiter(s[tok.i]) && mini->status == DEFAULT)
+			{
+				if (!check_sep(s, &tok.i, mini))
+					return (0);
+				continue ;
+			}
 			if (!handle_token_start(s, &tok, mini))
 				return (0);
 		}

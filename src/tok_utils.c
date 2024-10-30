@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tok_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 11:12:13 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 23:33:53 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/30 19:19:47 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	is_delimiter(char ch)
 {
-	if (ft_isspace(ch) || ch == '<' || ch == '>' || ch == '*' || ch == '|')
+	if (ch == '<' || ch == '>' || ch == '*' || ch == '|')
 		return (true);
 	return (false);
 }
@@ -28,11 +28,8 @@ bool	is_quotes(char ch)
 
 void	skip_spaces(char *s, int *i)
 {
-	if (ft_isspace(s[*i]))
-	{
-		while (ft_isspace(s[*i]))
-			(*i)++;
-	}
+	while (ft_isspace(s[*i]))
+		(*i)++;
 }
 
 // Reallocates memory for the copy string if needed

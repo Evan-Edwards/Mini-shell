@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/30 13:22:56 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 19:36:56 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ char	*allocate_token(int len);
 int		handle_token_start(char *s, t_tok *tok, t_mini *mini);
 int		handle_empty_quotes(char *s, int *i);
 int		len_next(char *str, int i, t_mini mini);
+int		handle_token2(t_tok *tok, t_mini *mini);
 
 /* ************************************************************************** */
 /*                          token list utils                                  */
