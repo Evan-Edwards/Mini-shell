@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/30 09:30:36 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 12:22:01 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 //if a match is found, uses getenv to retrieve the variable's value
 //returns a newly allocated string containing the value or an empty string
 //if no match is found, returns an empty string
-static char	*search_env(char *search, int len, t_mini *mini)
+char	*search_env(char *search, int len, t_mini *mini)
 {
 	int		j;
 	char	*result;
@@ -43,45 +43,11 @@ static char	*search_env(char *search, int len, t_mini *mini)
 	return (result);
 }
 
-//finds length of env variable name in input str
-//allocates memory for copy and copies variable name
-//searches env array for matching variable with search_env
-//if found returns value of variable by recalling getenv
-char	*get_env(char *str, int *i, t_mini *mini)
-{
-    int		start;
-    int		len;
-    char	*search;
-    char	*result;
-    int		j;
-
-    j = *i;
-    start = ++(*i);
-    if (str[start] == '?')
-    {
-        (*i)++;
-        return (ft_itoa(mini->exit_status));
-    }
-    while (str[*i] && !is_delimiter(str[*i]) && !is_quotes(str[*i]))
-        (*i)++;
-    len = *i - start;
-    if (ft_isdigit(str[start]))
-        return (ft_strdup(""));
-    search = ft_substr(str, start, len);
-    if (!search)
-        return (NULL);
-    result = search_env(search, len, mini);
-    if (result == NULL)
-        *i = j;
-    free(search);
-    return (result);
-}
-
 //handles expansion of a single environment variable
 //gets the env var value, resizes the copy buffer if needed
 //adds the expanded value to the copy string
 //returns the updated copy string or NULL on error
-static char	*handle_env_var(char *str, int *i, t_mini *mini, char **copy)
+char	*handle_env_var(char *str, int *i, t_mini *mini, char **copy)
 {
 	char	*env_var;
 	size_t	new_size;
@@ -103,7 +69,11 @@ static char	*handle_env_var(char *str, int *i, t_mini *mini, char **copy)
 	return (*copy);
 }
 
-int quotes2(char *s, int *i, t_mini *mini)
+// Updates quote status based on current character
+// Handles both single and double quotes
+// Returns 1 if quote was found, 0 otherwise
+// Updates mini->status based on quote type
+int	quotes2(char *s, int *i, t_mini *mini)
 {
 	if (s[*i] == '\'')
 	{
@@ -112,63 +82,54 @@ int quotes2(char *s, int *i, t_mini *mini)
 		else if (mini->status == SINGLEQ)
 			mini->status = DEFAULT;
 		else
-		{
 			return (1);
-		}
 		return (1);
 	}
 	if (s[*i] == '\"')
 	{
 		if (mini->status == DEFAULT)
-		{
 			mini->status = DOUBLEQ;
-		}
 		else if (mini->status == DOUBLEQ)
-		{
 			mini->status = DEFAULT;
-		}
 		else
-		{
 			return (1);
-		}
 		return (1);
 	}
 	return (0);
 }
-
 
 //iterates through str, expanding environment variables
 //checks for quotes using quotes function
 //expands $ variables outside single quotes using handle_env_var
 //copies other characters to copy string
 //returns the fully processed copy string or NULL on error
-static char	*process_env_vars(char *str, t_mini *mini, char *copy)
+char	*process_env_vars(char *str, t_mini *mini, char *copy)
 {
-    int	i;
-    int	j;
+	int	i;
+	int	j;
 
-    i = 0;
-    j = 0;
-    while (str[i])
-    {
-        quotes2(str, &i, mini);
-        if (str[i] == '$' && mini->status != SINGLEQ)
-        {
-            // Check for lone $ first
-            if (!str[i + 1] || is_delimiter(str[i + 1]) || is_quotes(str[i + 1]))
-            {
-                copy[j++] = str[i++];  // Copy the $ directly
-                continue;
-            }
-            if (!handle_env_var(str, &i, mini, &copy))
-                return (NULL);
-            j = ft_strlen(copy);
-        }
-        else if (str[i])  // Add check for str[i] to prevent buffer overflow
-            copy[j++] = str[i++];
-    }
-    copy[j] = '\0';
-    return (copy);
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		quotes2(str, &i, mini);
+		if (str[i] == '$' && mini->status != SINGLEQ)
+		{
+			if (!str[i + 1] || is_delimiter(str[i + 1])
+				|| is_quotes(str[i + 1]))
+			{
+				copy[j++] = str[i++];
+				continue ;
+			}
+			if (!handle_env_var(str, &i, mini, &copy))
+				return (NULL);
+			j = ft_strlen(copy);
+		}
+		else if (str[i])
+			copy[j++] = str[i++];
+	}
+	copy[j] = '\0';
+	return (copy);
 }
 
 //allocates room for expanded copy of str
@@ -179,7 +140,7 @@ char	*env_var_expansion(char *str, t_mini *mini)
 {
 	char	*copy;
 
-	copy = calloc(ft_strlen(str) + 1, 1);
+	copy = ft_calloc(ft_strlen(str) + 1, 1);
 	if (!copy)
 		return (NULL);
 	copy = process_env_vars(str, mini, copy);
@@ -191,6 +152,5 @@ char	*env_var_expansion(char *str, t_mini *mini)
 		free (copy);
 		return (NULL);
 	}
-	//printf("%s\n", copy);
 	return (copy);
 }

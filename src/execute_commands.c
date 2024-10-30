@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 20:35:34 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/29 17:51:26 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 12:08:04 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	create_pipe(int pipe_fd[2])
 int	validate_command_path(char **arg, t_mini *mini, char **path)
 {
 	if (mini->flag == 0)
-		*path = get_path(arg[0], mini->envp);
+		*path = get_path(arg, mini->envp, mini);
 	else
 		*path = get_path2(arg[0], mini->envp);
 	if (*path == NULL)
@@ -40,9 +40,9 @@ int	validate_command_path(char **arg, t_mini *mini, char **path)
 		ft_putstr_fd(": command not found\n", 2);
 		mini->exit_status = 127;
 		if (mini->flag == 0)
-			exit(127);
+			ft_close(127, NULL, arg, mini);
 		else
-			exit(1);
+			ft_close(EXIT_FAILURE, NULL, arg, mini);
 	}
 	return (1);
 }

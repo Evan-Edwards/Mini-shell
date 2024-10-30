@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+         #
+#    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/29 22:57:05 by ttero            ###   ########.fr        #
+#    Updated: 2024/10/30 12:42:42 by eedwards         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,14 +59,15 @@ SOURCES = close.c \
 	path2.c \
 	set_types.c \
 	signals.c \
-	tok_env_exp.c \
-	tok_env_exp2.c \
-	tok_env_exp3.c \
+	tok_delim.c \
+	tok_env_exp_old.c \
+	tok_get_env.c \
 	tok_lst.c \
 	tok_main.c \
+	tok_process.c \
 	tok_quotes.c \
 	tok_utils.c \
-	tok_env_exp_old.c \
+	tok_utils2.c \
 
 
 # Object files

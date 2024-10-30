@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:53:35 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/30 09:14:31 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:19:43 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	reg(char *str)
 
 //Sets the type for each token in the linked list
 //Returns 1 on success, 0 if the list is empty
-int	set_types(t_token *lst, t_mini *mini)
+int	set_types(t_token *lst)
 {
 	if (!lst)
 		return (0);

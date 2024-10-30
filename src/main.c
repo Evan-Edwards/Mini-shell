@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:24:50 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 23:42:57 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/30 12:10:47 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,15 @@ static int	process_command(char *input, t_mini *mini)
 		return (0);
 	}
 	if (input[0] == '\0')
-	{
-		free(input);
 		return (0);
-	}
 	if (ft_history(input, mini) == 0)
 		ft_close(EXIT_FAILURE, input, NULL, mini);
 	if (input_to_tokens(input, mini) == 0)
-		ft_close(EXIT_FAILURE, input, NULL, mini);
-	set_types(mini->lst, mini);
-	if (check_errors(mini->lst) == 0)
-	{
-		reset_input(input, mini);
 		return (0);
-	}
+	set_types(mini->lst);
+	if (check_errors(mini->lst) == 0)
+		return (0);
 	dis_b(mini);
-	reset_input(input, mini);
 	return (1);
 }
 
@@ -69,6 +62,7 @@ int	main(int ac, char *av[], char **envp)
 		if (input == NULL)
 			ft_close(0, input, NULL, &mini);
 		process_command(input, &mini);
+		reset_input(input, &mini);
 		g_signal_status = 0;
 	}
 	return (0);
