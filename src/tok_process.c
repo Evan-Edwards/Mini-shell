@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:25:14 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/30 12:53:29 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 14:58:48 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	process_char(char *s, t_tok *tok, t_mini *mini)
 		return (1);
 	if (is_delimiter(s[tok->i]) && mini->status == DEFAULT)
 	{
+		if (tok->k == NULL)
+			return (1);
 		process_delimiter(tok->k, &tok->j, s, mini);
 		tok->k = NULL;
 		tok->malloc_flag = 0;
