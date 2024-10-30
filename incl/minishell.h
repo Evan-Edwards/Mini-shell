@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 10:28:04 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 21:02:01 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/30 12:41:15 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,15 @@ typedef enum e_type
 	EXTRA,
 }					t_type;
 
+typedef struct s_tok
+{
+	int		i;
+	int		j;
+	int		len;
+	int		malloc_flag;
+	char	*k;
+}	t_tok;
+
 /* ************************************************************************** */
 /*                                SIGNALS                                     */
 /* ************************************************************************** */
@@ -88,20 +97,34 @@ int		token(char *s, t_mini *mini);
 char	*env_var_expansion(char *str, t_mini *mini);
 
 /* ************************************************************************** */
+/*                           env var expansion                               */
+/* ************************************************************************** */
+char	*search_env(char *search, int len, t_mini *mini);
+char	*handle_env_var(char *str, int *i, t_mini *mini, char **copy);
+int		quotes2(char *s, int *i, t_mini *mini);
+char	*process_env_vars(char *str, t_mini *mini, char *copy);
+char	*get_env(char *str, int *i, t_mini *mini);
+
+/* ************************************************************************** */
 /*                           create token utils                               */
 /* ************************************************************************** */
+int		handle_redirect_out(char *s, int *i, t_mini *mini);
+int		handle_redirect_in(char *s, int *i, t_mini *mini);
+int		handle_pipe(char *s, int *i, t_mini *mini);
+int		check_sep(char *s, int *i, t_mini *mini);
+int		process_char(char *s, t_tok *tok, t_mini *mini);
+int		process_delimiter(char *k, int *j, char *s, t_mini *mini);
+int		handle_remaining_token(t_tok *tok, t_mini *mini);
+int		quotes(char *s, int *i, t_mini *mini);
 bool	is_delimiter(char ch);
 bool	is_quotes(char ch);
-char	*get_env_value(char *str, int *i, t_mini *mini);
 void	skip_spaces(char *s, int *i);
-int		quotes(char *s, int *i, t_mini *mini);
-//char	*process_env_vars(char *str, char *copy, t_mini *mini);
-size_t	get_total_size(char *str, t_mini *mini);
-void	copy_single_quoted(char *str, int *i, char *copy, int *j);
-void	copy_double_quoted(char *str, int *i, char *copy, int *j, t_mini *mini);
-void	copy_quoted(char *str, int *i, char *copy, int *j, t_mini *mini);
-int		handle_dollar(char *str, int *i, char *copy, int *j, t_mini *mini);
-//int		handle_env_var(char *str, int *i, char *copy, int *j, t_mini *mini);
+char	*add_copy_size(char *copy, size_t new_total_size);
+char	*create_token(char c, char *k, int double_char);
+char	*allocate_token(int len);
+int		handle_token_start(char *s, t_tok *tok, t_mini *mini);
+int		handle_empty_quotes(char *s, int *i);
+int		len_next(char *str, int i, t_mini mini);
 
 /* ************************************************************************** */
 /*                          token list utils                                  */
@@ -125,7 +148,7 @@ int		ex_history(char **arg, t_history *history);
 /*                             SET TYPES                                      */
 /* ************************************************************************** */
 int		count_pipes(t_token *lst);
-int		set_types(t_token *lst, t_mini *mini);
+int		set_types(t_token *lst);
 int		reg(char *str);
 int		check_errors(t_token *lst);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   distribute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/29 19:28:32 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/30 12:22:33 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	execute_external_command(char **arg, t_mini *mini, int fd[2])
 {
 	int		exec_result;
 	char	*path;
+	
 
 	close(fd[0]);
 	if (!validate_command_path(arg, mini, &path))
