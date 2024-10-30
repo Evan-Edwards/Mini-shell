@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   distribute4.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 13:10:53 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/30 13:24:19 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 18:14:30 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,10 @@ int	setup_pipe(int fd[2], int flag)
 
 void	handle_parent_process(int fd[2], int flag, pid_t pid, t_mini *mini)
 {
-	char	buffer[4096];
-	ssize_t	bytes_read;
-
 	if (flag)
 	{
 		close(fd[1]);
-		bytes_read = read(fd[0], buffer, sizeof(buffer));
-		while (bytes_read > 0)
-		{
-			if (write(STDOUT_FILENO, buffer, bytes_read) == -1)
-				ft_putstr_fd("Error: Failed to write to stdout\n", 2);
-			bytes_read = read(fd[0], buffer, sizeof(buffer));
-		}
+		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 	}
 	waitpid(pid, &(mini->exit_status), 0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   distribute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 19:04:57 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/30 13:13:51 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 18:11:34 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	handle_child_process(char **arg, t_mini *mini, int fd[2],
 		execute_external_command(arg, mini, fd);
 	else
 		execute_external_command2(arg, mini, fd);
-	exit(EXIT_SUCCESS);
+	ft_close(EXIT_SUCCESS, NULL, arg, mini);
 }
 
 // Main execution function that handles builtin and external commands

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:36:16 by eedwards          #+#    #+#             */
-/*   Updated: 2024/10/29 18:00:24 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 18:18:26 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,16 @@ static void	handle_heredoc_child(int *fd, char *limiter)
 			&& line[ft_strlen(limiter)] == '\n')
 		{
 			free(line);
-			exit(EXIT_SUCCESS);
+			break ;
 		}
 		if (write(fd[1], line, ft_strlen(line)) == -1)
+		{
 			ft_putstr_fd("Write error", 2);
+			free(line);
+			break ;
+		}
 		free(line);
+		line = get_next_line(STDIN_FILENO);
 	}
 	close(fd[1]);
 	exit(EXIT_SUCCESS);
