@@ -6,7 +6,7 @@
 /*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/30 09:14:16 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 09:30:36 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,7 @@ char	*env_var_expansion(char *str, t_mini *mini)
 	{
 		ft_putstr_fd("uneven quotes\n", 2);
 		free (copy);
+		return (NULL);
 	}
 	//printf("%s\n", copy);
 	return (copy);

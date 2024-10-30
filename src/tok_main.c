@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tok_main.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:18 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/29 23:43:04 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/30 09:38:36 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,27 +211,33 @@ int	token(char *s, t_mini *mini)
     return (1);
 } */
 
- static int	len_next(char *str, int i, t_mini mini)
+static int len_next(char *str, int i, t_mini mini)
 {
-	int	j;
+    int j;
 
-	j = 0;
-	skip_spaces(str, &i);
-	//printf("%c\n", str[i]);
-	while (str[i])
-	{
-		if (is_delimiter(str[i]) && mini.status == DEFAULT)
-			{
-				//printf("%d\n", j);
-				break;
-			}
-		quotes(str, &i, &mini);
-		if (str[i] == '\0')
-			break;
-		i++;
-		j++;
-	}
-	return (j);
+    j = 0;
+    skip_spaces(str, &i);
+    
+    // Handle empty quotes
+    if ((str[i] == '\'' && str[i + 1] == '\'') ||
+        (str[i] == '\"' && str[i + 1] == '\"'))
+        return 0;  // Return 0 length for empty quotes
+        
+    // Handle special case of lone $
+    if (str[i] == '$' && (!str[i + 1] || is_delimiter(str[i + 1]) || is_quotes(str[i + 1])))
+        return 1;
+
+    while (str[i])
+    {
+        if (is_delimiter(str[i]) && mini.status == DEFAULT)
+            break;
+        quotes(str, &i, &mini);
+        if (str[i] == '\0')
+            break;
+        i++;
+        j++;
+    }
+    return (j);
 }
 
 
@@ -295,55 +301,76 @@ int check_sep(char *s, int *i, t_mini *mini)
 	return (1);
 }
 
-int token (char *s, t_mini *mini)
+int token(char *s, t_mini *mini)
 {
-	int i;
-	int j;
+    int i;
+    int j;
     int len;
     int malloc_flag;
     char *k;
 
-	i = 0;
+    i = 0;
     j = 0;
     malloc_flag = 0;
-	while(s[i])
-	{
-		if (malloc_flag == 0)
+    k = NULL;
+    while(s[i])
+    {
+        if (malloc_flag == 0)
         {
             skip_spaces(s, &i);
+            // Handle empty quotes
+            if ((s[i] == '\'' && s[i + 1] == '\'') ||
+                (s[i] == '\"' && s[i + 1] == '\"'))
+            {
+                i += 2;  // Skip both quotes
+                continue;
+            }
             len = len_next(s, i, *mini);
-            if (!(k = malloc(len + 1)))
-                printf("malloc error");
+            if (len == 0)  // Skip if empty quotes
+            {
+                i++;
+                continue;
+            }
+            k = malloc(len + 1);
+            if (!k)
+            {
+                ft_putstr_fd("malloc error\n", 2);
+                return (0);
+            }
             malloc_flag = 1;
         }
         quotes(s, &i, mini);
-		if (s[i] == '\0')
-			break;
-		if (is_delimiter(s[i]) && mini->status == DEFAULT)
-			{
-				k[j] = '\0';
-				if (strlen(k) > 0)
-					add_to_list(k, mini);
-                free (k);
-				if (s[i] == '>' || s[i] == '<' || s[i] == '|')
-					check_sep(s, &i, mini);
-                malloc_flag = 0;
-                j = 0;
-            }
-		 else
-		{
-			k[j] = s[i];
-			 j++;
-		}
+        if (s[i] == '\0')
+            break;
+        if (is_delimiter(s[i]) && mini->status == DEFAULT)
+        {
+            k[j] = '\0';
+            if (ft_strlen(k) > 0)
+                add_to_list(k, mini);
+            free(k);
+            k = NULL;  // Set k to NULL after freeing
+            if (s[i] == '>' || s[i] == '<' || s[i] == '|')
+                check_sep(s, &i, mini);
+            malloc_flag = 0;
+            j = 0;
+        }
+        else
+        {
+            k[j] = s[i];
+            j++;
+        }
         i++;
-	}
-	k[j] = '\0';
-	add_to_list(k, mini);
-    free (k);
-	return (1);
+    }
+    if (k)  // Only add and free if k exists and hasn't been freed
+    {
+        k[j] = '\0';
+        if (ft_strlen(k) > 0)
+            add_to_list(k, mini);
+        free(k);
+        k = NULL;
+    }
+    return (1);
 }
-
-
 
 //Takes input string and mini struct
 //Expands environmental variables and tokenizes the input
