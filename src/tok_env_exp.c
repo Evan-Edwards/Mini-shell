@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tok_env_exp_old.c                                  :+:      :+:    :+:   */
+/*   tok_env_exp.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/30 12:22:01 by eedwards         ###   ########.fr       */
+/*   Updated: 2024/10/30 22:41:19 by ttero            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*search_env(char *search, int len, t_mini *mini)
 	j = 0;
 	while (mini->envp[j])
 	{
-		if (strncmp(mini->envp[j], search, len) == 0
+		if (ft_strncmp(mini->envp[j], search, len) == 0
 			&& mini->envp[j][len] == '=')
 		{
 			env_value = mini->envp[j] + len + 1;
