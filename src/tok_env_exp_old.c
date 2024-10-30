@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tok_env_exp_old.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:11 by ttero             #+#    #+#             */
-/*   Updated: 2024/10/29 23:05:51 by ttero            ###   ########.fr       */
+/*   Updated: 2024/10/30 09:14:16 by eedwards         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,32 +49,32 @@ static char	*search_env(char *search, int len, t_mini *mini)
 //if found returns value of variable by recalling getenv
 char	*get_env(char *str, int *i, t_mini *mini)
 {
-	int		start;
-	int		len;
-	char	*search;
-	char	*result;
-	int		j;
+    int		start;
+    int		len;
+    char	*search;
+    char	*result;
+    int		j;
 
-	j = *i;
-	start = ++(*i);
-	if (str[start] == '?')
-	{
-		(*i)++;  // Move past the ?
-		return (ft_itoa(mini->exit_status));
-	}
-	while (str[*i] && !is_delimiter(str[*i]) && !is_quotes(str[*i]))
-		(*i)++;
-	len = *i - start;
-	if (ft_isdigit(str[start]))
-		return (ft_strdup(""));
-	search = ft_substr(str, start, len);
-	if (!search)
-		return (NULL);
-	result = search_env(search, len, mini);
-	if (result == NULL)
-		*i = j;
-	free(search);
-	return (result);
+    j = *i;
+    start = ++(*i);
+    if (str[start] == '?')
+    {
+        (*i)++;
+        return (ft_itoa(mini->exit_status));
+    }
+    while (str[*i] && !is_delimiter(str[*i]) && !is_quotes(str[*i]))
+        (*i)++;
+    len = *i - start;
+    if (ft_isdigit(str[start]))
+        return (ft_strdup(""));
+    search = ft_substr(str, start, len);
+    if (!search)
+        return (NULL);
+    result = search_env(search, len, mini);
+    if (result == NULL)
+        *i = j;
+    free(search);
+    return (result);
 }
 
 //handles expansion of a single environment variable
@@ -144,25 +144,31 @@ int quotes2(char *s, int *i, t_mini *mini)
 //returns the fully processed copy string or NULL on error
 static char	*process_env_vars(char *str, t_mini *mini, char *copy)
 {
-	int	i;
-	int	j;
+    int	i;
+    int	j;
 
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		quotes2(str, &i, mini);
-		if (str[i] == '$' && mini->status != SINGLEQ)
-		{
-			if (!handle_env_var(str, &i, mini, &copy))
-				return (NULL);
-			j = ft_strlen(copy);
-		}
-		else
-			copy[j++] = str[i++];
-	}
-	copy[j] = '\0';
-	return (copy);
+    i = 0;
+    j = 0;
+    while (str[i])
+    {
+        quotes2(str, &i, mini);
+        if (str[i] == '$' && mini->status != SINGLEQ)
+        {
+            // Check for lone $ first
+            if (!str[i + 1] || is_delimiter(str[i + 1]) || is_quotes(str[i + 1]))
+            {
+                copy[j++] = str[i++];  // Copy the $ directly
+                continue;
+            }
+            if (!handle_env_var(str, &i, mini, &copy))
+                return (NULL);
+            j = ft_strlen(copy);
+        }
+        else if (str[i])  // Add check for str[i] to prevent buffer overflow
+            copy[j++] = str[i++];
+    }
+    copy[j] = '\0';
+    return (copy);
 }
 
 //allocates room for expanded copy of str
