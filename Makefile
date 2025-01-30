@@ -3,22 +3,20 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ttero <ttero@student.hive.fi>              +#+  +:+       +#+         #
+#    By: eedwards <eedwards@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 13:17:22 by eedwards          #+#    #+#              #
-#    Updated: 2024/10/30 22:30:13 by ttero            ###   ########.fr        #
+#    Updated: 2025/01/30 10:29:32 by eedwards         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Project name and compiler
 NAME = minishell
 CC = cc -g
-
-# Compiler and linker flags
 CFLAGS = -Wall -Wextra -Ofast
 LFLAGS = -L./$(LIBFT) -lft -lreadline
+MAKE_SILENT = make --no-print-directory
 
-#-Werror
 # Libraries
 LIBFT = libft
 LIBFTA = libft.a
@@ -79,21 +77,24 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 # Rules
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@make -C $(LIBFT)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LFLAGS)
+	@$(MAKE_SILENT) -C $(LIBFT)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LFLAGS)
+	@echo "$(NAME) created"
 
 clean:
-	$(RM) $(OBJS)
-	@make -C $(LIBFT) clean
+	@$(RM) -r obj
+	@$(MAKE_SILENT) -C $(LIBFT) clean
+	@echo "minishell object files removed"
 
 fclean: clean
-	$(RM) $(NAME)
-	make -C $(LIBFT) fclean
+	@$(RM) $(NAME)
+	@$(MAKE_SILENT) -C $(LIBFT) fclean
+	@echo "$(NAME) removed"
 
 re: fclean all
 
